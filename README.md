@@ -56,3 +56,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Change Log
+
+- **2026-04-08**: Added custom landing page (resources/views/welcome.blade.php) with professional dark theme and CTA buttons. Updated README.md with this changelog entry.
