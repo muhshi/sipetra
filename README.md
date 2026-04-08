@@ -42,3 +42,19 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 [MIT license](https://opensource.org/licenses/MIT).
 
+---
+
+## Changelog
+
+### [Unreleased]
+#### Added
+- `ImportUsersSeeder` untuk proses batch import data Pegawai dan Mitra.
+- Dukungan import Pegawai dari `pegawai.json`.
+- Dukungan import Mitra dari file Excel menggunakan `phpoffice/phpspreadsheet`.
+- Kolom identitas baru pada tabel `users` (NIP, SOBAT ID, dsb).
+- Integrasi Filament Shield dan Laravel Passport.
+
+#### Changed
+- Pembaruan `README.md` dengan detail proyek SIPETRA SSO.
+- Optimasi kecepatan seeder dengan caching password hash.
+
