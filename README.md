@@ -58,3 +58,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Pembaruan `README.md` dengan detail proyek SIPETRA SSO.
 - Optimasi kecepatan seeder dengan caching password hash.
 
+### [2026-04-09]
+#### Merged
+- Melakukan pull dan menyinkronkan branch `nana-work` dengan branch `main` (`git pull origin main -X theirs`). Mengadopsi struktur seeder gabungan `ImportUsersSeeder` dan modifikasi README dari main.
+#### Changed
+- Pembaruan changelog untuk mencatat pull terbaru.
