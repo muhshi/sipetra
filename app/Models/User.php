@@ -46,11 +46,10 @@ class User extends Authenticatable implements FilamentUser, OAuthenticatable
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_active && (
-            $this->hasRole('super_admin') ||
-            $this->hasRole('admin') ||
-            $this->hasRole('operator')
-        );
+        // SIPETRA bertindak sebagai SSO Terpusat.
+        // Semua user aktif (termasuk Pegawai biasa & Mitra) HARUS DIIZINKAN masuk/numpang login.
+        // Halaman/Menu di dalam panel akan disembunyikan otomatis oleh Filament Shield sesuai Role mereka.
+        return $this->is_active;
     }
 
     /**
