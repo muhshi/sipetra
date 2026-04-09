@@ -63,3 +63,5 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Melakukan pull dan menyinkronkan branch `nana-work` dengan branch `main` (`git pull origin main -X theirs`). Mengadopsi struktur seeder gabungan `ImportUsersSeeder` dan modifikasi README dari main.
 #### Changed
 - Pembaruan changelog untuk mencatat pull terbaru.
+#### Fixed
+- Menyelesaikan *bug* `AuthorizationViewResponse is not instantiable` dengan membuat `App\Models\PassportClient` khusus (SSO Otomatis Bypass Prompt) sehingga mempercepat proses *login* antar sistem internal.
