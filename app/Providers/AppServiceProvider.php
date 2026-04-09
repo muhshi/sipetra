@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Passport::useClientModel(\App\Models\PassportClient::class);
+        Passport::authorizationView(function () { return response(''); });
         
         Passport::tokensCan([
             'profile:read' => 'Baca informasi profil dasar (nama, email, avatar)',
