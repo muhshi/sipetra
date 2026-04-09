@@ -58,6 +58,11 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Pembaruan `README.md` dengan detail proyek SIPETRA SSO.
 - Optimasi kecepatan seeder dengan caching password hash.
 
+### [2026-04-08 & Awal 04-09 (Restored dari `nana-work`)]
+#### Added
+- *Added custom landing page (`resources/views/welcome.blade.php`) with professional dark theme and CTA buttons.*
+- *Created `PegawaiSeeder` and `MitraSeeder` to import user data from `pegawai.json` and `mitra.xlsx` using `OpenSpout`. Seeded the database successfully.*
+
 ### [2026-04-09]
 #### Merged
 - Melakukan pull dan menyinkronkan branch `nana-work` dengan branch `main` (`git pull origin main -X theirs`). Mengadopsi struktur seeder gabungan `ImportUsersSeeder` dan modifikasi README dari main.
