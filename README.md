@@ -59,3 +59,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ## Change Log
 
 - **2026-04-08**: Added custom landing page (resources/views/welcome.blade.php) with professional dark theme and CTA buttons. Updated README.md with this changelog entry.
+- **2026-04-09**: Created `PegawaiSeeder` and `MitraSeeder` to import user data from `pegawai.json` and `2026_3321_exportmitrakepka...xlsx` using `OpenSpout`. Seeded the database successfully.
