@@ -62,6 +62,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 #### Added
 - *Added custom landing page (`resources/views/welcome.blade.php`) with professional dark theme and CTA buttons.*
 - *Created `PegawaiSeeder` and `MitraSeeder` to import user data from `pegawai.json` and `mitra.xlsx` using `OpenSpout`. Seeded the database successfully.*
+- Menambahkan dokumen `arsitektur_portal_sso.md` yang berisi panduan konseptual *Golden Flow* integrasi SSO dengan Aplikasi Portal.
+- Menambahkan dokumen `panduan_integrasi_klien.md` yang berisi langkah teknis konkret bagi developer untuk menyambungkan aplikasi Klien dengan Sipetra.
 
 ### [2026-04-09]
 #### Merged
