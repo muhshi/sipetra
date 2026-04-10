@@ -107,10 +107,10 @@ Pegawai            App Client              SIPETRA (SSO Server)
 - [x] Super admin user: `admin@sipetra.bps.go.id`
 
 ### ❌ Belum Dilakukan
-- [ ] Custom halaman consent/authorize (Passport 13.x menggunakan JSON response)
+- [ ] Custom halaman consent/authorize
 - [ ] Testing (OAuth flow, API endpoints, Filament panel)
-- [ ] Import data pegawai dari API BPS
-- [ ] Import data mitra dari Excel SOBAT
+- [x] Import data pegawai dari API BPS
+- [x] Import data mitra dari Excel SOBAT
 - [ ] Dokumentasi client integration
 
 ---
@@ -321,14 +321,14 @@ class User extends Authenticatable implements FilamentUser, OAuthenticatable
 ## 5. Belum Diimplementasi (Backlog)
 
 ### Fase Berikutnya: Import Data
-- [ ] Artisan command untuk import pegawai dari API BPS
-- [ ] Artisan command untuk import mitra dari Excel SOBAT
+- [x] Artisan command untuk import pegawai dari API BPS
+- [x] Artisan command untuk import mitra dari Excel SOBAT
 - [ ] Scheduled sync pegawai (cron job)
 
 ### Fase Berikutnya: Custom UI
 - [ ] Custom halaman consent/authorize
 - [ ] Branding BPS di halaman login Filament
-- [ ] Custom login page dengan NIP/email toggle
+- [x] Custom login page dengan NIP/email toggle
 
 ### Fase Berikutnya: Testing
 - [ ] Test OAuth authorization flow
