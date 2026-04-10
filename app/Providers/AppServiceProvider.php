@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::viewNamespace('passport');
+        Passport::authorizationView('vendor.passport.authorize');
 
         Passport::tokensCan([
             'profile:read' => 'Baca informasi profil dasar (nama, email, avatar)',
