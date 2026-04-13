@@ -12,7 +12,7 @@ return [
     /**
      * Whether to use database stored scopes.
      */
-    'use_database_scopes' => true,
+    'use_database_scopes' => false,
 
     /**
      * Cache settings.
@@ -35,11 +35,6 @@ return [
     'oauth' => [
         'allowed_grant_types' => [
             'authorization_code',
-            'client_credentials',
-            'password',
-            'personal_access',
-            'implicit',
-            'device',
         ],
     ],
 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Laravel\Passport\Client as BaseClient;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client as BaseClient;
 
 class PassportClient extends BaseClient
 {

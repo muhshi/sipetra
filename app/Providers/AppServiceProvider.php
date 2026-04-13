@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\PassportClient;
+use App\Settings\SystemSettings;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient;
+use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\EditClient;
+use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\ViewClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,7 +18,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            CreateClient::class,
+            \App\Filament\Resources\ClientResource\Pages\CreateClient::class,
+        );
+
+        $this->app->bind(
+            ViewClient::class,
+            \App\Filament\Resources\ClientResource\Pages\ViewClient::class,
+        );
+
+        $this->app->bind(
+            EditClient::class,
+            \App\Filament\Resources\ClientResource\Pages\EditClient::class,
+        );
     }
 
     /**
@@ -20,9 +39,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::useClientModel(\App\Models\PassportClient::class);
-        Passport::authorizationView(function () { return response(''); });
-        
+        Passport::useClientModel(PassportClient::class);
+        Passport::authorizationView(function () {
+            return response('');
+        });
+
         Passport::tokensCan([
             'profile:read' => 'Baca informasi profil dasar (nama, email, avatar)',
             'identity:read' => 'Baca identitas (NIP/ID Mitra, tipe)',
@@ -37,5 +58,14 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addHour());
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
+
+        try {
+            if (Schema::hasTable('settings')) {
+                $settings = app(SystemSettings::class);
+                config(['session.lifetime' => $settings->session_lifetime]);
+            }
+        } catch (\Throwable $th) {
+            // Ignore if settings migration hasn't run
+        }
     }
 }
