@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\Contracts\OAuthenticatable;
-use Laravel\Passport\HasApiTokens;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasApiTokensTrait;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasPassportScopeGrantsTrait;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -41,7 +41,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasPassportScopeGrantsInterface, OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, HasPassportScopeGrantsTrait, HasRoles, Notifiable;
+    use HasApiTokensTrait, HasFactory, HasPassportScopeGrantsTrait, HasRoles, Notifiable;
 
     /**
      * Determine if the user can access the Filament admin panel.

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Plugins\ExtendedPassportUiPlugin;
 use App\Http\Middleware\FlashClientSecret;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -20,7 +21,6 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -61,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                FilamentPassportUiPlugin::make(),
+                ExtendedPassportUiPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
