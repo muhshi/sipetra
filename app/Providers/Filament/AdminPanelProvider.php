@@ -58,7 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                // \N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin::make(),
+                \N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
