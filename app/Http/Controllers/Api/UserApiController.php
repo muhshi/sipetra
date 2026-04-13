@@ -14,12 +14,14 @@ class UserApiController extends Controller
     public function show(Request $request): JsonResponse
     {
         $user = $request->user();
+        $clientId = $request->user()->token()->client_id;
 
         return response()->json([
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'avatar' => $user->avatar_url,
+            'client_role' => $user->clientRoleFor($clientId),
         ]);
     }
 

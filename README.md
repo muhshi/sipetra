@@ -58,16 +58,21 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
   SIPETRA_REDIRECT_URI="..."
   ```
 - **Migrasi `activity_log`**: Menerbitkan dan menjalankan migrasi dari paket `spatie/laravel-activitylog` yang dibutuhkan oleh paket N3XT0R untuk merekam log perubahan OAuth Client.
+- **Client Access Control**: Fitur kontrol akses per aplikasi klien. Admin dapat menetapkan Role spesifik per klien (`client_roles`) dan menugaskan user aktif ke klien dengan Role tertentu (`client_user_accesses`). Termasuk dukungan UI Relation Manager di form detail klien.
+- **Halaman Penolakan Akses**: Menambahkan halaman khusus `oauth.rejected` yang memblokir proses SSO jika user tidak memiliki izin ke aplikasi bersangkutan.
+- **API `client_role`**: Endpoint `/api/user` kini mengembalikan data `client_role` otomatis sesuai klien yang melakukan request.
 
 #### Changed
 - **Grant Type dibatasi ke Authorization Code saja**: Opsi grant type lain (Password, Client Credentials, Implicit, Device, Personal Access) dihapus dari daftar pilihan di konfigurasi `passport-authorization-core`.
 - **Database Scopes dinonaktifkan**: Fitur UI Scopes dari N3XT0R dinonaktifkan (`use_database_scopes => false`) karena scope dikelola secara statis melalui `AppServiceProvider`.
 - **Model `PassportClient`**: Basis class diubah dari `Laravel\Passport\Client` menjadi `N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client` untuk kompatibilitas penuh dengan paket N3XT0R FilamentPassportUi.
-- **`AppServiceProvider`**: Ditambahkan IoC Container Binding untuk override halaman `CreateClient`, `EditClient`, dan `ViewClient` dari vendor dengan versi kustom.
+- **`AppServiceProvider`**: Ditambahkan IoC Container Binding untuk override halaman `CreateClient`, `EditClient`, dan `ViewClient` dari vendor dengan versi kustom. Modifikasi juga pada `Passport::authorizationView` untuk mengarahkan pengguna yang tidak diizinkan ke halaman penolakan akses.
+- **Enforcement SSO**: Metode `skipsAuthorization` model `PassportClient` dimodifikasi agar mengecek tabel izin sebelum melanjutkan Single Sign-On.
 
 #### Fixed
 - ***TypeError* pada halaman View Client**: Disebabkan oleh ketidakcocokan tipe model `PassportClient`. Diperbaiki dengan mengubah inheritance model.
 - **Copy .ENV menghasilkan `null`**: Disebabkan oleh `$hidden` pada model Eloquent Passport yang memblokir akses ke `plain_secret`. Diperbaiki dengan menggunakan raw DB query (`DB::table(...)`) langsung, membypass layer Eloquent.
+- **Class Action Not Found**: Memperbaiki masalah namespace Filament v5 di Relation Manager dari `Filament\Tables\Actions\` menjadi `Filament\Actions\`.
 
 ---
 

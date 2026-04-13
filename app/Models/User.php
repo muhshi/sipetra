@@ -42,6 +42,19 @@ class User extends Authenticatable implements FilamentUser, OAuthenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
+     * Dapatkan role user untuk klien SSO tertentu.
+     */
+    public function clientRoleFor(string $clientId): ?string
+    {
+        $access = ClientUserAccess::with('role')
+            ->where('client_id', $clientId)
+            ->where('user_id', $this->id)
+            ->first();
+
+        return $access?->role?->name;
+    }
+
+    /**
      * Determine if the user can access the Filament admin panel.
      */
     public function canAccessPanel(Panel $panel): bool
