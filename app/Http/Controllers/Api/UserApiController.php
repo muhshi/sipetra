@@ -38,9 +38,7 @@ class UserApiController extends Controller
             'jenis_kelamin' => $user->jenis_kelamin,
             'tempat_lahir' => $user->tempat_lahir,
             'tanggal_lahir' => $user->tanggal_lahir?->format('Y-m-d'),
-            'pendidikan' => $user->pendidikan,
-            'phone' => $user->phone,
-
+            'pendidikan' => $user->pendidikan
         ]);
     }
 
