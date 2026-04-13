@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Filament\Passport\Schemas;
 
+use App\Filament\Passport\Schemas\Fields\ClientIdInput;
 use App\Filament\Passport\Schemas\Fields\RedirectInput;
+use App\Filament\Passport\Schemas\Fields\SecretInput;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use N3XT0R\FilamentPassportUi\Application\StateResolvers\GrantType\NeedsUserPermissionState;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\ClientResourceForm;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\GrantTypeSelect;
-use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\IdHidden;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\NameInput;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\OwnerSelect;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\RevokeToggle;
-use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\SecretInput;
 
 class ExtendedClientResourceForm extends ClientResourceForm
 {
     public static function configure(Schema $schema, array $additionalComponents = []): Schema
     {
         $components = [
-            IdHidden::make(),
+            ClientIdInput::make(),
             NameInput::make(),
             OwnerSelect::make()
                 ->requiredIf(

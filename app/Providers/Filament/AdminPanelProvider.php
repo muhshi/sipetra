@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Plugins\ExtendedPassportUiPlugin;
-use App\Http\Middleware\FlashClientSecret;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -57,7 +56,6 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                FlashClientSecret::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),

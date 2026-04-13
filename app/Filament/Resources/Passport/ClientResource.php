@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Passport;
 
-use App\Filament\Passport\Schemas\ExtendedClientWizardForm;
+use App\Filament\Passport\Schemas\ExtendedClientResourceForm;
 use Filament\Schemas\Schema;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource as BaseClientResource;
 
@@ -14,7 +14,7 @@ class ClientResource extends BaseClientResource
 
     public static function form(Schema $schema): Schema
     {
-        return ExtendedClientWizardForm::configure($schema);
+        return ExtendedClientResourceForm::configure($schema);
     }
 
     public static function getPages(): array
