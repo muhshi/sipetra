@@ -46,6 +46,31 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-13]
+#### Added
+- **System Settings Page**: Halaman pengaturan sistem di Filament Admin untuk mengatur Session Lifetime secara dinamis via dropdown (60 menit, 2 jam, 1 hari, 1 minggu, 1 bulan, selamanya). Menggunakan `spatie/laravel-settings` sebagai backend-nya.
+- **Alur Pembuatan OAuth Client yang Disederhanakan**: Form `Create Client` kini cukup meminta Nama Aplikasi dan Link Dashboard. `Redirect URI` otomatis terisi (`{dashboard_url}/auth/callback`) namun tetap bisa diedit secara manual.
+- **Penyimpanan & Tampilan Client Secret Permanen**: Kolom `plain_secret` ditambahkan ke tabel `oauth_clients` (via migrasi baru). Client Secret kini tersimpan dan dapat dilihat kapan saja di halaman detail client.
+- **Tombol "Copy .ENV"**: Tombol hijau di halaman detail client untuk menyalin seluruh konfigurasi sekaligus dalam format siap-tempel `.env`:
+  ```
+  SIPETRA_CLIENT_ID="..."
+  SIPETRA_CLIENT_SECRET="..."
+  SIPETRA_REDIRECT_URI="..."
+  ```
+- **Migrasi `activity_log`**: Menerbitkan dan menjalankan migrasi dari paket `spatie/laravel-activitylog` yang dibutuhkan oleh paket N3XT0R untuk merekam log perubahan OAuth Client.
+
+#### Changed
+- **Grant Type dibatasi ke Authorization Code saja**: Opsi grant type lain (Password, Client Credentials, Implicit, Device, Personal Access) dihapus dari daftar pilihan di konfigurasi `passport-authorization-core`.
+- **Database Scopes dinonaktifkan**: Fitur UI Scopes dari N3XT0R dinonaktifkan (`use_database_scopes => false`) karena scope dikelola secara statis melalui `AppServiceProvider`.
+- **Model `PassportClient`**: Basis class diubah dari `Laravel\Passport\Client` menjadi `N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client` untuk kompatibilitas penuh dengan paket N3XT0R FilamentPassportUi.
+- **`AppServiceProvider`**: Ditambahkan IoC Container Binding untuk override halaman `CreateClient`, `EditClient`, dan `ViewClient` dari vendor dengan versi kustom.
+
+#### Fixed
+- ***TypeError* pada halaman View Client**: Disebabkan oleh ketidakcocokan tipe model `PassportClient`. Diperbaiki dengan mengubah inheritance model.
+- **Copy .ENV menghasilkan `null`**: Disebabkan oleh `$hidden` pada model Eloquent Passport yang memblokir akses ke `plain_secret`. Diperbaiki dengan menggunakan raw DB query (`DB::table(...)`) langsung, membypass layer Eloquent.
+
+---
+
 ### [Unreleased]
 #### Added
 - `ImportUsersSeeder` untuk proses batch import data Pegawai dan Mitra.
