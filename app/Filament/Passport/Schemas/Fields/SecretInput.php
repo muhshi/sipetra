@@ -16,13 +16,13 @@ class SecretInput
             ->password()
             ->revealable()
             ->readOnly()
-            ->dehydrated(false)
-            ->visible(fn ($state) => filled($state))
-            ->helperText(__('Copy this secret. It will not be shown again after you leave this page.'))
+            // ->dehydrated(false)
+            ->visible(fn($state) => filled($state))
+            ->helperText(__('COPY THIS SECRET CODE. It will not be shown again after you leave this page.'))
             ->suffixAction(
                 Action::make('copy')
                     ->icon('heroicon-m-clipboard')
-                    ->alpineClickHandler(fn ($state) => "window.navigator.clipboard.writeText('$state'); \$tooltip('Copied to clipboard', { timeout: 1500 });")
+                    ->alpineClickHandler(fn($state) => "window.navigator.clipboard.writeText('$state'); \$tooltip('Copied to clipboard', { timeout: 1500 });")
             );
     }
 }
