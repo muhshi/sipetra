@@ -1,5 +1,5 @@
 # SSO Sipetra — Fase 2: Rule-Based Access Control & User Attributes
-
+id, secret, link callback, managemen akses, user ABC bisa aplikasi apa saja, pegawai aplikasi ABC, mitra aplikasi A
 > **Status:** 📋 Planning  
 > **Tanggal:** 2026-04-13  
 > **Dibuat oleh:** Admin Sipetra
