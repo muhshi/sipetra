@@ -81,7 +81,9 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 ### ✅ Added
 - **`NoCacheHeaders` Middleware** — Middleware global (didaftarkan di group `web`) untuk mengirim header anti-cache guna mencegah kebocoran data via browser cache.
 - **Integrasi Keamanan di Dokumentasi** — Penambahan Bagian 11 di `Panduan_Integrasi_SSO.md` mengenai penanganan browser cache dan penggunaan null-safe operator di Blade.
-- **Enhanced OAuth Client Creation UX** — Implementasi **3-Step Wizard** pada form pendaftaran klien baru. Admin kini dapat mengonfigurasi *Access Policy* dan *Access Rules* dalam satu alur kerja.
+- **Enhanced OAuth Client Creation UX** — Implementasi **3-Step Wizard** pada form pendaftaran klien baru. Admin kini dapat mengonfigurasi *Access Policy* dan *Access Rules* dalam satu alur kerja. Field *Access Rules* kini mendukung **Multi-select**, memudahkan penambahan banyak user/role sekaligus.
+- **Active Token Counter** — Penambahan badge pada menu "Tokens" di sidebar yang secara real-time menunjukkan jumlah token yang aktif (belum dicabut).
+- **Sinkronisasi Waktu & Lokal** — Konfigurasi zona waktu ke **Asia/Jakarta (WIB)** dan lokal ke **Bahasa Indonesia (id)** untuk memastikan seluruh pencatatan waktu dan format pesan sesuai dengan standar lokal.
 
 ### 🐛 Fixed
 - **Undefined method 'update'** — Penambahan type hint PHPDoc di controller klien untuk memperbaiki warning statis.

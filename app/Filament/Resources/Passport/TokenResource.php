@@ -22,6 +22,11 @@ use N3XT0R\FilamentPassportUi\Resources\TokenResource\Schemas\Components\Columns
 class TokenResource extends BaseTokenResource
 {
     protected static ?string $slug = 'tokens';
+ 
+     public static function getNavigationBadge(): ?string
+     {
+         return (string) static::getModel()::where('revoked', false)->count();
+     }
 
     public static function table(Table $table): Table
     {
