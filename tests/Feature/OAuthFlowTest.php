@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Enums\ClientAccessPolicy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Laravel\Passport\Client;
@@ -21,6 +22,7 @@ beforeEach(function () {
         'revoked' => false,
         'owner_id' => $this->user->id,
         'owner_type' => $this->user->getMorphClass(),
+        'access_policy' => ClientAccessPolicy::Open,
     ]);
 });
 
