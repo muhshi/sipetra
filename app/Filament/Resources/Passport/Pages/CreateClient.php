@@ -23,9 +23,26 @@ class CreateClient extends BaseCreateClient
     protected function handleRecordCreation(array $data): Model
     {
         $record = parent::handleRecordCreation($data);
+
+        // Save access policy
         $record->forceFill([
             'access_policy' => $data['access_policy'] ?? ClientAccessPolicy::Restricted->value,
         ])->save();
+
+        // Save access rules if present
+        if (! empty($data['access_rules'])) {
+            foreach ($data['access_rules'] as $ruleSet) {
+                $ruleType = $ruleSet['rule_type'];
+                $ruleValues = (array) ($ruleSet['rule_values'] ?? []);
+
+                foreach ($ruleValues as $ruleValue) {
+                    $record->accessRules()->create([
+                        'rule_type' => $ruleType,
+                        'rule_value' => (string) $ruleValue,
+                    ]);
+                }
+            }
+        }
 
         return $record;
     }
