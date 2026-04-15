@@ -31,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
             'user:manage' => 'Akses penuh manajemen user',
         ]);
 
+        Passport::useClientModel(\N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class);
+
         Passport::setDefaultScope(['profile:read']);
 
         Passport::tokensExpireIn(now()->addHour());
