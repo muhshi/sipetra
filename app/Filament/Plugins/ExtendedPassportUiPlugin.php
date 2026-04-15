@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Plugins;
 
 use App\Filament\Resources\Passport\ClientResource;
+use App\Filament\Resources\Passport\TokenResource;
 use Filament\Panel;
 use N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin;
 use N3XT0R\FilamentPassportUi\Resources\PassportScopeActionsResource;
 use N3XT0R\FilamentPassportUi\Resources\PassportScopeResourceResource;
-use N3XT0R\FilamentPassportUi\Resources\TokenResource;
 
 class ExtendedPassportUiPlugin extends FilamentPassportUiPlugin
 {
