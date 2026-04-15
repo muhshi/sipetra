@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\IdentityType;
+use App\Services\AccessRuleResolver;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -42,16 +43,17 @@ class User extends Authenticatable implements FilamentUser, OAuthenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
-     * Dapatkan role user untuk klien SSO tertentu.
+     * Dapatkan role user untuk klien SSO tertentu via AccessRuleResolver.
      */
     public function clientRoleFor(string $clientId): ?string
     {
-        $access = ClientUserAccess::with('role')
-            ->where('client_id', $clientId)
-            ->where('user_id', $this->id)
-            ->first();
+        $client = PassportClient::find($clientId);
 
-        return $access?->role?->name;
+        if (! $client) {
+            return null;
+        }
+
+        return app(AccessRuleResolver::class)->resolveClientRole($this, $client);
     }
 
     /**

@@ -3,11 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserProfileResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserApiController extends Controller
 {
+    /**
+     * GET /api/user/me — profil lengkap user (profile + identity + organization).
+     */
+    public function me(Request $request): UserProfileResource
+    {
+        return new UserProfileResource($request->user());
+    }
+
     /**
      * GET /api/user — profil dasar user yang ter-autentikasi.
      */

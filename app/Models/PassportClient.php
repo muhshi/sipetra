@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ClientAccessPolicy;
+use App\Services\AccessRuleResolver;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Passport\Scope;
@@ -11,15 +13,26 @@ class PassportClient extends BaseClient
 {
     /**
      * Determine if the client should skip the authorization prompt.
-     * Jika user tidak terdaftar dalam daftar akses klien ini, tampilkan view penolakan.
+     * Evaluasi dilakukan oleh AccessRuleResolver berdasarkan access_policy dan rules.
      *
      * @param  Scope[]  $scopes
      */
     public function skipsAuthorization(Authenticatable $user, array $scopes): bool
     {
-        return ClientUserAccess::where('client_id', $this->id)
-            ->where('user_id', $user->getAuthIdentifier())
-            ->exists();
+        return app(AccessRuleResolver::class)->isAllowed($user, $this);
+    }
+
+    protected function casts(): array
+    {
+        return array_merge(parent::casts(), [
+            'access_policy' => ClientAccessPolicy::class,
+        ]);
+    }
+
+    /** @return HasMany<ClientAccessRule, $this> */
+    public function accessRules(): HasMany
+    {
+        return $this->hasMany(ClientAccessRule::class, 'client_id');
     }
 
     /** @return HasMany<ClientRole, $this> */

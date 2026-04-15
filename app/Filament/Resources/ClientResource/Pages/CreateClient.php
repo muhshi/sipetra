@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClientResource\Pages;
 
+use App\Enums\ClientAccessPolicy;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource;
-use N3XT0R\FilamentPassportUi\Support\Cache\CacheFlasher;
 use N3XT0R\LaravelPassportAuthorizationCore\Application\UseCases\Client\CreateClientUseCase;
 
 class CreateClient extends CreateRecord
@@ -43,6 +45,13 @@ class CreateClient extends CreateRecord
                 ->helperText('Otomatis terisi dari Link Dashboard. Ubah jika memiliki URL callback berbeda.')
                 ->url()
                 ->required(),
+
+            Select::make('access_policy')
+                ->label('Kebijakan Akses')
+                ->options(ClientAccessPolicy::class)
+                ->default(ClientAccessPolicy::Restricted->value)
+                ->required()
+                ->helperText('Restricted: wajib ada rule cocok. Open: semua user aktif bisa masuk.'),
         ]);
     }
 
@@ -51,7 +60,7 @@ class CreateClient extends CreateRecord
         $actor = Filament::auth()->user();
 
         // Generate secret sendiri agar kita 100% yakin punya plain text-nya untuk disimpan
-        $plainSecret = \Illuminate\Support\Str::random(40);
+        $plainSecret = Str::random(40);
 
         $result = app(CreateClientUseCase::class)->execute(
             data: [
@@ -66,6 +75,7 @@ class CreateClient extends CreateRecord
         $client = $result->client;
         $client->secret = $plainSecret;
         $client->plain_secret = $plainSecret;
+        $client->access_policy = $data['access_policy'] ?? ClientAccessPolicy::Restricted->value;
         $client->save();
 
         return $client;

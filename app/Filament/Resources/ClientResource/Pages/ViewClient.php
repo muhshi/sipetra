@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClientResource\Pages;
 
+use App\Filament\Resources\ClientResource\RelationManagers\AccessRulesRelationManager;
 use App\Filament\Resources\ClientResource\RelationManagers\ClientRolesRelationManager;
-use App\Filament\Resources\ClientResource\RelationManagers\ClientUserAccessesRelationManager;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
@@ -130,7 +130,7 @@ class ViewClient extends ViewRecord
     {
         return [
             ClientRolesRelationManager::class,
-            ClientUserAccessesRelationManager::class,
+            AccessRulesRelationManager::class,
         ];
     }
 }
