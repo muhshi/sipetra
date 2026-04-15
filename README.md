@@ -76,6 +76,25 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ---
 
+### [2026-04-15]
+#### Added
+- **Rule-Based Access Control (Fase 2)**: Sistem kontrol akses berbasis aturan fleksibel menggantikan whitelist user statis.
+  - Kolom `access_policy` pada `oauth_clients` (`restricted` | `open`) mengontrol behavior saat tidak ada rule yang cocok.
+  - Tabel `client_access_rules` mendukung 3 tipe aturan: `user` (user spesifik), `sipetra_role` (role Spatie), dan `identity_type` (pegawai/mitra/admin).
+  - Evaluasi OR: user diizinkan jika cocok dengan **salah satu** rule yang aktif.
+- **`AccessRuleResolver` Service**: Engine evaluasi akses terpusat yang digunakan oleh `PassportClient::skipsAuthorization()` dan `User::clientRoleFor()`.
+- **Override OAuth Authorization Flow**: `OAuthAuthorizationController` mengintervensi flow Passport untuk memblokir user yang tidak diizinkan sebelum consent page ditampilkan.
+- **Halaman `auth/oauth-denied`**: Halaman penolakan akses yang menampilkan nama aplikasi, akun yang digunakan, dan tombol Logout/Kembali.
+- **`AccessRulesRelationManager`**: UI Filament baru (menggantikan `ClientUserAccessesRelationManager`) dengan form dinamis berdasarkan `rule_type`.
+- **Field `access_policy` di `CreateClient`**: Admin dapat memilih kebijakan akses saat membuat OAuth client baru.
+- **API Endpoint `GET /api/user/me`**: Endpoint baru yang mengembalikan profil lengkap user (profile + identitas + organisasi) via `UserProfileResource`.
+- **`MigrateClientUserAccessesToRulesSeeder`**: Seeder untuk memindahkan data lama `client_user_accesses` ke `client_access_rules` sebagai `rule_type = 'user'`.
+
+#### Changed
+- **`PassportClient`**: `skipsAuthorization()` kini mendelegasikan evaluasi ke `AccessRuleResolver`. Tambah cast `access_policy` ke enum `ClientAccessPolicy` dan relasi `accessRules()`.
+- **`User::clientRoleFor()`**: Kini menggunakan `AccessRuleResolver::resolveClientRole()`.
+- **`ViewClient`**: `ClientUserAccessesRelationManager` digantikan oleh `AccessRulesRelationManager`.
+
 ### [Unreleased]
 #### Added
 - `ImportUsersSeeder` untuk proses batch import data Pegawai dan Mitra.
