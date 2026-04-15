@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Passport\Schemas;
 
+use App\Enums\ClientAccessPolicy;
 use App\Filament\Passport\Schemas\Fields\RedirectInput;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use N3XT0R\FilamentPassportUi\Application\StateResolvers\GrantType\NeedsUserPermissionState;
@@ -33,6 +35,13 @@ class ExtendedClientWizardForm extends ClientWizardForm
 
                     return app(NeedsUserPermissionState::class)->execute($grantType);
                 }),
+            Select::make('access_policy')
+                ->label('Access Policy')
+                ->options(collect(ClientAccessPolicy::cases())->mapWithKeys(
+                    fn (ClientAccessPolicy $policy): array => [$policy->value => $policy->label()]
+                )->all())
+                ->default(ClientAccessPolicy::Restricted->value)
+                ->required(),
             RedirectInput::make(),
         ];
 
