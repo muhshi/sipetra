@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Models\Passport\Client;
 use Illuminate\Foundation\Auth\User as AuthUser;
-use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ClientPolicy
 {
     use HandlesAuthorization;
+
+    public function before(AuthUser $authUser, string $ability): bool|null
+    {
+        if (method_exists($authUser, 'hasRole') && $authUser->hasRole('super_admin')) {
+            return true;
+        }
+
+        if (method_exists($authUser, 'hasRole') && $authUser->hasRole('admin')) {
+            return true;
+        }
+
+        return null;
+    }
     
     public function viewAny(AuthUser $authUser): bool
     {
