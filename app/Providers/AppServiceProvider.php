@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Auth\OAuthAuthorizationController;
+use App\Models\Passport\Client as PassportClient;
+use App\Policies\ClientPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
 use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PassportAuthorizationController::class, OAuthAuthorizationController::class);
     }
 
     /**
@@ -20,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(PassportClient::class, ClientPolicy::class);
+
         Passport::authorizationView('vendor.passport.authorize');
 
         Passport::tokensCan([
@@ -31,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'user:manage' => 'Akses penuh manajemen user',
         ]);
 
-        Passport::useClientModel(\N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class);
+        Passport::useClientModel(PassportClient::class);
 
         Passport::setDefaultScope(['profile:read']);
 
