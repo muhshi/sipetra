@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Passport;
 
 use App\Filament\Passport\Schemas\ExtendedClientResourceForm;
+use App\Filament\Resources\Passport\RelationManagers\ClientTokensRelationManager;
 use Filament\Schemas\Schema;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource as BaseClientResource;
 
@@ -15,6 +16,13 @@ class ClientResource extends BaseClientResource
     public static function form(Schema $schema): Schema
     {
         return ExtendedClientResourceForm::configure($schema);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ClientTokensRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
