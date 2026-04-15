@@ -25,6 +25,7 @@ SIPETRA (Sistem Identitas Tunggal Pegawai dan Mitra) adalah server autentikasi t
     php artisan migrate
     php artisan db:seed --class=RoleAndPermissionSeeder
     php artisan db:seed --class=AdminUserSeeder
+    php artisan db:seed --class=PassportScopeSeeder
     ```
 
 ## Import Data Pegawai & Mitra
