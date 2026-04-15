@@ -17,7 +17,7 @@
                     <span class="font-bold text-xl tracking-tight text-gray-900">SIPETRA</span>
                 </div>
                 <div class="flex items-center">
-                    <span class="text-sm font-medium text-gray-500 mr-4">{{ Auth::user()->name }}</span>
+                    <span class="text-sm font-medium text-gray-500 mr-4">{{ Auth::user()?->name }}</span>
                     <!-- Simple absolute logout route using form -->
                     <form method="POST" action="{{ route('logout') ?? '/logout' }}" id="logout-form">
                         @csrf
@@ -34,12 +34,12 @@
             <div class="bg-white shadow rounded-xl overflow-hidden mb-6">
                 <div class="px-6 py-8 border-b border-gray-100 flex items-center bg-gradient-to-r from-blue-50 to-white">
                     <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold shadow-sm">
-                        {{ substr(Auth::user()->name, 0, 1) }}
+                        {{ substr(Auth::user()?->name ?? 'U', 0, 1) }}
                     </div>
                     <div class="ml-5">
-                        <h2 class="text-2xl font-bold text-gray-900">{{ Auth::user()->name }}</h2>
-                        <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium {{ Auth::user()->identity_type->value === 'Pegawai' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
-                            {{ Auth::user()->identity_type->value ?? 'Pegawai' }}
+                        <h2 class="text-2xl font-bold text-gray-900">{{ Auth::user()?->name }}</h2>
+                        <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium {{ (Auth::user()?->identity_type?->value ?? '') === 'Pegawai' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
+                            {{ Auth::user()?->identity_type?->value ?? 'User' }}
                         </span>
                     </div>
                 </div>
@@ -48,23 +48,23 @@
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Alamat Email</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()->email ?? '-' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()?->email ?? '-' }}</dd>
                         </div>
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Nomor Telepon</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()->phone ?? '-' }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ Auth::user()?->phone ?? '-' }}</dd>
                         </div>
                         <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-500">{{ Auth::user()->identity_type->value === 'Mitra' ? 'SOBAT ID' : 'NIP / NIP Baru' }}</dt>
+                            <dt class="text-sm font-medium text-gray-500">{{ (Auth::user()?->identity_type?->value ?? '') === 'Mitra' ? 'SOBAT ID' : 'NIP / NIP Baru' }}</dt>
                             <dd class="mt-1 text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded inline-block">
-                                {{ Auth::user()->identity_type->value === 'Mitra' ? (Auth::user()->sobat_id ?? '-') : (Auth::user()->nip_baru ?? Auth::user()->nip) }}
+                                {{ (Auth::user()?->identity_type?->value ?? '') === 'Mitra' ? (Auth::user()?->sobat_id ?? '-') : (Auth::user()?->nip_baru ?? Auth::user()?->nip ?? '-') }}
                             </dd>
                         </div>
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Organisasi / Satuan Kerja</dt>
                             <dd class="mt-1 text-sm text-gray-900">
-                                {{ Auth::user()->unit_kerja ?? 'BPS' }}
-                                <span class="block text-xs text-gray-500 mt-0.5">Kode: {{ Auth::user()->kd_satker ?? '-' }}</span>
+                                {{ Auth::user()?->unit_kerja ?? 'BPS' }}
+                                <span class="block text-xs text-gray-500 mt-0.5">Kode: {{ Auth::user()?->kd_satker ?? '-' }}</span>
                             </dd>
                         </div>
                     </dl>
@@ -85,7 +85,7 @@
                         Anda saat ini telah masuk menggunakan akun utama SIPETRA. Anda bisa berpindah ke aplikasi internal BPS lainnya dengan mulus tanpa perlu login ulang (Single Sign-On).
                     </p>
                     
-                    @if(Auth::user()->canAccessPanel(app(\Filament\FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin')))
+                    @if(Auth::check() && Auth::user()->canAccessPanel(app(\Filament\FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin')))
                         <div class="mt-4">
                             <a href="/admin" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:border-blue-900 focus:shadow-outline-blue transition ease-in-out duration-150 shadow-sm">
                                 Buka Dasbor Admin SIPETRA &rarr;
