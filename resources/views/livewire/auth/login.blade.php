@@ -1,8 +1,14 @@
 <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white shadow-lg overflow-hidden sm:rounded-xl border border-gray-100">
     <div class="flex flex-col items-center mb-8">
         <!-- Logo BPS Demak -->
-        <div class="mb-4">
-            <img src="{{ asset('logoBpsDemakHitam.png') }}" alt="Logo BPS Demak" class="h-16 w-auto object-contain">
+        <div class="flex items-center">
+            <img src="{{ asset('logoBpsDemakHitam.png') }}"
+                alt="Logo BPS Demak"
+                class="h-16 w-auto object-contain dark:hidden">
+
+            <img src="{{ asset('logoBpsDemakOren.png') }}"
+                alt="Logo BPS Demak"
+                class="hidden h-16 w-auto object-contain dark:block">
         </div>
         <h2 class="text-2xl font-bold text-gray-800 text-center">Single Sign-On</h2>
         <p class="text-sm text-gray-500 mt-1">Sistem Informasi Pegawai Terpadu (SIPETRA)</p>

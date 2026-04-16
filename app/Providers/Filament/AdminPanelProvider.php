@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName('SIPETRA - BPS')
             ->brandLogo(asset('logoBpsDemakHitam.png'))
+            ->darkModeBrandLogo(asset('logoBpsDemakOren.png'))
             ->brandLogoHeight('2rem')
             ->colors([
                 'primary' => Color::Blue,
