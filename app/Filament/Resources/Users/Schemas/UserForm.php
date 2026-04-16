@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\IdentityType;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -21,6 +22,13 @@ class UserForm
                     ->icon('heroicon-o-user')
                     ->columns(2)
                     ->schema([
+                        FileUpload::make('avatar_url')
+                            ->label('Avatar')
+                            ->image()
+                            ->directory('avatars')
+                            ->avatar()
+                            ->circle()
+                            ->columnSpanFull(),
                         TextInput::make('name')
                             ->label('Nama Lengkap')
                             ->required(),
