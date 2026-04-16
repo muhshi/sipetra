@@ -76,6 +76,16 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-04-16] — User Profile & Branding Updates
+
+### ✅ Added
+- **User Avatar Support** — Implementasi fitur upload avatar pada CRUD User di Panel Admin. User kini dapat mengunggah foto profil yang tersimpan di storage (`avatars/`).
+- **Filament `HasAvatar` Integration** — Mengintegrasikan model `User` dengan interface `HasAvatar` milik Filament sehingga foto profil muncul di pojok kanan atas dashboard.
+- **Dark Mode Logo Support** — Penambahan logo khusus untuk dark mode (`logoBpsDemakOren.png`) pada halaman login dan dashboard untuk meningkatkan estetika visual saat menggunakan tema gelap.
+- **Image Preview in Tables** — Penambahan kolom avatar (lingkaran) pada tabel daftar user untuk memudahkan identifikasi visual.
+
+---
+
 ## [2026-04-15] — Security Update & Documentation
 
 ### ✅ Added
