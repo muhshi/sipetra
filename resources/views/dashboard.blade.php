@@ -40,9 +40,13 @@
 
             <div class="bg-white shadow rounded-xl overflow-hidden mb-6">
                 <div class="px-6 py-8 border-b border-gray-100 flex items-center bg-gradient-to-r from-blue-50 to-white">
-                    <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold shadow-sm">
-                        {{ substr(Auth::user()?->name ?? 'U', 0, 1) }}
-                    </div>
+                    @if(Auth::user()?->avatar_url)
+                        <img src="{{ Storage::url(Auth::user()->avatar_url) }}" alt="Avatar" class="w-16 h-16 rounded-full object-cover shadow-sm">
+                    @else
+                        <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl font-bold shadow-sm">
+                            {{ substr(Auth::user()?->name ?? 'U', 0, 1) }}
+                        </div>
+                    @endif
                     <div class="ml-5">
                         <h2 class="text-2xl font-bold text-gray-900">{{ Auth::user()?->name }}</h2>
                         <span class="inline-flex items-center mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium {{ (Auth::user()?->identity_type?->value ?? '') === 'Pegawai' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
