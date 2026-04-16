@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Enums\IdentityType;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasApiTokensTrait;
@@ -38,10 +40,18 @@ use Spatie\Permission\Traits\HasRoles;
     'is_active',
 ])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser, HasPassportScopeGrantsInterface, OAuthenticatable
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasPassportScopeGrantsInterface, OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokensTrait, HasFactory, HasPassportScopeGrantsTrait, HasRoles, Notifiable;
+
+    /**
+     * Get the user's avatar URL for Filament.
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+    }
 
     /**
      * Determine if the user can access the Filament admin panel.
