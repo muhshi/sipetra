@@ -10,13 +10,13 @@
 
     <!-- Toggle Login Type -->
     <div class="flex p-1 space-x-1 bg-gray-100 rounded-lg mb-6">
-        <button wire:click="$set('loginType', 'nip')" 
+        <button wire:click="$set('loginType', 'nip')"
             class="flex-1 py-2 text-sm font-medium rounded-md transition-all {{ $loginType === 'nip' ? 'bg-white shadow text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">
             Pegawai (NIP)
         </button>
-        <button wire:click="$set('loginType', 'email')" 
+        <button wire:click="$set('loginType', 'email')"
             class="flex-1 py-2 text-sm font-medium rounded-md transition-all {{ $loginType === 'email' ? 'bg-white shadow text-blue-700' : 'text-gray-500 hover:text-gray-700' }}">
-            Mitra (Email)
+            Email
         </button>
     </div>
 
@@ -64,7 +64,7 @@
             </span>
         </button>
     </form>
-    
+
     <div class="mt-8 pt-6 border-t border-gray-100 text-center">
         <p class="text-xs text-gray-400">
             &copy; {{ date('Y') }} Badan Pusat Statistik.<br>Terintegrasi dengan Layanan Kepegawaian & SOBAT.
