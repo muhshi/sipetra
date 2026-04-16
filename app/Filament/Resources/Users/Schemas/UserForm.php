@@ -100,8 +100,8 @@ class UserForm
                         Select::make('jenis_kelamin')
                             ->label('Jenis Kelamin')
                             ->options([
-                                'LK' => 'Laki-laki',
-                                'PR' => 'Perempuan',
+                                'L' => 'Laki-laki',
+                                'P' => 'Perempuan',
                             ]),
                         TextInput::make('tempat_lahir')
                             ->label('Tempat Lahir'),
