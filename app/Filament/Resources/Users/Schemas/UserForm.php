@@ -27,7 +27,7 @@ class UserForm
                             ->image()
                             ->directory('avatars')
                             ->avatar()
-                            ->circle()
+                            ->circular()
                             ->columnSpanFull(),
                         TextInput::make('name')
                             ->label('Nama Lengkap')
