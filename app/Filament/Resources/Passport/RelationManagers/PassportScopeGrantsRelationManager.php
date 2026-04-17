@@ -82,7 +82,7 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     ->color('danger')
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
-                    ->visible(fn ($livewire) => str_contains(get_class($livewire), 'Edit'))
+                    ->visible(fn () => request()->routeIs('filament.admin.resources.clients.edit'))
                     ->action(fn ($record) => $record->delete()),
             ])
             ->toolbarActions([
