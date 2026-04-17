@@ -54,6 +54,15 @@ class TokenResource extends BaseTokenResource
                 CreatedAtColumn::make('expires_at')
                     ->label(__('filament-passport-ui::passport-ui.common.expires_at')),
             ])
+            ->actions([
+                \Filament\Actions\Action::make('revoke')
+                    ->label('Revoke')
+                    ->color('danger')
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->visible(fn ($record, $livewire) => ! $record->revoked && (method_exists($livewire, 'isReadOnly') ? ! $livewire->isReadOnly() : true))
+                    ->action(fn (Model $record) => $record->update(['revoked' => true])),
+            ])
             ->defaultSort('updated_at', 'desc');
     }
 
