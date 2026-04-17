@@ -25,6 +25,7 @@ class UserForm
                         FileUpload::make('avatar_url')
                             ->label('Avatar')
                             ->image()
+                            ->disk('public')
                             ->directory('avatars')
                             ->avatar()
                             ->columnSpanFull(),
