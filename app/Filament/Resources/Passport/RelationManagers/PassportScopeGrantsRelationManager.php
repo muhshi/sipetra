@@ -5,6 +5,10 @@ namespace App\Filament\Resources\Passport\RelationManagers;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables;
 use Filament\Tables\Table;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
@@ -60,7 +64,7 @@ class PassportScopeGrantsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->label('Grant Scope')
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['context_client_id'] = $this->getOwnerRecord()->id;
@@ -68,12 +72,12 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->label('Revoke'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
