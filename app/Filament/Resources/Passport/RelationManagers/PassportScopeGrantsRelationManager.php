@@ -82,7 +82,7 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     ->color('danger')
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
-                    ->visible(fn () => request()->routeIs('filament.admin.resources.clients.edit'))
+                    ->visible(fn () => request()->is('*/edit*'))
                     ->action(fn ($record) => $record->delete()),
             ])
             ->toolbarActions([
