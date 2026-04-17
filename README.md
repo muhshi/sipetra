@@ -47,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-17]
+#### Changed
+- Inisialisasi repositori Git dan sinkronisasi dengan branch `asmuam` dari remote repository.
+
 ### [Unreleased]
 #### Added
 - `ImportUsersSeeder` untuk proses batch import data Pegawai dan Mitra.
