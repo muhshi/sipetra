@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Passport\RelationManagers;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Tables;
@@ -79,8 +79,12 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
-                DeleteAction::make()
-                    ->label('Revoke'),
+                Action::make('revoke')
+                    ->label('Revoke')
+                    ->color('danger')
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->action(fn ($record) => $record->delete()),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
