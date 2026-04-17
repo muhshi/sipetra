@@ -7,8 +7,6 @@ use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Tables;
 use Filament\Tables\Table;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
@@ -43,6 +41,7 @@ class PassportScopeGrantsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->recordKeyName('id')
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('resource.name')
@@ -87,9 +86,7 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     ->action(fn ($record) => $record->delete()),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                // Disabled bulk actions to prevent selection conflicts
             ]);
     }
 }
