@@ -67,7 +67,12 @@ class PassportScopeGrantsRelationManager extends RelationManager
                 CreateAction::make()
                     ->label('Grant Scope')
                     ->mutateFormDataUsing(function (array $data): array {
-                        $data['context_client_id'] = $this->getOwnerRecord()->id;
+                        $record = $this->getOwnerRecord();
+                        
+                        $data['context_client_id'] = $record->id;
+                        $data['tokenable_id'] = $record->id;
+                        $data['tokenable_type'] = $record->getMorphClass();
+                        
                         return $data;
                     }),
             ])
