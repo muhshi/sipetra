@@ -5,12 +5,12 @@ namespace App\Filament\Resources\Passport\RelationManagers;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
 
@@ -78,11 +78,11 @@ class PassportScopeGrantsRelationManager extends RelationManager
                         ]);
                     }),
             ])
-            ->actions([
+            ->recordActions([
                 DeleteAction::make()
                     ->label('Revoke'),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
