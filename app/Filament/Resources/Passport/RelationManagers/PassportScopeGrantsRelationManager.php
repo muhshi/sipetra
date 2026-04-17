@@ -41,7 +41,6 @@ class PassportScopeGrantsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordKeyName('id')
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('resource.name')
@@ -83,10 +82,11 @@ class PassportScopeGrantsRelationManager extends RelationManager
                     ->color('danger')
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
+                    ->visible(fn ($livewire) => str_contains(get_class($livewire), 'Edit'))
                     ->action(fn ($record) => $record->delete()),
             ])
             ->toolbarActions([
-                // Disabled bulk actions to prevent selection conflicts
+                //
             ]);
     }
 }
