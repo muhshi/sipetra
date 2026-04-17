@@ -66,14 +66,16 @@ class PassportScopeGrantsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make()
                     ->label('Grant Scope')
-                    ->mutateFormDataUsing(function (array $data): array {
+                    ->using(function (array $data, string $model): \N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant {
                         $record = $this->getOwnerRecord();
                         
-                        $data['context_client_id'] = $record->id;
-                        $data['tokenable_id'] = $record->id;
-                        $data['tokenable_type'] = $record->getMorphClass();
-                        
-                        return $data;
+                        return \N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant::create([
+                            'resource_id' => $data['resource_id'],
+                            'action_id' => $data['action_id'],
+                            'context_client_id' => $record->id,
+                            'tokenable_id' => $record->id,
+                            'tokenable_type' => $record->getMorphClass(),
+                        ]);
                     }),
             ])
             ->actions([
