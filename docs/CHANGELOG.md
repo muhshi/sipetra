@@ -76,6 +76,13 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-04-20] — Documentation Update
+
+### 🔄 Changed
+- **`Panduan_Integrasi_SSO.md`** — Menambahkan scope `email:read` pada contoh konfigurasi Laravel Socialite. Hal ini memastikan klien mendapatkan data email secara eksplisit sesuai dengan standar OAuth2.
+
+---
+
 ## [2026-04-16] — User Profile & Branding Updates
 
 ### ✅ Added
