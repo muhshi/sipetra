@@ -117,7 +117,7 @@ Buka `config/services.php` dan tambahkan:
     'client_secret' => env('SIPETRA_CLIENT_SECRET'),
     'redirect'      => env('SIPETRA_REDIRECT_URI'),
     'base_url'      => env('SIPETRA_BASE_URL', 'https://sipetra.test'),
-    'scopes'        => ['profile:read', 'identity:read', 'organization:read'],
+    'scopes'        => ['profile:read', 'email:read', 'identity:read', 'organization:read'],
 ],
 ```
 
