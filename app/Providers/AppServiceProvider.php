@@ -15,6 +15,8 @@ use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\EditClient;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\ViewClient;
 
+use Illuminate\Support\Facades\URL;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -45,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         Gate::policy(PassportClient::class, ClientPolicy::class);
 
         Passport::useClientModel(PassportClient::class);
