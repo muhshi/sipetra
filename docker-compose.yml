@@ -1,0 +1,26 @@
+services:
+  sipetra-app:
+    container_name: sipetra-app
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - SERVER_NAME=:80
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8100:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - .:/app
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - default
+      # - mysql-stack_mysql_network # Aktifkan jika ada database eksternal
+
+networks:
+  default: {}
+  # mysql-stack_mysql_network:
+  #   external: true
