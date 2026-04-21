@@ -6,12 +6,13 @@ services:
       - PUID=1000
       - PGID=1000
       - SERVER_NAME=:80
-      - DB_CONNECTION=mysql
-      - DB_HOST=sipetra-db
-      - DB_PORT=3306
-      - DB_DATABASE=sipetra_db
-      - DB_USERNAME=sipetra_user
-      - DB_PASSWORD=sipetra_pass
+      # Pastikan DB_HOST sesuai dengan nama container MySQL di network mysql-stack
+      # - DB_CONNECTION=mysql
+      # - DB_HOST=mysql
+      # - DB_PORT=3306
+      # - DB_DATABASE=sipetra
+      # - DB_USERNAME=root
+      # - DB_PASSWORD=
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,28 +23,11 @@ services:
     volumes:
       - .:/app
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-    depends_on:
-      - sipetra-db
     networks:
-      - sipetra-network
-
-  sipetra-db:
-    image: mysql:8.0
-    container_name: sipetra-db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: sipetra_db
-      MYSQL_USER: sipetra_user
-      MYSQL_PASSWORD: sipetra_pass
-    volumes:
-      - sipetra_db_data:/var/lib/mysql
-    networks:
-      - sipetra-network
+      - default
+      - mysql-stack_mysql_network
 
 networks:
-  sipetra-network:
-    driver: bridge
-
-volumes:
-  sipetra_db_data:
+  default: {}
+  mysql-stack_mysql_network:
+    external: true
