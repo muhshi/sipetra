@@ -10,7 +10,7 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::table('passport_scope_grants', static function (Blueprint $table) {
-            $table->foreignId('context_client_id')
+            $table->foreignUuid('context_client_id')
                 ->nullable()
                 ->after('tokenable_type')
                 ->constrained('oauth_clients')
