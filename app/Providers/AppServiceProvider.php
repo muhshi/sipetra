@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Auth\OAuthAuthorizationController;
 use App\Models\PassportClient;
+use App\Policies\ClientPolicy;
 use App\Settings\SystemSettings;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
 use Laravel\Passport\Passport;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\EditClient;
@@ -32,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
             EditClient::class,
             \App\Filament\Resources\ClientResource\Pages\EditClient::class,
         );
+
+        $this->app->bind(PassportAuthorizationController::class, OAuthAuthorizationController::class);
     }
 
     /**
@@ -39,7 +45,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(PassportClient::class, ClientPolicy::class);
+
         Passport::useClientModel(PassportClient::class);
+
         Passport::authorizationView(function ($parameters) {
             // Jika skipsAuthorization() == false, user tidak terdaftar → tampilkan halaman penolakan
             // Jika skipsAuthorization() == true, alur tidak sampai ke view ini
@@ -47,6 +56,7 @@ class AppServiceProvider extends ServiceProvider
                 'client' => $parameters['client'] ?? null,
             ]);
         });
+
 
         Passport::tokensCan([
             'profile:read' => 'Baca informasi profil dasar (nama, email, avatar)',
@@ -56,6 +66,8 @@ class AppServiceProvider extends ServiceProvider
             'email:read' => 'Baca alamat email',
             'user:manage' => 'Akses penuh manajemen user',
         ]);
+
+        Passport::useClientModel(PassportClient::class);
 
         Passport::setDefaultScope(['profile:read']);
 

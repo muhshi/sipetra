@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserProfileResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserApiController extends Controller
 {
@@ -20,9 +22,18 @@ class UserApiController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'avatar' => $user->avatar_url,
+            'avatar' => $user->avatar_url ? Storage::disk('public')->url($user->avatar_url) : null,
             'client_role' => $user->clientRoleFor($clientId),
+
         ]);
+    }
+
+    /**
+     * GET /api/user/me — profil lengkap user yang ter-autentikasi.
+     */
+    public function me(Request $request): UserProfileResource
+    {
+        return new UserProfileResource($request->user());
     }
 
     /**
@@ -40,7 +51,7 @@ class UserApiController extends Controller
             'jenis_kelamin' => $user->jenis_kelamin,
             'tempat_lahir' => $user->tempat_lahir,
             'tanggal_lahir' => $user->tanggal_lahir?->format('Y-m-d'),
-            'pendidikan' => $user->pendidikan,
+            'pendidikan' => $user->pendidikan
         ]);
     }
 

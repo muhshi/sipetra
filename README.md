@@ -23,8 +23,9 @@ SIPETRA (Sistem Identitas Tunggal Pegawai dan Mitra) adalah server autentikasi t
 4.  Jalankan migrasi dan seeder awal:
     ```bash
     php artisan migrate
-    php artisan db:seed --class=AdminUserSeeder
     php artisan db:seed --class=RoleAndPermissionSeeder
+    php artisan db:seed --class=AdminUserSeeder
+    php artisan db:seed --class=PassportScopeSeeder
     ```
 
 ## Import Data Pegawai & Mitra
@@ -46,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-17]
+#### Changed
+- Inisialisasi repositori Git dan sinkronisasi dengan branch `asmuam` dari remote repository.
+
 ### [2026-04-13]
 #### Added
 - **System Settings Page**: Halaman pengaturan sistem di Filament Admin untuk mengatur Session Lifetime secara dinamis via dropdown (60 menit, 2 jam, 1 hari, 1 minggu, 1 bulan, selamanya). Menggunakan `spatie/laravel-settings` sebagai backend-nya.
@@ -58,7 +63,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
   SIPETRA_REDIRECT_URI="..."
   ```
 - **Migrasi `activity_log`**: Menerbitkan dan menjalankan migrasi dari paket `spatie/laravel-activitylog` yang dibutuhkan oleh paket N3XT0R untuk merekam log perubahan OAuth Client.
-- **Client Access Control**: Fitur kontrol akses per aplikasi klien. Admin dapat menetapkan Role spesifik per klien (`client_roles`) dan menugaskan user aktif ke klien dengan Role tertentu (`client_user_accesses`). Termasuk dukungan UI Relation Manager di form detail klien.
+- **Client Access Control**: Fitur kontrol akses per aplikasi klien. Admin dapat menetapkan Role spesikan per klien (`client_roles`) dan menugaskan user aktif ke klien dengan Role tertentu (`client_user_accesses`). Termasuk dukungan UI Relation Manager di form detail klien.
 - **Halaman Penolakan Akses**: Menambahkan halaman khusus `oauth.rejected` yang memblokir proses SSO jika user tidak memiliki izin ke aplikasi bersangkutan.
 - **API `client_role`**: Endpoint `/api/user` kini mengembalikan data `client_role` otomatis sesuai klien yang melakukan request.
 
@@ -74,7 +79,6 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Copy .ENV menghasilkan `null`**: Disebabkan oleh `$hidden` pada model Eloquent Passport yang memblokir akses ke `plain_secret`. Diperbaiki dengan menggunakan raw DB query (`DB::table(...)`) langsung, membypass layer Eloquent.
 - **Class Action Not Found**: Memperbaiki masalah namespace Filament v5 di Relation Manager dari `Filament\Tables\Actions\` menjadi `Filament\Actions\`.
 
----
 
 ### [Unreleased]
 #### Added

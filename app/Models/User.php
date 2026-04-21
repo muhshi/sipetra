@@ -5,14 +5,18 @@ namespace App\Models;
 use App\Enums\IdentityType;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Contracts\OAuthenticatable;
-use Laravel\Passport\HasApiTokens;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Concerns\HasPassportScopeGrantsInterface;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasApiTokensTrait;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Traits\HasPassportScopeGrantsTrait;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable([
@@ -36,10 +40,18 @@ use Spatie\Permission\Traits\HasRoles;
     'is_active',
 ])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser, OAuthenticatable
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasPassportScopeGrantsInterface, OAuthenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokensTrait, HasFactory, HasPassportScopeGrantsTrait, HasRoles, Notifiable;
+
+    /**
+     * Get the user's avatar URL for Filament.
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::disk('public')->url($this->avatar_url) : null;
+    }
 
     /**
      * Dapatkan role user untuk klien SSO tertentu.

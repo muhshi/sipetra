@@ -2,8 +2,9 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Http\Middleware\Authenticate;
+use App\Filament\Plugins\ExtendedPassportUiPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,8 +31,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('SIPETRA - BPS')
+            ->brandLogo(asset('logoBpsDemakHitam.png'))
+            ->darkModeBrandLogo(asset('logoBpsDemakOren.png'))
+            ->brandLogoHeight('2rem')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -38,11 +44,8 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
                 \App\Filament\Pages\SystemSettingsPage::class,
             ])
+
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -56,7 +59,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                \N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin::make(),
+                ExtendedPassportUiPlugin::make(),
+                // \N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
