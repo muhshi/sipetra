@@ -51,6 +51,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 #### Changed
 - **Pembersihan Pasca-Merge**: Melakukan pembersihan kode (cleanup) setelah penggabungan branch `asmuam`, termasuk perbaikan import class dan konsistensi gaya kode menggunakan Laravel Pint.
 - **Optimasi Provider**: Merapikan `AppServiceProvider` dan `AdminPanelProvider` dengan menghapus import yang tidak digunakan dan menggunakan class alias yang lebih tepat.
+- **Konfigurasi Docker**: Menambahkan `Dockerfile` (**PHP 8.4**), `docker-compose.yml` (Mapping port **8100**), service **MySQL 8.0**, dan `Caddyfile` (FrankenPHP).
 
 ### [2026-04-17]
 #### Changed
