@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\Passport\RelationManagers;
 
-use Filament\Forms;
-use Filament\Schemas\Schema;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Forms;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
 
 class PassportScopeGrantsRelationManager extends RelationManager
@@ -64,10 +65,10 @@ class PassportScopeGrantsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make()
                     ->label('Grant Scope')
-                    ->using(function (array $data, string $model): \N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant {
+                    ->using(function (array $data, string $model): PassportScopeGrant {
                         $record = $this->getOwnerRecord();
-                        
-                        return \N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeGrant::create([
+
+                        return PassportScopeGrant::create([
                             'resource_id' => $data['resource_id'],
                             'action_id' => $data['action_id'],
                             'context_client_id' => $record->id,

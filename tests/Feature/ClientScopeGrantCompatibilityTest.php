@@ -40,7 +40,7 @@ it('keeps legacy client morph type so existing scope grants still resolve', func
     ]);
 
     PassportScopeGrant::create([
-        'tokenable_type' => \N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class,
+        'tokenable_type' => N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class,
         'tokenable_id' => $client->getKey(),
         'context_client_id' => $client->getKey(),
         'resource_id' => $resource->id,
@@ -48,7 +48,7 @@ it('keeps legacy client morph type so existing scope grants still resolve', func
     ]);
 
     expect($client->getMorphClass())
-        ->toBe(\N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class);
+        ->toBe(N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class);
 
     expect($client->hasScope('profile:read'))->toBeTrue();
 });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Auth\Login;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -18,8 +19,9 @@ Route::get('/dashboard', function () {
 
 // Logout Route
 Route::post('/logout', function () {
-    Illuminate\Support\Facades\Auth::logout();
+    Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
+
     return redirect()->route('login');
 })->name('logout');

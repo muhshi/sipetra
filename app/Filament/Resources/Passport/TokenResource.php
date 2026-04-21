@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Passport;
 
-use App\Filament\Resources\Passport\Pages;
 use App\Support\Passport\TokenDisplayNameResolver;
+use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,11 +22,11 @@ use N3XT0R\FilamentPassportUi\Resources\TokenResource\Schemas\Components\Columns
 class TokenResource extends BaseTokenResource
 {
     protected static ?string $slug = 'tokens';
- 
-     public static function getNavigationBadge(): ?string
-     {
-         return (string) static::getModel()::where('revoked', false)->count();
-     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::where('revoked', false)->count();
+    }
 
     public static function table(Table $table): Table
     {
@@ -55,7 +55,7 @@ class TokenResource extends BaseTokenResource
                     ->label(__('filament-passport-ui::passport-ui.common.expires_at')),
             ])
             ->actions([
-                \Filament\Actions\Action::make('revoke')
+                Action::make('revoke')
                     ->label('Revoke')
                     ->color('danger')
                     ->icon('heroicon-o-trash')

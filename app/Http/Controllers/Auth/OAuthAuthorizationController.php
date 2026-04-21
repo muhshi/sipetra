@@ -6,8 +6,11 @@ use App\Models\Passport\Client;
 use App\Services\AccessRuleResolver;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Laravel\Passport\Bridge\User;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Contracts\AuthorizationViewResponse;
+use Laravel\Passport\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\AuthorizationController as BaseAuthorizationController;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
@@ -39,7 +42,7 @@ class OAuthAuthorizationController extends BaseAuthorizationController
 
         if ($this->guard->guest()) {
             $request->input('prompt') === 'none'
-                ? throw \Laravel\Passport\Exceptions\OAuthServerException::loginRequired($authRequest)
+                ? throw OAuthServerException::loginRequired($authRequest)
                 : $this->promptForLogin($request);
         }
 
@@ -64,7 +67,7 @@ class OAuthAuthorizationController extends BaseAuthorizationController
             );
         }
 
-        $authRequest->setUser(new \Laravel\Passport\Bridge\User($user->getAuthIdentifier()));
+        $authRequest->setUser(new User($user->getAuthIdentifier()));
 
         $scopes = $this->parseScopes($authRequest);
 
@@ -74,10 +77,10 @@ class OAuthAuthorizationController extends BaseAuthorizationController
         }
 
         if ($request->input('prompt') === 'none') {
-            throw \Laravel\Passport\Exceptions\OAuthServerException::consentRequired($authRequest);
+            throw OAuthServerException::consentRequired($authRequest);
         }
 
-        $request->session()->put('authToken', $authToken = \Illuminate\Support\Str::random());
+        $request->session()->put('authToken', $authToken = Str::random());
         $request->session()->put('authRequest', serialize($authRequest));
 
         return $viewResponse->withParameters([

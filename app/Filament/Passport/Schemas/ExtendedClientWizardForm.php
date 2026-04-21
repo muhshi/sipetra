@@ -11,7 +11,6 @@ use App\Filament\Passport\Schemas\Fields\RedirectInput;
 use App\Models\User;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -38,7 +37,7 @@ class ExtendedClientWizardForm extends ClientWizardForm
                 ->label('Informasi Klien')
                 ->icon(Heroicon::OutlinedKey)
                 ->description('Detail nama, tipe grant, dan redirect URI.')
-                ->schema($this->getClientComponents($client))
+                ->schema($this->getClientComponents($client)),
         ];
 
         if ($dbScopesRequired) {

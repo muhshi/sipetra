@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Passport\Client;
-use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class ClientPolicy
 {
     use HandlesAuthorization;
 
-    public function before(AuthUser $authUser, string $ability): bool|null
+    public function before(AuthUser $authUser, string $ability): ?bool
     {
         if (method_exists($authUser, 'hasRole') && $authUser->hasRole('super_admin')) {
             return true;
@@ -24,7 +24,7 @@ class ClientPolicy
 
         return null;
     }
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Client');
@@ -84,5 +84,4 @@ class ClientPolicy
     {
         return $authUser->can('Reorder:Client');
     }
-
 }

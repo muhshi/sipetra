@@ -43,7 +43,7 @@ class TokenDisplayNameResolver
         $userKeyName = $userInstance->getAuthIdentifierName();
         $userTable = $userInstance->getTable();
 
-        return $query->whereIn('user_id', function ($subQuery) use ($search, $userKeyName, $userTable, $userModel): void {
+        return $query->whereIn('user_id', function ($subQuery) use ($search, $userKeyName, $userTable): void {
             $subQuery->from($userTable)
                 ->select($userKeyName)
                 ->where('name', 'like', "%{$search}%")

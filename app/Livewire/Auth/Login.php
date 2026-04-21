@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\IdentityType;
+use App\Models\User;
+use Filament\FilamentManager;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -14,8 +17,11 @@ class Login extends Component
     public $loginType = 'nip'; // Default login for employees
 
     public $nip = '';
+
     public $email = '';
+
     public $password = '';
+
     public $remember = false;
 
     protected $rules = [
@@ -39,9 +45,9 @@ class Login extends Component
 
             // Try with NIP Lama first
             $attempt = Auth::attempt(['nip' => $this->nip, 'password' => $this->password, 'is_active' => true], $this->remember);
-            
+
             // If failed, try with NIP Baru
-            if (!$attempt) {
+            if (! $attempt) {
                 $attempt = Auth::attempt(['nip_baru' => $this->nip, 'password' => $this->password, 'is_active' => true], $this->remember);
             }
 
@@ -51,10 +57,11 @@ class Login extends Component
                 'password' => 'required|string',
             ]);
 
-            $user = \App\Models\User::where('email', $this->email)->first();
-            
-            if ($user && $user->identity_type === \App\Enums\IdentityType::Admin) {
+            $user = User::where('email', $this->email)->first();
+
+            if ($user && $user->identity_type === IdentityType::Admin) {
                 $this->addError('email', 'Administrator harap login melalui halaman /admin/login');
+
                 return;
             }
 
@@ -66,16 +73,16 @@ class Login extends Component
 
             // Get intended URL
             $intended = redirect()->getIntendedUrl();
-            
+
             // Cek jika Pegawai biasa (bukan admin) tanpa sengaja memiliki memori 'intended' ke /admin,
             // (biasanya karena ia pernah mengklik link /admin sebelum login).
             // Maka kita paksa ia masuk ke /dashboard saja, daripada kena halaman 403 Forbidden.
             if ($intended && str_contains($intended, '/admin')) {
-                /** @var \App\Models\User $user */
+                /** @var User $user */
                 $user = Auth::user();
-                $panel = app(\Filament\FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
-                
-                if (!$user->canAccessPanel($panel)) {
+                $panel = app(FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
+
+                if (! $user->canAccessPanel($panel)) {
                     return redirect()->route('dashboard');
                 }
             }

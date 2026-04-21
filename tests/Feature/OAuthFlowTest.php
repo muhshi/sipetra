@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Enums\ClientAccessPolicy;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Laravel\Passport\Client;

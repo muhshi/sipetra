@@ -28,7 +28,7 @@ beforeEach(function () {
 
 it('denies oauth authorize when client is restricted and user has no matching rule', function () {
     $this->actingAs($this->user)
-        ->get('/oauth/authorize?' . http_build_query([
+        ->get('/oauth/authorize?'.http_build_query([
             'client_id' => $this->client->id,
             'redirect_uri' => 'http://localhost:8001/auth/callback',
             'response_type' => 'code',
@@ -48,7 +48,7 @@ it('allows oauth authorize when user matches an access rule', function () {
     ]);
 
     $this->actingAs($this->user)
-        ->get('/oauth/authorize?' . http_build_query([
+        ->get('/oauth/authorize?'.http_build_query([
             'client_id' => $this->client->id,
             'redirect_uri' => 'http://localhost:8001/auth/callback',
             'response_type' => 'code',

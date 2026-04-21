@@ -47,6 +47,11 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-21]
+#### Changed
+- **Pembersihan Pasca-Merge**: Melakukan pembersihan kode (cleanup) setelah penggabungan branch `asmuam`, termasuk perbaikan import class dan konsistensi gaya kode menggunakan Laravel Pint.
+- **Optimasi Provider**: Merapikan `AppServiceProvider` dan `AdminPanelProvider` dengan menghapus import yang tidak digunakan dan menggunakan class alias yang lebih tepat.
+
 ### [2026-04-17]
 #### Changed
 - Inisialisasi repositori Git dan sinkronisasi dengan branch `asmuam` dari remote repository.
