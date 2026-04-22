@@ -111,6 +111,49 @@ class UserForm
                             ->visibility('public'),
                     ])
                     ->collapsible(),
+
+                Section::make('Detil Kepegawaian (BPS)')
+                    ->description('Data profil kepegawaian yang terhubung dengan data master.')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('employeeProfile.tmt_cpns')
+                                    ->label('TMT CPNS')
+                                    ->disabled(),
+                                TextInput::make('employeeProfile.tmt_pns')
+                                    ->label('TMT PNS')
+                                    ->disabled(),
+                                TextInput::make('employeeProfile.tmt_golongan')
+                                    ->label('TMT Golongan')
+                                    ->disabled(),
+                            ]),
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('employeeProfile.tmt_jabatan')
+                                    ->label('TMT Jabatan')
+                                    ->disabled(),
+                                TextInput::make('employeeProfile.status_pegawai')
+                                    ->label('Status Pegawai')
+                                    ->disabled(),
+                                TextInput::make('employeeProfile.agama')
+                                    ->label('Agama')
+                                    ->disabled(),
+                            ]),
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('employeeProfile.mk_tahun')
+                                    ->label('Masa Kerja (Tahun)')
+                                    ->suffix('Tahun')
+                                    ->disabled(),
+                                TextInput::make('employeeProfile.mk_bulan')
+                                    ->label('Masa Kerja (Bulan)')
+                                    ->suffix('Bulan')
+                                    ->disabled(),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed()
+                    ->visible(fn ($record) => $record?->identity_type === IdentityType::Pegawai),
             ]);
     }
 }

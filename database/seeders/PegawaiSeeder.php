@@ -71,9 +71,9 @@ class PegawaiSeeder extends Seeder
 
             // Status aktif: non-aktif jika nmstpeg = Pensiun atau Melimpah
             $nmstpeg = strtolower(trim($row['nmstpeg'] ?? ''));
-            $isActive = ! in_array($nmstpeg, ['pensiun', 'melimpah']);
+            $isActive = ! in_array($nmstpeg, ['pensiun', 'meninggal', 'melimpah']);
 
-            User::create([
+            $user = User::create([
                 'name' => trim($row['namagelar'] ?? ''),
                 'email' => $email,
                 'password' => Hash::make($password),
@@ -91,9 +91,58 @@ class PegawaiSeeder extends Seeder
                 'is_active' => $isActive,
             ]);
 
+            // Create Employee Profile
+            $mkTahun = 0;
+            $mkBulan = 0;
+            if (! empty($row['tmtcpns'])) {
+                try {
+                    $tmtCpns = Carbon::createFromFormat('d-m-Y', $row['tmtcpns']);
+                    $diff = $tmtCpns->diff(Carbon::now());
+                    $mkTahun = $diff->y;
+                    $mkBulan = $diff->m;
+                } catch (\Throwable) {
+                }
+            }
+
+            $agamaCode = trim($row['agama'] ?? '');
+            $agamaMap = [
+                '1' => 'Islam',
+                '2' => 'Protestan',
+                '3' => 'Katolik',
+                '4' => 'Hindu',
+                '5' => 'Budha',
+                '6' => 'Konghucu',
+            ];
+
+            $user->employeeProfile()->create([
+                'tmt_cpns' => $this->parseDate($row['tmtcpns'] ?? null),
+                'tmt_pns' => $this->parseDate($row['tmtpns'] ?? null),
+                'tmt_golongan' => $this->parseDate($row['tmtgol'] ?? null),
+                'tmt_jabatan' => $this->parseDate($row['tmtjab'] ?? null),
+                'kd_gol' => trim($row['kdgol'] ?? null),
+                'kd_jab' => trim($row['kdstjab'] ?? null),
+                'status_pegawai' => trim($row['nmstpeg'] ?? null),
+                'mk_tahun' => $mkTahun,
+                'mk_bulan' => $mkBulan,
+                'agama' => $agamaMap[$agamaCode] ?? $agamaCode,
+                'tgl_ijazah' => $this->parseDate($row['tglijazah'] ?? null),
+            ]);
+
             $created++;
         }
 
         $this->command->info("PegawaiSeeder: {$created} user dibuat, {$skipped} dilewati (sudah ada).");
+    }
+
+    private function parseDate($date)
+    {
+        if (empty($date)) {
+            return null;
+        }
+        try {
+            return Carbon::createFromFormat('d-m-Y', $date)->toDateString();
+        } catch (\Throwable) {
+            return null;
+        }
     }
 }

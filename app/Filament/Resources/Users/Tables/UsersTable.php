@@ -57,6 +57,10 @@ class UsersTable
                     ->label('Status')
                     ->boolean()
                     ->sortable(),
+                TextColumn::make('employeeProfile.mk_tahun')
+                    ->label('Masa Kerja')
+                    ->state(fn ($record) => $record->masa_kerja)
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Terdaftar')
                     ->dateTime()

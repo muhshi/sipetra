@@ -5,10 +5,13 @@ namespace App\Filament\Resources\Users\Pages;
 use App\Enums\IdentityType;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Artisan;
 
 class ListUsers extends ListRecords
 {
@@ -17,6 +20,19 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('sync_pegawai')
+                ->label('Sync Data Pegawai')
+                ->icon('heroicon-o-arrow-path')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->action(function () {
+                    Artisan::call('app:update-employee-profiles');
+                    Notification::make()
+                        ->title('Sinkronisasi Selesai')
+                        ->success()
+                        ->send();
+                })
+                ->visible(fn () => auth()->user()->hasRole('super_admin')),
             CreateAction::make(),
         ];
     }

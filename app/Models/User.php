@@ -10,6 +10,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -75,6 +76,26 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasspo
         // Semua user aktif (termasuk Pegawai biasa & Mitra) HARUS DIIZINKAN masuk/numpang login.
         // Halaman/Menu di dalam panel akan disembunyikan otomatis oleh Filament Shield sesuai Role mereka.
         return $this->is_active;
+    }
+
+    /**
+     * Get the employee profile relationship.
+     */
+    public function employeeProfile(): HasOne
+    {
+        return $this->hasOne(EmployeeProfile::class);
+    }
+
+    /**
+     * Get the displayable masa kerja.
+     */
+    public function getMasaKerjaAttribute(): string
+    {
+        if (! $this->employeeProfile) {
+            return '-';
+        }
+
+        return "{$this->employeeProfile->mk_tahun} Tahun {$this->employeeProfile->mk_bulan} Bulan";
     }
 
     /**
