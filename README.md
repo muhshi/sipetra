@@ -47,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-22]
+#### Added
+- **User Management Resource**: Menambahkan `UserResource` di Filament untuk mengelola data pengguna (Pegawai & Mitra). Resource ini mendukung pengelolaan role (Shield), tipe identitas, status aktif, serta profil lengkap termasuk upload avatar.
+
 ### [2026-04-21]
 #### Changed
 - **Pembersihan Pasca-Merge**: Melakukan pembersihan kode (cleanup) setelah penggabungan branch `asmuam`, termasuk perbaikan import class dan konsistensi gaya kode menggunakan Laravel Pint.
