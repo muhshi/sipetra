@@ -18,10 +18,14 @@ use N3XT0R\FilamentPassportUi\Resources\TokenResource as BaseTokenResource;
 use N3XT0R\FilamentPassportUi\Resources\TokenResource\Schemas\Components\Columns\ClientIdColumn;
 use N3XT0R\FilamentPassportUi\Resources\TokenResource\Schemas\Components\Columns\RevokedColumn;
 use N3XT0R\FilamentPassportUi\Resources\TokenResource\Schemas\Components\Columns\ScopesColumn;
+use UnitEnum;
 
 class TokenResource extends BaseTokenResource
 {
     protected static ?string $slug = 'tokens';
+
+    protected static string|UnitEnum|null $navigationGroup = 'SSO';
+    protected static ?string $pluralModelLabel = 'Token';
 
     public static function getNavigationBadge(): ?string
     {
@@ -60,8 +64,8 @@ class TokenResource extends BaseTokenResource
                     ->color('danger')
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation()
-                    ->visible(fn ($record, $livewire) => ! $record->revoked && (method_exists($livewire, 'isReadOnly') ? ! $livewire->isReadOnly() : true))
-                    ->action(fn (Model $record) => $record->update(['revoked' => true])),
+                    ->visible(fn($record, $livewire) => !$record->revoked && (method_exists($livewire, 'isReadOnly') ? !$livewire->isReadOnly() : true))
+                    ->action(fn(Model $record) => $record->update(['revoked' => true])),
             ])
             ->defaultSort('updated_at', 'desc');
     }

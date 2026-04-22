@@ -58,7 +58,9 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Pengaturan')
+                ,
                 ExtendedPassportUiPlugin::make(),
                 // \N3XT0R\FilamentPassportUi\FilamentPassportUiPlugin::make(),
             ])

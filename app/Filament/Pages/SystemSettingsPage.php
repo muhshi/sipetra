@@ -18,10 +18,10 @@ class SystemSettingsPage extends SettingsPage
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Settings';
+        return 'Pengaturan';
     }
 
-    public function getTitle(): string | \Illuminate\Contracts\Support\Htmlable
+    public function getTitle(): string|\Illuminate\Contracts\Support\Htmlable
     {
         return 'System Settings';
     }
