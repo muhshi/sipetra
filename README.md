@@ -49,7 +49,12 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-04-22]
 #### Added
-- **User Management Resource**: Menambahkan `UserResource` di Filament untuk mengelola data pengguna (Pegawai & Mitra). Resource ini mendukung pengelolaan role (Shield), tipe identitas, status aktif, serta profil lengkap termasuk upload avatar.
+- **Employee Profiles**: Menambahkan tabel `employee_profiles` untuk menyimpan data detil kepegawaian (TMT CPNS/PNS, TMT Golongan/Jabatan, Masa Kerja, Agama, dsb) guna merampingkan tabel `users`.
+- **Self-Service Profile Page**: Implementasi halaman profil mandiri kustom (`EditProfile`) yang memungkinkan pegawai melihat data kepegawaian mereka (Read-Only) dan memperbarui data personal (Foto Profil, No HP, Tempat Lahir) secara mandiri.
+- **Admin Sync Button**: Menambahkan tombol "Sync Data Pegawai" pada header `UserResource` untuk sinkronisasi massal dari `pegawai.json` serta kalkulasi otomatis masa kerja dan status keaktifan (Pensiun/Meninggal otomatis Inaktif).
+
+#### Changed
+- **User Management Resource**: Peningkatan `UserResource` dengan integrasi tab filter identitas, badge jumlah user, serta tampilan detil profil kepegawaian yang terintegrasi langsung dalam form edit user bagi Admin.
 
 ### [2026-04-21]
 #### Changed
