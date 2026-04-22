@@ -6,9 +6,11 @@ use App\Enums\IdentityType;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class EditProfile extends BaseEditProfile
 {
@@ -21,8 +23,19 @@ class EditProfile extends BaseEditProfile
                     ->schema([
                         $this->getNameFormComponent(),
                         $this->getEmailFormComponent(),
-                        $this->getPasswordFormComponent(),
-                        $this->getPasswordConfirmationFormComponent(),
+                        TextInput::make('password')
+                            ->label('Password Baru')
+                            ->password()
+                            ->revealable(filament()->arePasswordsRevealable())
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->same('passwordConfirmation'),
+                        TextInput::make('passwordConfirmation')
+                            ->label('Konfirmasi Password Baru')
+                            ->password()
+                            ->revealable(filament()->arePasswordsRevealable())
+                            ->required(fn (Get $get) => filled($get('password')))
+                            ->dehydrated(false),
                     ]),
 
                 Section::make('Profil Kepegawaian')
