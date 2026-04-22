@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RoleAndPermissionSeeder extends Seeder
 {
@@ -13,45 +14,27 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $permissions = [
-            'view_user',
-            'view_any_user',
-            'create_user',
-            'update_user',
-            'delete_user',
-            'delete_any_user',
-            'view_role',
-            'view_any_role',
-            'create_role',
-            'update_role',
-            'delete_role',
-            'delete_any_role',
+        // Daftar Role
+        $roles = [
+            'super_admin',
+            'kepala',
+            'ketua_tim',
+            'operator',
         ];
 
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate([
+                'name' => $roleName,
+                'guard_name' => 'web',
+            ]);
         }
 
-        $superAdmin = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
-
-        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $admin->syncPermissions([
-            'view_user',
-            'view_any_user',
-            'create_user',
-            'update_user',
-            'view_role',
-            'view_any_role',
-        ]);
-
-        $operator = Role::firstOrCreate(['name' => 'operator', 'guard_name' => 'web']);
+        // Contoh: Memberikan akses dasar ke operator
+        $operator = Role::findByName('operator');
         $operator->syncPermissions([
-            'view_user',
-            'view_any_user',
-            'create_user',
-            'update_user',
+            // Tambahkan permission jika diperlukan
         ]);
     }
 }

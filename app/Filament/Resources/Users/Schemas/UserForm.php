@@ -5,11 +5,11 @@ namespace App\Filament\Resources\Users\Schemas;
 use App\Enums\IdentityType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,7 +52,7 @@ class UserForm
                                 Select::make('identity_type')
                                     ->label('Tipe Identitas')
                                     ->options(IdentityType::class)
-                                    ->default(IdentityType::ADMIN)
+                                    ->default(IdentityType::Admin)
                                     ->required()
                                     ->live(),
                                 TextInput::make('phone')
@@ -73,10 +73,10 @@ class UserForm
                             ->schema([
                                 TextInput::make('nip')
                                     ->label('NIP/NIP Baru')
-                                    ->visible(fn ($get) => $get('identity_type') === IdentityType::PEGAWAI->value),
+                                    ->visible(fn ($get) => $get('identity_type') === IdentityType::Pegawai->value),
                                 TextInput::make('sobat_id')
                                     ->label('Sobat ID')
-                                    ->visible(fn ($get) => $get('identity_type') === IdentityType::MITRA->value),
+                                    ->visible(fn ($get) => $get('identity_type') === IdentityType::Mitra->value),
                                 Select::make('jenis_kelamin')
                                     ->label('Jenis Kelamin')
                                     ->options([

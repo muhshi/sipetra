@@ -3,14 +3,17 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Enums\IdentityType;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class UsersTable
 {
@@ -76,6 +79,22 @@ class UsersTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    BulkAction::make('assignRole')
+                        ->label('Assign Roles')
+                        ->icon('heroicon-o-shield-check')
+                        ->form([
+                            Select::make('roles')
+                                ->label('Roles')
+                                ->multiple()
+                                ->relationship('roles', 'name')
+                                ->preload()
+                                ->required(),
+                        ])
+                        ->action(fn (Collection $records, array $data) => $records->each(function ($record) use ($data) {
+                            $record->roles()->sync($data['roles']);
+                        }))
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotificationTitle('Roles assigned successfully'),
                     DeleteBulkAction::make(),
                 ]),
             ]);
