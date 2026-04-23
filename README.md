@@ -47,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-23]
+#### Fixed
+- Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit agar dapat mengakses relasi `accessRules()`.
+
 ### [2026-04-17]
 #### Changed
 - Inisialisasi repositori Git dan sinkronisasi dengan branch `asmuam` dari remote repository.
