@@ -63,3 +63,5 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Pembaruan `README.md` dengan detail proyek SIPETRA SSO.
 - Optimasi kecepatan seeder dengan caching password hash.
 
+git pull
+./deploy.sh

@@ -12,6 +12,8 @@ use N3XT0R\FilamentPassportUi\Resources\ClientResource as BaseClientResource;
 
 class ClientResource extends BaseClientResource
 {
+    protected static ?string $model = \App\Models\Passport\Client::class;
+
     protected static ?string $slug = 'clients';
 
     public static function form(Schema $schema): Schema
