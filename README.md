@@ -52,6 +52,16 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
 - Penambahan **Bridge Model** `App\Models\PassportClient` untuk menangani referensi lama yang mungkin masih tertinggal di database atau cache.
 - Mengubah pemanggilan `$record->accessRules()->create()` menjadi `\App\Models\ClientAccessRule::create()` di `CreateClient` untuk menghindari error pada server persisten (seperti FrankenPHP) yang masih menyimpan definisi class lama di memori.
+- **Environment Restoration**: Menjalankan `composer install` untuk memperbaiki error `vendor/autoload.php` yang hilang dan memulihkan dependensi proyek.
+- **Database Initialization**: Menjalankan migrasi database dan initial seeders (`RoleAndPermissionSeeder`, `AdminUserSeeder`, `PassportScopeSeeder`) untuk menyiapkan lingkungan pengembangan.
+
+#### Changed
+- Merged branch `asmuam` to `main` and resolved composer conflicts.
+- Ran `composer install` to fix missing Filament plugins (Spatie Settings Plugin).
+- Refactored Passport OAuth scopes to support granular data separation between Pegawai and Mitra.
+- Updated `PassportScopeSeeder` with proper scope formatting (`identity_pegawai:read`, `employee:read`, etc).
+- Refactored `UserApiController` to dynamically return data payload based on the requested token scopes.
+- Simplified `routes/api.php` to use a single dynamic `/api/user` endpoint.
 
 ### [2026-04-22]
 #### Added
@@ -131,12 +141,3 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Mengubah fungsi `canAccessPanel()` pada `User.php` agar SELURUH pengguna (termasuk Pegawai dan Mitra) dapat berpartisipasi dalam sesi masuk SSO tanpa perlu ditolak Filament.
 #### Added
 - Menambahkan dokumen `arsitektur_portal_sso.md` yang berisi panduan konseptual *Golden Flow* integrasi SSO dengan Aplikasi Portal.
- # # #   [ 2 0 2 6 - 0 4 - 2 3 ] 
- # # # #   C h a n g e d 
- -   M e r g e d   b r a n c h   \  s m u a m \   t o   \ m a i n \   a n d   r e s o l v e d   c o m p o s e r   c o n f l i c t s . 
- -   R a n   \ c o m p o s e r   i n s t a l l \   t o   f i x   m i s s i n g   F i l a m e n t   p l u g i n s   ( S p a t i e   S e t t i n g s   P l u g i n ) . 
- -   R e f a c t o r e d   P a s s p o r t   O A u t h   s c o p e s   t o   s u p p o r t   g r a n u l a r   d a t a   s e p a r a t i o n   b e t w e e n   P e g a w a i   a n d   M i t r a . 
- -   U p d a t e d   \ P a s s p o r t S c o p e S e e d e r \   w i t h   p r o p e r   s c o p e   f o r m a t t i n g   ( \ i d e n t i t y _ p e g a w a i : r e a d \ ,   \ e m p l o y e e : r e a d \ ,   e t c ) . 
- -   R e f a c t o r e d   \ U s e r A p i C o n t r o l l e r \   t o   d y n a m i c a l l y   r e t u r n   d a t a   p a y l o a d   b a s e d   o n   t h e   r e q u e s t e d   t o k e n   s c o p e s . 
- -   S i m p l i f i e d   \  o u t e s / a p i . p h p \   t o   u s e   a   s i n g l e   d y n a m i c   \ / a p i / u s e r \   e n d p o i n t .  
- 
