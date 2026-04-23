@@ -12,7 +12,7 @@ return [
     /**
      * Whether to use database stored scopes.
      */
-    'use_database_scopes' => false,
+    'use_database_scopes' => true,
 
     /**
      * Cache settings.
