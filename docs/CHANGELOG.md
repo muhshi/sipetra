@@ -83,6 +83,10 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 - **SettingsPage not found** — Menginstall dependensi `filament/spatie-laravel-settings-plugin` (v5.6) yang menyebabkan error saat mengakses menu System Settings.
 - **Missing Table settings** — Menjalankan `php artisan migrate` untuk membuat tabel `settings` dan migrasi klien lainnya setelah pull kode terbaru.
 
+### 🔄 Changed
+- **Edit Scopes UI** — Mengganti Relation Manager (tabel yang harus diinput satu per satu) dengan `ScopeCheckboxList` pada form Edit Client agar lebih praktis seperti saat Create.
+- **Dropdown User UI** — Menambahkan keterangan "Ketik untuk mencari..." pada form Nilai Aturan (Access Rules) tipe User agar tidak membingungkan pengguna (sebelumnya hanya muncul "Tidak ada data").
+
 ---
 
 ## [2026-04-20] — Documentation Update
