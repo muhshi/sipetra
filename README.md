@@ -49,7 +49,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-04-23]
 #### Fixed
-- Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit agar dapat mengakses relasi `accessRules()`.
+- Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
+- Penambahan **Bridge Model** `App\Models\PassportClient` untuk menangani referensi lama yang mungkin masih tertinggal di database atau cache, memastikan relasi `accessRules()` selalu tersedia.
 
 ### [2026-04-17]
 #### Changed
