@@ -94,6 +94,11 @@ class ExtendedClientWizardForm extends ClientWizardForm
                         ->searchPrompt('Ketik untuk mencari...')
                         ->loadingMessage('Sedang mencari...')
                         ->noSearchResultsMessage('Tidak ditemukan.')
+                        ->emptyOptionsMessage(fn (Get $get): string => 
+                            $this->normalizeRuleType($get('rule_type')) === AccessRuleType::User 
+                                ? 'Silakan ketik nama/NIP untuk mencari...' 
+                                : 'Tidak ada pilihan.'
+                        )
                         ->options(fn (Get $get): array => $this->getInitialRuleValueOptions($get('rule_type')))
                         ->getSearchResultsUsing(fn (Get $get, ?string $search): array => $this->searchRuleValueOptions($get('rule_type'), $search))
                         ->getOptionLabelsUsing(fn (Get $get, array $values): array => $this->getRuleValueLabels($get('rule_type'), $values))
