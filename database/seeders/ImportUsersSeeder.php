@@ -39,7 +39,7 @@ class ImportUsersSeeder extends Seeder
                 ? $pegawai['email'].'@bps.go.id'
                 : $pegawai['niplama'].'@bps.go.id';
 
-            User::updateOrCreate(
+            $user = User::updateOrCreate(
                 ['nip' => $pegawai['niplama']],
                 [
                     'name' => trim($pegawai['namagelar']),
@@ -58,6 +58,7 @@ class ImportUsersSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+            $user->assignRole('pegawai');
             $count++;
         }
 
@@ -114,7 +115,7 @@ class ImportUsersSeeder extends Seeder
                 }
             }
 
-            User::updateOrCreate(
+            $user = User::updateOrCreate(
                 ['sobat_id' => $sobatId],
                 [
                     'name' => trim((string) $row[0]),
@@ -129,6 +130,7 @@ class ImportUsersSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+            $user->assignRole('mitra');
             $count++;
         }
 
