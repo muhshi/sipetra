@@ -59,11 +59,6 @@ class Login extends Component
 
             $user = User::where('email', $this->email)->first();
 
-            if ($user && $user->identity_type === IdentityType::Admin) {
-                $this->addError('email', 'Administrator harap login melalui halaman /admin/login');
-
-                return;
-            }
 
             $attempt = Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_active' => true], $this->remember);
         }
