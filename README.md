@@ -58,6 +58,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Admin Access**: Mengizinkan Administrator untuk login melalui portal utama `/login` tanpa paksaan untuk menggunakan halaman admin khusus.
 - **Asset Build**: Menjalankan `npm run build` untuk menghasilkan manifest Vite yang hilang guna memperbaiki error `ViteManifestNotFoundException`.
 - **New Roles**: Menambahkan role `pegawai` dan `mitra` ke dalam `RoleAndPermissionSeeder`.
+- **Auto-Assign Roles**: Memperbarui `ImportUsersSeeder` dan `PegawaiSeeder` agar otomatis memberikan role `pegawai` atau `mitra` sesuai dengan `identity_type` pengguna saat proses import.
 - **UI Access Control**: Membatasi tampilan tombol "Buka Dasbor Admin SIPETRA" di halaman dashboard agar hanya muncul bagi pengguna dengan role `super_admin`.
 
 #### Changed
