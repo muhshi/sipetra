@@ -54,6 +54,9 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - Mengubah pemanggilan `$record->accessRules()->create()` menjadi `\App\Models\ClientAccessRule::create()` di `CreateClient` untuk menghindari error pada server persisten (seperti FrankenPHP) yang masih menyimpan definisi class lama di memori.
 - **Environment Restoration**: Menjalankan `composer install` untuk memperbaiki error `vendor/autoload.php` yang hilang dan memulihkan dependensi proyek.
 - **Database Initialization**: Menjalankan migrasi database dan initial seeders (`RoleAndPermissionSeeder`, `AdminUserSeeder`, `PassportScopeSeeder`) untuk menyiapkan lingkungan pengembangan.
+- **Centralized Login**: Mengubah redirect tamu default dari `/admin/login` ke `/login` agar alur SSO lebih konsisten melalui portal utama.
+- **Admin Access**: Mengizinkan Administrator untuk login melalui portal utama `/login` tanpa paksaan untuk menggunakan halaman admin khusus.
+- **Asset Build**: Menjalankan `npm run build` untuk menghasilkan manifest Vite yang hilang guna memperbaiki error `ViteManifestNotFoundException`.
 
 #### Changed
 - Merged branch `asmuam` to `main` and resolved composer conflicts.
