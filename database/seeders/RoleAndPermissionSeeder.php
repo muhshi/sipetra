@@ -22,6 +22,8 @@ class RoleAndPermissionSeeder extends Seeder
             'kepala',
             'ketua_tim',
             'operator',
+            'pegawai',
+            'mitra',
         ];
 
         foreach ($roles as $roleName) {
