@@ -15,11 +15,11 @@ class PassportScopeSeeder extends Seeder
     {
         $scopes = [
             'profile:read',
-            'identity:read',
-            'organization:read',
-            'phone:read',
-            'email:read',
-            'user:manage',
+            'identity_pegawai:read',
+            'identity_mitra:read',
+            'employee:read',
+            'contact:read', // Merging phone and address to just contact:read
+            'roles:read',
         ];
 
         $resources = [];

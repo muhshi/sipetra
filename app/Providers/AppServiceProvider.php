@@ -64,12 +64,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Passport::tokensCan([
-            'profile:read' => 'Baca informasi profil dasar (nama, email, avatar)',
-            'identity:read' => 'Baca identitas (NIP/ID Mitra, tipe)',
-            'organization:read' => 'Baca info organisasi (satker, unit kerja, jabatan)',
-            'phone:read' => 'Baca nomor telepon',
-            'email:read' => 'Baca alamat email',
-            'user:manage' => 'Akses penuh manajemen user',
+            'profile:read' => 'Baca informasi profil dasar (nama, email, avatar, tipe user)',
+            'identity_pegawai:read' => 'Baca identitas khusus pegawai (NIP Baru/Lama)',
+            'identity_mitra:read' => 'Baca identitas khusus mitra (SOBAT ID, NIK)',
+            'employee:read' => 'Baca data detil kepegawaian (Jabatan, Golongan, Masa Kerja, Agama, dsb)',
+            'contact:read' => 'Baca data kontak (Nomor HP, Alamat)',
+            'roles:read' => 'Baca hak akses (Roles & Permissions)',
         ]);
 
         Passport::useClientModel(PassportClient::class);
