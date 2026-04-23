@@ -2,35 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Passport\Scope;
-use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client as BaseClient;
+use App\Models\Passport\Client as BaseClient;
 
+/**
+ * Legacy Bridge Model
+ * 
+ * Class ini dipertahankan sebagai jembatan untuk komponen yang mungkin masih 
+ * mereferensikan App\Models\PassportClient secara hardcoded atau via database.
+ */
 class PassportClient extends BaseClient
 {
     /**
-     * Determine if the client should skip the authorization prompt.
-     * Jika user tidak terdaftar dalam daftar akses klien ini, tampilkan view penolakan.
-     *
-     * @param  Scope[]  $scopes
+     * Pastikan morph class tetap mengarah ke base model jika diperlukan
      */
-    public function skipsAuthorization(Authenticatable $user, array $scopes): bool
+    public function getMorphClass(): string
     {
-        return ClientUserAccess::where('client_id', $this->id)
-            ->where('user_id', $user->getAuthIdentifier())
-            ->exists();
-    }
-
-    /** @return HasMany<ClientRole, $this> */
-    public function clientRoles(): HasMany
-    {
-        return $this->hasMany(ClientRole::class, 'client_id');
-    }
-
-    /** @return HasMany<ClientUserAccess, $this> */
-    public function userAccesses(): HasMany
-    {
-        return $this->hasMany(ClientUserAccess::class, 'client_id');
+        return \N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client::class;
     }
 }

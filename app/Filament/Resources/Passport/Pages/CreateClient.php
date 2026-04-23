@@ -36,7 +36,8 @@ class CreateClient extends BaseCreateClient
                 $ruleValues = (array) ($ruleSet['rule_values'] ?? []);
 
                 foreach ($ruleValues as $ruleValue) {
-                    $record->accessRules()->create([
+                    \App\Models\ClientAccessRule::create([
+                        'client_id' => $record->getKey(),
                         'rule_type' => $ruleType,
                         'rule_value' => (string) $ruleValue,
                     ]);

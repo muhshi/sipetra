@@ -47,6 +47,12 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-23]
+#### Fixed
+- Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
+- Penambahan **Bridge Model** `App\Models\PassportClient` untuk menangani referensi lama yang mungkin masih tertinggal di database atau cache.
+- Mengubah pemanggilan `$record->accessRules()->create()` menjadi `\App\Models\ClientAccessRule::create()` di `CreateClient` untuk menghindari error pada server persisten (seperti FrankenPHP) yang masih menyimpan definisi class lama di memori.
+
 ### [2026-04-22]
 #### Added
 - **Employee Profiles**: Menambahkan tabel `employee_profiles` untuk menyimpan data detil kepegawaian (TMT CPNS/PNS, TMT Golongan/Jabatan, Masa Kerja, Agama, dsb) guna merampingkan tabel `users`.

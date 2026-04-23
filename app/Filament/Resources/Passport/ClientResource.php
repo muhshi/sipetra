@@ -13,6 +13,8 @@ use UnitEnum;
 
 class ClientResource extends BaseClientResource
 {
+    protected static ?string $model = \App\Models\Passport\Client::class;
+
     protected static ?string $slug = 'clients';
 
     protected static string|UnitEnum|null $navigationGroup = 'SSO';
