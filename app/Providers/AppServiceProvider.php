@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::useClientModel(PassportClient::class);
 
         Passport::authorizationView(function ($parameters) {
-            return view('passport::authorize', $parameters);
+            return view('oauth.authorize', $parameters);
         });
 
         Passport::tokensCan([
