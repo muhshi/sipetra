@@ -56,11 +56,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::useClientModel(PassportClient::class);
 
         Passport::authorizationView(function ($parameters) {
-            // Jika skipsAuthorization() == false, user tidak terdaftar → tampilkan halaman penolakan
-            // Jika skipsAuthorization() == true, alur tidak sampai ke view ini
-            return view('oauth.rejected', [
-                'client' => $parameters['client'] ?? null,
-            ]);
+            return view('passport::authorize', $parameters);
         });
 
         Passport::tokensCan([
