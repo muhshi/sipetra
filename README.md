@@ -50,7 +50,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 ### [2026-04-23]
 #### Fixed
 - Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
-- Penambahan **Bridge Model** `App\Models\PassportClient` untuk menangani referensi lama yang mungkin masih tertinggal di database atau cache, memastikan relasi `accessRules()` selalu tersedia.
+- Penambahan **Bridge Model** `App\Models\PassportClient` untuk menangani referensi lama yang mungkin masih tertinggal di database atau cache.
+- Mengubah pemanggilan `$record->accessRules()->create()` menjadi `\App\Models\ClientAccessRule::create()` di `CreateClient` untuk menghindari error pada server persisten (seperti FrankenPHP) yang masih menyimpan definisi class lama di memori.
 
 ### [2026-04-17]
 #### Changed
