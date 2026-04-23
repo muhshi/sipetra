@@ -57,6 +57,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Centralized Login**: Mengubah redirect tamu default dari `/admin/login` ke `/login` agar alur SSO lebih konsisten melalui portal utama.
 - **Admin Access**: Mengizinkan Administrator untuk login melalui portal utama `/login` tanpa paksaan untuk menggunakan halaman admin khusus.
 - **Asset Build**: Menjalankan `npm run build` untuk menghasilkan manifest Vite yang hilang guna memperbaiki error `ViteManifestNotFoundException`.
+- **New Roles**: Menambahkan role `pegawai` dan `mitra` ke dalam `RoleAndPermissionSeeder`.
+- **UI Access Control**: Membatasi tampilan tombol "Buka Dasbor Admin SIPETRA" di halaman dashboard agar hanya muncul bagi pengguna dengan role `super_admin`.
 
 #### Changed
 - Merged branch `asmuam` to `main` and resolved composer conflicts.
