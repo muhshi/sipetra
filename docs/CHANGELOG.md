@@ -76,6 +76,15 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-04-23] — Client Wizard & Settings Plugin Fixes
+
+### 🐛 Fixed
+- **Missing "Izin User" Tab** — Mengaktifkan kembali konfigurasi `use_database_scopes = true` pada `config/passport-authorization-core.php` untuk memunculkan kembali tahap 2 (Izin User) pada form pembuatan Klien SSO.
+- **SettingsPage not found** — Menginstall dependensi `filament/spatie-laravel-settings-plugin` (v5.6) yang menyebabkan error saat mengakses menu System Settings.
+- **Missing Table settings** — Menjalankan `php artisan migrate` untuk membuat tabel `settings` dan migrasi klien lainnya setelah pull kode terbaru.
+
+---
+
 ## [2026-04-20] — Documentation Update
 
 ### 🔄 Changed
