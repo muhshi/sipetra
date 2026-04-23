@@ -42,6 +42,23 @@ class ExtendedClientResourceForm extends ClientResourceForm
             RevokeToggle::make(),
         ];
 
+        $dbScopesRequired = app(\N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository::class)->isUsingDatabaseScopes();
+
+        if ($dbScopesRequired) {
+            $components[] = \Filament\Schemas\Components\Grid::make()
+                ->schema(fn (Get $get) => [
+                    \N3XT0R\FilamentPassportUi\Resources\BaseResource\Components\ScopeCheckboxList::make(
+                        context: 'client',
+                        name: 'client_scopes',
+                        record: $get('id') ? \App\Models\Passport\Client::find($get('id')) : null,
+                        statePath: 'client_scopes',
+                        contextClient: $get('id') ? \App\Models\Passport\Client::find($get('id')) : null,
+                    ),
+                ])
+                ->key('client_scopes')
+                ->columnSpanFull();
+        }
+
         return $schema->components(
             array_merge(
                 $components,

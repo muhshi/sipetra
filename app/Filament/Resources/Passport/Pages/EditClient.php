@@ -15,11 +15,6 @@ class EditClient extends BaseEditClient
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        // Prevent scope wiping by providing existing scopes to the UseCase
-        $data['scopes'] = $record->passportScopeGrants->map(function ($grant) {
-            return "{$grant->resource->name}:{$grant->action->name}";
-        })->toArray();
-
         $updatedRecord = parent::handleRecordUpdate($record, $data);
         $updatedRecord->forceFill([
             'access_policy' => $data['access_policy'] ?? ClientAccessPolicy::Restricted->value,

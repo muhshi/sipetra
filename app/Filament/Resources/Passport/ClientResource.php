@@ -34,7 +34,6 @@ class ClientResource extends BaseClientResource
         return [
             ClientTokensRelationManager::class,
             AccessRulesRelationManager::class,
-            RelationManagers\PassportScopeGrantsRelationManager::class,
         ];
     }
 
