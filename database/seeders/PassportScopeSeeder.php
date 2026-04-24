@@ -14,7 +14,6 @@ class PassportScopeSeeder extends Seeder
     public function run(): void
     {
         $scopes = [
-            'profile:read' => 'Informasi profil dasar (nama, email, avatar, tipe user)',
             'identity_pegawai:read' => 'Identitas khusus pegawai (NIP Baru/Lama)',
             'identity_mitra:read' => 'Identitas khusus mitra (SOBAT ID, NIK)',
             'employee:read' => 'Data detil kepegawaian (Jabatan, Golongan, Masa Kerja, Agama, dsb)',

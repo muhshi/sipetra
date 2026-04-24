@@ -22,7 +22,7 @@ class UserApiController extends Controller
         $token = $user->token();
         $clientId = $token->client_id;
 
-        // Selalu return data profile dasar jika ada scope profile:read
+        // Selalu return data profile dasar (Basic Profile)
         $data = [
             'id' => $user->id,
             'name' => $user->name,
