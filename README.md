@@ -56,7 +56,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Refaktor Seeder**: Optimalisasi `PassportScopeSeeder` dan `ImportUsersSeeder` untuk penanganan scope yang lebih bersih dan efisien.
 - **Cleanup Resource**: Pembersihan kode pada `ClientResource` dan `EditClient` dengan memindahkan logika form ke class schema terpisah.
 - **Merge Update**: Melakukan pull dan merge dari branch `asmuam` untuk menyinkronkan fitur-fitur terbaru ke branch `main`.
-- **Scope Simplification**: Menghapus requirement scope `profile:read`. Data profil dasar kini selalu dikembalikan secara default tanpa memerlukan scope khusus.
+- **Scope Restoration**: Mengembalikan scope `profile:read` secara formal untuk menjamin kompatibilitas dengan aplikasi klien yang masih memintanya, namun data profil dasar tetap dikirim secara otomatis tanpa pengecekan ketat di sisi API.
 
 ### [2026-04-23]
 #### Fixed
