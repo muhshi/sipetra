@@ -47,6 +47,16 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-24]
+#### Added
+- **OAuth Client Wizard**: Implementasi form pembuatan/pengeditan OAuth Client menggunakan Wizard 3-langkah yang lebih terorganisir.
+- **Extended Client Schemas**: Pemisahan logika form client ke dalam `ExtendedClientResourceForm` dan `ExtendedClientWizardForm` untuk meningkatkan maintainability.
+
+#### Changed
+- **Refaktor Seeder**: Optimalisasi `PassportScopeSeeder` dan `ImportUsersSeeder` untuk penanganan scope yang lebih bersih dan efisien.
+- **Cleanup Resource**: Pembersihan kode pada `ClientResource` dan `EditClient` dengan memindahkan logika form ke class schema terpisah.
+- **Merge Update**: Melakukan pull dan merge dari branch `asmuam` untuk menyinkronkan fitur-fitur terbaru ke branch `main`.
+
 ### [2026-04-23]
 #### Fixed
 - Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
