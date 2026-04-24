@@ -1,85 +1,237 @@
-# Panduan Penempelan SSO Sipetra ke Aplikasi Klien (Portal)
+# Panduan Integrasi SIPETRA SSO (OAuth2)
 
-Dokumen ini berisi langkah-langkah praktis bagi pengembang (developer) aplikasi sektoral BPS atau Portal untuk menyambungkan aplikasinya dengan Server SSO Sipetra.
+Dokumen ini berisi langkah-langkah teknis untuk mengintegrasikan sistem autentikasi **SIPETRA SSO** (Single Sign-On) ke dalam aplikasi Laravel menggunakan **Laravel Socialite**.
 
-Secara teknis, Sipetra telah berjalan penuh menggunakan arsitektur **OAuth2**. Pilih salah satu skenario di bawah berdasarkan teknologi yang digunakan pada aplikasi Klien Anda.
+## 1. Konfigurasi Environment (`.env`)
 
----
+Tambahkan variabel berikut di file `.env` aplikasi klien:
 
-## Skenario 1: Apabila Aplikasi Klien Dibangun Menggunakan Laravel
-
-Klien berbasis Laravel sangat dimudahkan karena dapat digabungkan langsung dengan pustaka *Laravel Socialite*.
-
-### 1. Dapatkan Kredensial Unik Aplikasi
-Sebagai syarat masuk/komunikasi antar mesin, minta **Client ID** dan **Client Secret** khusus Portal/Sektoral tersebut dari Administrator Sipetra (bisa dipantau di tabel *oauth_clients* database Sipetra). 
-
-Pasang kuncinya secara rahasia di file *Environment* lokal (`.env`) aplikasi Anda:
 ```env
-SIPETRA_CLIENT_ID="[COPY_CLIENT_ID_DARI_SIPETRA]"
-SIPETRA_CLIENT_SECRET="[COPY_CLIENT_SECRET_DARI_SIPETRA]"
-SIPETRA_REDIRECT_URI="https://portal.bpsdemak.com/auth/callback"
+SIPETRA_CLIENT_ID="isi_dengan_client_id_dari_sipetra"
+SIPETRA_CLIENT_SECRET="isi_dengan_client_secret_dari_sipetra"
+SIPETRA_REDIRECT_URI="${APP_URL}/auth/sipetra/callback"
+SIPETRA_BASE_URL="https://bpsdemak.com"
 ```
 
-### 2. Pasang Laravel Socialite
-Instal pustaka OAuth2 bawaan laravel secara _remote_ melalui terminal Klien:
-```bash
-composer require laravel/socialite
-```
+## 2. Registrasi Service (`config/services.php`)
 
-### 3. Daftarkan Service di Config
-Buka berkas `config/services.php` klien Anda, lalu tambahkan rujukan destinasi Sipetra:
+Daftarkan kredensial SIPETRA di dalam array `config/services.php`:
+
 ```php
 'sipetra' => [
-    'client_id'     => env('SIPETRA_CLIENT_ID'),
+    'client_id' => env('SIPETRA_CLIENT_ID'),
     'client_secret' => env('SIPETRA_CLIENT_SECRET'),
-    'redirect'      => env('SIPETRA_REDIRECT_URI'),
-    'host'          => env('SIPETRA_HOST', 'https://sipetra.bpsdemak.com'), 
+    'redirect' => env('SIPETRA_REDIRECT_URI'),
+    'base_url' => env('SIPETRA_BASE_URL'),
+    // Scope wajib untuk mendapatkan data profil
+    'scopes' => ['identity_pegawai:read', 'employee:read', 'contact:read', 'roles:read'],
 ],
 ```
 
-### 4. Inject Provider Kustom
-Buat berkas *Provider* menjemput khusus (misal: `app/Providers/SipetraProvider.php`) yang menjembatani bahasa pemetaan profil BPS. (Detail instruksi baris kode *Provider* ini tersedia lengkap dalam dokumen PRD/Perencanaan Sipetra utama pada sub-bab *Client Integration*).
+## 3. Custom Socialite Provider
 
-### 5. Pasang Route & Controller Interceptor
-Pungut data pengguna di antara dua alur rute utama *Controller* Anda:
-- **Rute Lempar (`/auth/redirect`)**: Ketika user menekan tombol 'Login dengan BPS'.
-  *Kode:* `return Socialite::driver('sipetra')->redirect();`
-- **Rute Tangkap (`/auth/callback`)**: Menjemput kembalian serah terima izin otentikasi dari Sipetra.
-  *Kode:* `$user = Socialite::driver('sipetra')->user();` lalu eksekusi *login* secara programmatif (`Auth::login()`) agar user berhasil menduduki meja Dasbor Anda.
+Buat file `app/Providers/SipetraSocialiteProvider.php` untuk menangani protokol OAuth2 SIPETRA:
 
----
+```php
+<?php
 
-## Skenario 2: Apabila Aplikasi Klien Dibangun Teknologi Lain (Next.js, Vue, PHP Native)
+namespace App\Providers;
 
-Tidak masalah jika tidak berbasis Laravel. Aturan mainnya menaati protokol komunikasi standar HTTP / global OAuth2 yang terdiri dari 3 siklus *Endpoint* URL resmi:
+use Laravel\Socialite\Two\AbstractProvider;
+use Laravel\Socialite\Two\ProviderInterface;
+use Laravel\Socialite\Two\User;
 
-### 1. Endpoint Lemparan Otentikasi
-Tombol "Log in BPS" pada antarmuka Portal/Front-End Anda harus mengarahkan (_redirect_) layar _browser_ murni ke format URL berikut:
-```text
-https://sipetra.bpsdemak.com/oauth/authorize?client_id=[ID_PORTAL_ANDA]&redirect_uri=[URL_CALLBACK_ANDA]&response_type=code
-```
-
-### 2. Endpoint Pertukaran Tiket Token (*Background POST*)
-Setelah *user* sah mengetik _password_-nya di Sipetra, Sipetra akan melempar *user* kembali ke `[URL_CALLBACK_ANDA]` sambil menempelkan sebuah _query parameter_ berupa `?code=xyza...`. 
-
-Sistem *Backend* Klien Anda harus lekas menyambar parameter rahasia tersebut lalu mengirim _POST Request_ (di balik layar) menuju Sipetra untuk ditukar menjadi token akses sakti:
-```json
-POST https://sipetra.bpsdemak.com/oauth/token
+class SipetraSocialiteProvider extends AbstractProvider implements ProviderInterface
 {
-    "grant_type": "authorization_code",
-    "client_id": "[ID_PORTAL_ANDA]",
-    "client_secret": "[RAHASIA_PORTAL_ANDA]",
-    "redirect_uri": "[URL_CALLBACK_ANDA]",
-    "code": "xyza..."
+    protected $scopeSeparator = ' ';
+
+    protected function getAuthUrl($state)
+    {
+        return $this->buildAuthUrlFromBase(
+            config('services.sipetra.base_url') . '/oauth/authorize',
+            $state
+        );
+    }
+
+    protected function getTokenUrl()
+    {
+        return config('services.sipetra.base_url') . '/oauth/token';
+    }
+
+    protected function getUserByToken($token)
+    {
+        $response = $this->getHttpClient()->get(
+            config('services.sipetra.base_url') . '/api/user',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    protected function mapUserToObject(array $user)
+    {
+        return (new User)->setRaw($user)->map([
+            'id'     => $user['id'],
+            'name'   => $user['name'],
+            'email'  => $user['email'],
+            'avatar' => $user['avatar'] ?? null,
+        ]);
+    }
+
+    protected function getTokenFields($code)
+    {
+        $fields = parent::getTokenFields($code);
+        $fields['grant_type'] = 'authorization_code';
+        return $fields;
+    }
+
+    protected function getDefaultScopes()
+    {
+        return config('services.sipetra.scopes', []);
+    }
 }
 ```
-Sipetra akan membalas _request JSON_ tersebut dengan sebongkah data **`access_token`**.
 
-### 3. Endpoint Suplai Ekstraksi Biodata
-Bermodalkan `access_token` hasil penukaran tersebut, panggil API profil internal Sipetra untuk "menyedot" data penggunanya secara *real-time*:
-```text
-GET https://sipetra.bpsdemak.com/api/user
-Header: 
-  Authorization: Bearer [access_token_yg_baru_didapat]
+Daftarkan provider tersebut di `app/Providers/AppServiceProvider.php` pada method `boot()`:
+
+```php
+public function boot(): void
+{
+    $socialite = $this->app->make(\Laravel\Socialite\Contracts\Factory::class);
+    $socialite->extend('sipetra', function ($app) use ($socialite) {
+        $config = $app['config']['services.sipetra'];
+        return $socialite->buildProvider(\App\Providers\SipetraSocialiteProvider::class, $config);
+    });
+}
 ```
-Hasil JSON bersihkan dari *Endpoint* ini mengantungi kelengkapan profil (Nama, Identitas Email, Kode NIP, dan Jabatan) Pegawai bersangkutan. Tinggal Anda lemparkan / cetak (*render*) info JSON ini melenggang masuk ke laman profil Dasbor aplikasi Anda!
+
+## 4. Database & Model User
+
+Pastikan tabel `users` memiliki kolom untuk menyimpan ID SSO dan data tambahan. Jalankan migrasi:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->string('sipetra_id')->nullable()->unique();
+    $table->text('sipetra_token')->nullable();
+    $table->text('sipetra_refresh_token')->nullable();
+    $table->string('nip')->nullable();
+    $table->string('jabatan')->nullable();
+    // kolom lain sesuai kebutuhan
+});
+```
+
+Pastikan kolom-kolom tersebut masuk ke `$fillable` di model `User.php`.
+
+## 5. Route & Controller SSO
+
+Buat controller `app/Http/Controllers/Auth/SsoController.php`:
+
+```php
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
+class SsoController extends Controller
+{
+    public function redirect()
+    {
+        return Socialite::driver('sipetra')->redirect();
+    }
+
+    public function callback(Request $request)
+    {
+        if ($request->has('error')) {
+            return redirect()->route('login')->with('error', 'Login SSO Dibatalkan');
+        }
+
+        try {
+            $ssoUser = Socialite::driver('sipetra')->user();
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Gagal mengambil data user');
+        }
+
+        $rawData = $ssoUser->getRaw();
+
+        // Cari user berdasarkan sipetra_id atau email
+        $user = User::where('sipetra_id', $ssoUser->getId())->first()
+             ?? User::where('email', $ssoUser->getEmail())->first();
+
+        $data = [
+            'sipetra_id'    => $ssoUser->getId(),
+            'name'          => $ssoUser->getName(),
+            'email'         => $ssoUser->getEmail(),
+            'sipetra_token' => $ssoUser->token,
+            'nip'           => $rawData['nip'] ?? null,
+            // mapping data lain dari $rawData
+        ];
+
+        if ($user) {
+            $user->update($data);
+        } else {
+            $data['password'] = null;
+            $user = User::create($data);
+            
+            // Assign role default (jika pakai Spatie Permission)
+            if (method_exists($user, 'assignRole')) {
+                $user->assignRole('pegawai');
+            }
+        }
+
+        Auth::login($user);
+        return redirect()->intended('/admin');
+    }
+}
+```
+
+Tambahkan route di `routes/web.php`:
+
+```php
+Route::get('/auth/sipetra/redirect', [SsoController::class, 'redirect'])->name('sipetra.login');
+Route::get('/auth/sipetra/callback', [SsoController::class, 'callback']);
+```
+
+## 6. Integrasi UI (Filament)
+
+Jika menggunakan Filament, tambahkan tombol login di `app/Providers/Filament/AdminPanelProvider.php`:
+
+```php
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->renderHook(
+            PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+            fn (): string => Blade::render('
+                <div class="mt-4">
+                    <x-filament::button
+                        href="{{ route(\'sipetra.login\') }}"
+                        tag="a"
+                        color="info"
+                        outlined
+                        full-width
+                    >
+                        Masuk dengan SIPETRA SSO
+                    </x-filament::button>
+                </div>
+            '),
+        );
+}
+```
+
+## Catatan Penting
+- **Scopes**: Pastikan scope yang diminta di `config/services.php` sudah di-assign ke client di panel admin SIPETRA.
+- **HTTPS**: Di lingkungan production, pastikan `APP_URL` menggunakan `https://` agar callback tidak error.
