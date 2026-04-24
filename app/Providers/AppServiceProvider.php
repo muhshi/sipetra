@@ -60,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Passport::tokensCan([
+            'profile:read' => 'Baca informasi profil dasar (nama, email, avatar, tipe user)',
             'identity_pegawai:read' => 'Identitas khusus pegawai (NIP Baru/Lama)',
             'identity_mitra:read' => 'Baca identitas khusus mitra (SOBAT ID, NIK)',
             'employee:read' => 'Baca data detil kepegawaian (Jabatan, Golongan, Masa Kerja, Agama, dsb)',
