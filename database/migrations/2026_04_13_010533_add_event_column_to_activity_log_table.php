@@ -8,7 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::connection(config('activitylog.database_connection'))->table(config('activitylog.table_name'), function (Blueprint $table) {
+        $connection = config('activitylog.database_connection');
+        $tableName = config('activitylog.table_name');
+
+        if (Schema::connection($connection)->hasColumn($tableName, 'event')) {
+            return;
+        }
+
+        Schema::connection($connection)->table($tableName, function (Blueprint $table) {
             $table->string('event')->nullable()->after('subject_type');
         });
     }
@@ -20,4 +27,3 @@ return new class extends Migration
         });
     }
 };
-
