@@ -82,5 +82,18 @@ class AppServiceProvider extends ServiceProvider
             // Ignore if settings migration hasn't run
         }
 
+        // Paksa registrasi macro dari paket image-optimizer
+        if (class_exists(\DaniHidayatX\ImageOptimizer\ImageOptimizerServiceProvider::class)) {
+            try {
+                $provider = new \DaniHidayatX\ImageOptimizer\ImageOptimizerServiceProvider($this->app);
+                $reflection = new \ReflectionClass($provider);
+                $method = $reflection->getMethod('registerMacros');
+                $method->setAccessible(true);
+                $method->invoke($provider);
+            } catch (\Throwable $e) {
+                // Ignore if already registered
+            }
+        }
+
     }
 }
