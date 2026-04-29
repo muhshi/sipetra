@@ -16,6 +16,7 @@ services:
     volumes:
       - .:/app
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - .docker/php/conf.d/extra.ini:/usr/local/etc/php/conf.d/extra.ini:ro
     networks:
       - default
       - mysql-stack_mysql_network
