@@ -59,6 +59,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 #### Fixed
 - **Kompatibilitas Filament v5.6.0**: Memperbaiki `FatalError` pada `EmployeeProfileResource` yang disebabkan perubahan tipe properti `$navigationGroup` di Filament v5.6.0. Tipe diubah dari `?string` menjadi `string|UnitEnum|null` sesuai deklarasi tipe baru di parent class `Filament\Resources\Resource`.
 - **Migration Idempotent**: Memperbaiki error `activity_log table already exists` dan `duplicate column name` saat `php artisan migrate` dijalankan. Ketiga migration Spatie ActivityLog (`create_activity_log_table`, `add_event_column`, `add_batch_uuid_column`) kini dilindungi dengan guard `hasTable()`/`hasColumn()` agar aman dijalankan berulang kali.
+- **Callback URI Fix**: Memperbaiki error `[object Object]` pada field Callback URI dengan menggunakan `Simple Repeater`. Format data kini secara otomatis sinkron dengan array string di database tanpa perlu transformasi manual yang rentan error.
+
 
 
 
