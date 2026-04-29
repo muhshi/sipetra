@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY . /app
+# Copy custom PHP configuration
+COPY .docker/php/conf.d/extra.ini /usr/local/etc/php/conf.d/extra.ini
+
 # Composer (buat install deps dari dalam container)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
