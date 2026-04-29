@@ -27,14 +27,14 @@ class EditProfile extends BaseEditProfile
                             ->label('Password Baru')
                             ->password()
                             ->revealable(filament()->arePasswordsRevealable())
-                            ->dehydrated(fn($state) => filled($state))
-                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->same('passwordConfirmation'),
                         TextInput::make('passwordConfirmation')
                             ->label('Konfirmasi Password Baru')
                             ->password()
                             ->revealable(filament()->arePasswordsRevealable())
-                            ->required(fn(Get $get) => filled($get('password')))
+                            ->required(fn (Get $get) => filled($get('password')))
                             ->dehydrated(false),
                     ]),
 
@@ -51,7 +51,7 @@ class EditProfile extends BaseEditProfile
                                     ->disabled(),
                                 TextInput::make('identity_type')
                                     ->label('Tipe User')
-                                    ->formatStateUsing(fn($state) => $state instanceof IdentityType ? $state->label() : $state)
+                                    ->formatStateUsing(fn ($state) => $state instanceof IdentityType ? $state->label() : $state)
                                     ->disabled(),
                             ]),
                         Grid::make(3)
@@ -88,11 +88,11 @@ class EditProfile extends BaseEditProfile
                                     ->disabled(),
                                 TextInput::make('masa_kerja')
                                     ->label('Masa Kerja')
-                                    ->placeholder(fn($record) => $record?->masa_kerja)
+                                    ->placeholder(fn ($record) => $record?->masa_kerja)
                                     ->disabled(),
                             ]),
                     ])
-                    ->visible(fn() => in_array(auth()->user()->identity_type, [IdentityType::Pegawai, IdentityType::Admin])),
+                    ->visible(fn () => in_array(auth()->user()->identity_type, [IdentityType::Pegawai, IdentityType::Admin])),
 
                 Section::make('Data Personal')
                     ->description('Informasi kontak dan data pribadi yang dapat Anda perbarui.')
@@ -108,8 +108,11 @@ class EditProfile extends BaseEditProfile
                         FileUpload::make('avatar_url')
                             ->label('Foto Profil')
                             ->image()
+                            ->optimize('webp', 80)
+                            ->maxImageWidth(800)
                             ->directory('avatars')
-                            ->visibility('public'),
+                            ->visibility('public')
+                            ->helperText('Gambar akan otomatis dikompres ke format WebP. Maks. lebar 800px.'),
                     ]),
             ]);
     }

@@ -107,8 +107,11 @@ class UserForm
                         FileUpload::make('avatar_url')
                             ->label('Avatar')
                             ->image()
+                            ->optimize('webp', 80)
+                            ->maxImageWidth(800)
                             ->directory('avatars')
-                            ->visibility('public'),
+                            ->visibility('public')
+                            ->helperText('Gambar akan otomatis dikompres ke format WebP. Maks. lebar 800px.'),
                     ])
                     ->collapsible(),
 
