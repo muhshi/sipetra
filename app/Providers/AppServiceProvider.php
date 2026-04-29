@@ -6,11 +6,8 @@ use App\Http\Controllers\Auth\OAuthAuthorizationController;
 use App\Models\PassportClient;
 use App\Policies\ClientPolicy;
 use App\Settings\SystemSettings;
-use DaniHidayatX\ImageOptimizer\ImageProcessor;
-use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
@@ -85,70 +82,5 @@ class AppServiceProvider extends ServiceProvider
             // Ignore if settings migration hasn't run
         }
 
-        // Fallback registration for image-optimizer macros
-        if (class_exists(FileUpload::class) && ! FileUpload::hasMacro('optimize')) {
-            $registerMacro = function ($name, $callback) {
-                if (! FileUpload::hasMacro($name)) {
-                    FileUpload::macro($name, $callback);
-                }
-            };
-
-            $registerMacro('optimize', function ($format = 'webp', $quality = null) {
-                $this->imageOptimization = $this->imageOptimization ?? [];
-                $this->imageOptimization['format'] = $format;
-                $this->imageOptimization['quality'] = $quality;
-                if (FileUpload::hasMacro('ensureOptimizerHook')) {
-                    $this->ensureOptimizerHook();
-                }
-
-                return $this;
-            });
-
-            $registerMacro('maxImageWidth', function ($width) {
-                $this->imageOptimization = $this->imageOptimization ?? [];
-                $this->imageOptimization['max_width'] = $width;
-                if (FileUpload::hasMacro('ensureOptimizerHook')) {
-                    $this->ensureOptimizerHook();
-                }
-
-                return $this;
-            });
-
-            // We need ensureOptimizerHook too
-            $registerMacro('ensureOptimizerHook', function () {
-                if ($this->hasOptimizerHook ?? false) {
-                    return;
-                }
-                $this->hasOptimizerHook = true;
-                $this->saveUploadedFileUsing(function ($component, $file, $record = null) {
-                    return $component->processAndStoreImage($file);
-                });
-            });
-
-            $registerMacro('processAndStoreImage', function ($file) {
-                $settings = $this->imageOptimization ?? [];
-                $processorClass = 'DaniHidayatX\\ImageOptimizer\\ImageProcessor';
-
-                if (! class_exists($processorClass)) {
-                    return $this->storeUploadedFileToDisk($file);
-                }
-
-                $compressedImage = $processorClass::process($file, [
-                    'format' => $this->evaluate($settings['format'] ?? null),
-                    'max_width' => $this->evaluate($settings['max_width'] ?? null),
-                    'quality' => $this->evaluate($settings['quality'] ?? null),
-                ]);
-
-                $filename = $this->getUploadedFileNameForStorage($file);
-                if ($format = $this->evaluate($settings['format'] ?? null)) {
-                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '.' . $format;
-                }
-
-                $path = ltrim($this->getDirectory() . '/' . $filename, '/');
-                \Illuminate\Support\Facades\Storage::disk($this->getDiskName())->put($path, $compressedImage);
-
-                return $path;
-            });
-        }
     }
 }
