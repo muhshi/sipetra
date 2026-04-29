@@ -1,7 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\AdminPanelProvider::class,
-    DaniHidayatX\ImageOptimizer\ImageOptimizerServiceProvider::class,
+    AppServiceProvider::class,
+    AdminPanelProvider::class,
 ];
