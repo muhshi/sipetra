@@ -47,7 +47,12 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-04-29]
+#### Fixed
+- **Kompatibilitas Filament v5.6.0**: Memperbaiki `FatalError` pada `EmployeeProfileResource` yang disebabkan perubahan tipe properti `$navigationGroup` di Filament v5.6.0. Tipe diubah dari `?string` menjadi `string|UnitEnum|null` sesuai deklarasi tipe baru di parent class `Filament\Resources\Resource`.
+
 ### [2026-04-24]
+
 #### Added
 - **OAuth Client Wizard**: Implementasi form pembuatan/pengeditan OAuth Client menggunakan Wizard 3-langkah yang lebih terorganisir.
 - **Extended Client Schemas**: Pemisahan logika form client ke dalam `ExtendedClientResourceForm` dan `ExtendedClientWizardForm` untuk meningkatkan maintainability.
