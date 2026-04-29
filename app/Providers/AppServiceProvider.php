@@ -127,17 +127,25 @@ class AppServiceProvider extends ServiceProvider
 
             $registerMacro('processAndStoreImage', function ($file) {
                 $settings = $this->imageOptimization ?? [];
-                $compressedImage = ImageProcessor::process($file, [
+                $processorClass = 'DaniHidayatX\\ImageOptimizer\\ImageProcessor';
+
+                if (! class_exists($processorClass)) {
+                    return $this->storeUploadedFileToDisk($file);
+                }
+
+                $compressedImage = $processorClass::process($file, [
                     'format' => $this->evaluate($settings['format'] ?? null),
                     'max_width' => $this->evaluate($settings['max_width'] ?? null),
                     'quality' => $this->evaluate($settings['quality'] ?? null),
                 ]);
+
                 $filename = $this->getUploadedFileNameForStorage($file);
                 if ($format = $this->evaluate($settings['format'] ?? null)) {
-                    $filename = pathinfo($filename, PATHINFO_FILENAME).'.'.$format;
+                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '.' . $format;
                 }
-                $path = ltrim($this->getDirectory().'/'.$filename, '/');
-                Storage::disk($this->getDiskName())->put($path, $compressedImage);
+
+                $path = ltrim($this->getDirectory() . '/' . $filename, '/');
+                \Illuminate\Support\Facades\Storage::disk($this->getDiskName())->put($path, $compressedImage);
 
                 return $path;
             });
