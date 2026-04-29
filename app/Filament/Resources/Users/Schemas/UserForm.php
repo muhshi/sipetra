@@ -109,9 +109,10 @@ class UserForm
                             ->image()
                             ->optimize('webp', 80)
                             ->maxImageWidth(800)
+                            ->maxSize(10240)
                             ->directory('avatars')
                             ->visibility('public')
-                            ->helperText('Gambar akan otomatis dikompres ke format WebP. Maks. lebar 800px.'),
+                            ->helperText('Gambar akan otomatis dikompres ke format WebP. Maks. 10MB.'),
                     ])
                     ->collapsible(),
 
