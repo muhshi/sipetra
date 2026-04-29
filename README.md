@@ -49,7 +49,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-04-29]
 #### Added
-- **Image Optimizer untuk Avatar**: Menambahkan paket `danihidayatx/image-optimizer` untuk mengkompresi gambar secara otomatis saat upload. Avatar di halaman Profil Pegawai (`EditProfile`) dan form User Admin (`UserForm`) kini dikonversi ke format WebP dengan kualitas 80% dan lebar maksimal 800px sebelum disimpan ke server — tanpa perlu aksi manual dari pengguna.
+- **Image Optimizer untuk Avatar**: Menambahkan paket `danihidayatx/image-optimizer` untuk mengkompresi gambar secara otomatis saat upload. Avatar di halaman Profil Pegawai (`EditProfile`) dan form User Admin (`UserForm`) kini dikonversi ke format WebP dengan kualitas 80% dan lebar maksimal 800px sebelum disimpan ke server. Batas upload diatur maksimal **10MB** untuk mencegah kegagalan pada server.
+
 
 #### Changed
 - **Callback URI — Repeater Component**: Mengganti field Textarea untuk Callback URI dengan komponen `Repeater`. Setiap URI kini memiliki baris input sendiri, menghilangkan kebutuhan pemisahan manual dengan koma dan meningkatkan pengalaman pengguna saat mengelola banyak URI (server vs lokal).
