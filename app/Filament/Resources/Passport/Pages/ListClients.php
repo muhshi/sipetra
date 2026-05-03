@@ -25,7 +25,7 @@ class ListClients extends BaseListClients
                 ->requiresConfirmation()
                 ->modalHeading('Generate Token M2M Master Data')
                 ->modalDescription('Token ini akan memberikan akses ke API Master Data Sipetra (M2M). Setelah dihasilkan, token hanya akan ditampilkan SEKALI. Segera copy dan simpan ke .env Aplikasi Client!')
-                ->action(function (Component $livewire) {
+                ->action(function (Action $action, Component $livewire) {
                     // Cek apakah Personal Access Client sudah ada, jika belum otomatis buatkan
                     $clientRepository = app(ClientRepository::class);
                     $hasPersonalClient = false;
@@ -48,6 +48,7 @@ class ListClients extends BaseListClients
                     $token = $user->createToken('master-data-api');
 
                     $livewire->replaceMountedAction('show_generated_token', ['token' => $token->accessToken]);
+                    $action->halt();
                 }),
 
             Action::make('show_generated_token')
