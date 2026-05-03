@@ -47,7 +47,7 @@ class ListClients extends BaseListClients
                     $user = auth()->user();
                     $token = $user->createToken('master-data-api');
 
-                    $livewire->mountAction('show_generated_token', ['token' => $token->accessToken]);
+                    $livewire->replaceMountedAction('show_generated_token', ['token' => $token->accessToken]);
                 }),
 
             Action::make('show_generated_token')
