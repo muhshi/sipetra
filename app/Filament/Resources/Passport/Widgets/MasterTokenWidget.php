@@ -7,7 +7,7 @@ use Livewire\Attributes\On;
 
 class MasterTokenWidget extends Widget
 {
-    protected static string $view = 'filament.resources.passport.widgets.master-token-widget';
+    protected string $view = 'filament.resources.passport.widgets.master-token-widget';
 
     public ?string $token = null;
 
