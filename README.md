@@ -50,7 +50,8 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 ### [2026-05-03]
 #### Fixed
 - **Kompatibilitas Filament v5.6+ (Passport UI)**: Memperbaiki `FatalError` pada `ListClients` di mana `getHeaderActions()` harus bersifat `public` untuk menyesuaikan dengan deklarasi di parent class `N3XT0R\FilamentPassportUi`.
-- **Generate Master Token Fix**: Memperbaiki `QueryException` "Unknown column 'personal_access_client'" saat generate token M2M. Pengecekan kini menggunakan `ClientRepository` bawaan Passport yang lebih fleksibel terhadap skema database yang dimodifikasi oleh paket `N3XT0R` (menggunakan kolom `grant_types` alih-alih boolean columns).
+- **Generate Master Token Fix**: Memperbaiki `QueryException` "Unknown column 'personal_access_client'" saat generate token M2M. Pengecekan kini menggunakan `ClientRepository` bawaan Passport.
+- **Robust Client Creation**: Mengganti pemanggilan `Artisan::call('passport:client')` dengan penggunaan `ClientRepository` secara langsung untuk membuat Personal Access Client. Hal ini menghindari error `CommandNotFoundException` di lingkungan server tertentu (Docker) yang mungkin mengalami kendala registrasi command console.
 
 ### [2026-04-29]
 #### Added
