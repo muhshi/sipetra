@@ -7,6 +7,26 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-05-03] — Master Data API (M2M Sync)
+
+### ✅ Added
+- **`GET /api/master/users`** — Endpoint baru untuk sinkronisasi master data pegawai & mitra oleh aplikasi client (Machine-to-Machine). Mendukung filter `type`, `period`, `updated_after`, dan pagination hingga 500 record per halaman.
+- **`GET /api/master/users/{id}`** — Endpoint detail satu pengguna untuk validasi real-time.
+- **`MasterUserController`** — Controller baru di `app/Http/Controllers/Api/` untuk menangani request Master Data API.
+- **`MasterUserResource`** — API Resource transformer yang menstandarisasi format response (termasuk `avatar_url` sebagai full URL absolut).
+- **`ValidateMasterToken` Middleware** — Middleware keamanan tambahan yang memastikan endpoint hanya bisa diakses via Personal Access Token bernama `master-data-api`, bukan token OAuth flow biasa.
+- **Kolom `period`, `contract_start`, `contract_end`** — Kolom baru di tabel `users` untuk mendukung siklus kontrak mitra tahunan dan mitra adhoc (sensus, dll).
+- **`docs/openapi.yaml`** — OpenAPI 3.0.3 spec lengkap — machine-readable, dapat diimpor ke Postman/Swagger UI, dan dapat dibaca langsung oleh AI assistant.
+- **`docs/API_MASTER_USERS.md`** — Panduan integrasi developer-friendly termasuk implementasi referensi Laravel lengkap (Console Command, Scheduler, Filament button, Model Scope).
+
+### 🔄 Changed
+- **`routes/api.php`** — Penambahan route group `/master/*` dengan middleware bertingkat: `auth:api` + `master.token` + `throttle:60,1`.
+- **`app/Models/User.php`** — Penambahan `period`, `contract_start`, `contract_end` ke `$fillable` dan `casts` (date).
+- **`bootstrap/app.php`** — Registrasi alias middleware `master.token`.
+- **`GEMINI.md`** — Penambahan section "Master Data API" agar AI assistant otomatis mengetahui keberadaan endpoint ini.
+
+---
+
 ## Refaktor Arsitektur Akses Kontrol & Stabilisasi SSO
 
 ### ✅ Added (Ditambahkan)

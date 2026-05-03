@@ -23,6 +23,21 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - phpunit/phpunit (PHPUNIT) - v12
 - tailwindcss (TAILWINDCSS) - v4
 
+## Master Data API (M2M)
+
+This application exposes a **Machine-to-Machine API** for client applications to synchronize master user data (pegawai & mitra) without requiring SSO login.
+
+- **OpenAPI Spec:** `docs/openapi.yaml` — read this first when working on API endpoints
+- **Developer Guide:** `docs/API_MASTER_USERS.md`
+- **Endpoints:** `GET /api/master/users`, `GET /api/master/users/{id}`
+- **Auth:** Laravel Passport Personal Access Token, named `master-data-api`
+- **Middleware:** `auth:api` + `master.token` (ValidateMasterToken) + `throttle:60,1`
+- **Key Fields:** `sipetra_id`, `is_active`, `period`, `contract_start`, `contract_end`
+- **Avatar:** returned as full absolute URL via `Storage::disk('public')->url()`
+
+When modifying the API response structure, **always update `docs/openapi.yaml`** to keep the contract in sync.
+
+
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.

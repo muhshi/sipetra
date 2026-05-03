@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
             NoCacheHeaders::class,
         ]);
 
+        // Alias untuk validasi token M2M Master Data API
+        $middleware->alias([
+            'master.token' => \App\Http\Middleware\ValidateMasterToken::class,
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
 

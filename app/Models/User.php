@@ -39,6 +39,10 @@ use Spatie\Permission\Traits\HasRoles;
     'phone',
     'avatar_url',
     'is_active',
+    // Kolom siklus kontrak mitra
+    'period',
+    'contract_start',
+    'contract_end',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasPassportScopeGrantsInterface, OAuthenticatable
@@ -107,10 +111,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasspo
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'identity_type' => IdentityType::class,
-            'tanggal_lahir' => 'date',
-            'is_active' => 'boolean',
+            'password'          => 'hashed',
+            'identity_type'     => IdentityType::class,
+            'tanggal_lahir'     => 'date',
+            'is_active'         => 'boolean',
+            'contract_start'    => 'date',
+            'contract_end'      => 'date',
         ];
     }
 }
