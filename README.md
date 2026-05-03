@@ -47,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-03]
+#### Fixed
+- **Kompatibilitas Filament v5.6+ (Passport UI)**: Memperbaiki `FatalError` pada `ListClients` di mana `getHeaderActions()` harus bersifat `public` untuk menyesuaikan dengan deklarasi di parent class `N3XT0R\FilamentPassportUi`. Hal ini memperbaiki error saat menjalankan `php artisan migrate` atau mengakses halaman daftar client di server.
+
 ### [2026-04-29]
 #### Added
 - **Image Optimizer untuk Avatar**: Menambahkan paket `danihidayatx/image-optimizer` untuk mengkompresi gambar secara otomatis saat upload. Avatar di halaman Profil Pegawai (`EditProfile`) dan form User Admin (`UserForm`) kini dikonversi ke format WebP dengan kualitas 80% dan lebar maksimal 800px sebelum disimpan ke server. Batas upload diatur maksimal **10MB** untuk mencegah kegagalan pada server.

@@ -11,7 +11,7 @@ class ListClients extends BaseListClients
 {
     protected static string $resource = ClientResource::class;
 
-    protected function getHeaderActions(): array
+    public function getHeaderActions(): array
     {
         return array_merge([
             \Filament\Actions\Action::make('generate_master_token')
