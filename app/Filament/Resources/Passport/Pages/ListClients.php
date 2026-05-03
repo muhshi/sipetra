@@ -23,11 +23,21 @@ class ListClients extends BaseListClients
                 ->modalDescription('Token ini akan memberikan akses ke API Master Data Sipetra (M2M). Setelah dihasilkan, token hanya akan ditampilkan SEKALI. Segera copy dan simpan ke .env ManajemenSurat!')
                 ->action(function () {
                     // Cek apakah Personal Access Client sudah ada, jika belum otomatis buatkan
-                    $hasPersonalClient = \Laravel\Passport\Client::where('personal_access_client', 1)->exists();
+                    $clientRepository = app(\Laravel\Passport\ClientRepository::class);
+                    $hasPersonalClient = false;
+
+                    try {
+                        $clientRepository->personalAccessClient(config('auth.guards.api.provider'));
+                        $hasPersonalClient = true;
+                    } catch (\RuntimeException $e) {
+                        $hasPersonalClient = false;
+                    }
+
                     if (! $hasPersonalClient) {
                         \Illuminate\Support\Facades\Artisan::call('passport:client', [
                             '--personal' => true,
                             '--name' => 'Sipetra Personal Access Client',
+                            '--no-interaction' => true,
                         ]);
                     }
 
