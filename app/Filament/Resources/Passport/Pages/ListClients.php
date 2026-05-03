@@ -8,12 +8,19 @@ use App\Filament\Resources\Passport\ClientResource;
 use Filament\Actions\Action;
 use Filament\Infolists\Components\TextEntry;
 use Laravel\Passport\ClientRepository;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\ListClients as BaseListClients;
 
 class ListClients extends BaseListClients
 {
     protected static string $resource = ClientResource::class;
+
+    #[On('show-token-modal')]
+    public function showTokenModal(string $token): void
+    {
+        $this->mountAction('show_generated_token', ['token' => $token]);
+    }
 
     public function getHeaderActions(): array
     {
@@ -25,7 +32,7 @@ class ListClients extends BaseListClients
                 ->requiresConfirmation()
                 ->modalHeading('Generate Token M2M Master Data')
                 ->modalDescription('Token ini akan memberikan akses ke API Master Data Sipetra (M2M). Setelah dihasilkan, token hanya akan ditampilkan SEKALI. Segera copy dan simpan ke .env Aplikasi Client!')
-                ->action(function (Action $action, Component $livewire) {
+                ->action(function (Component $livewire) {
                     // Cek apakah Personal Access Client sudah ada, jika belum otomatis buatkan
                     $clientRepository = app(ClientRepository::class);
                     $hasPersonalClient = false;
@@ -47,8 +54,7 @@ class ListClients extends BaseListClients
                     $user = auth()->user();
                     $token = $user->createToken('master-data-api');
 
-                    $livewire->replaceMountedAction('show_generated_token', ['token' => $token->accessToken]);
-                    $action->halt();
+                    $livewire->dispatch('show-token-modal', token: $token->accessToken);
                 }),
 
             Action::make('show_generated_token')
