@@ -373,17 +373,35 @@ public function scopeMitra($query, ?string $period = null)
 
 ### 6. Tombol Sync Manual di Filament
 
+Sangat disarankan menggunakan **Background Job** untuk sinkronisasi guna menghindari *browser timeout* jika data yang ditarik sangat banyak.
+
 ```php
-use Illuminate\Support\Facades\Artisan;
+// 1. Buat Job: php artisan make:job SyncUsersJob
+// app/Jobs/SyncUsersJob.php
+public function handle(): void
+{
+    Artisan::call('sync:users', ['--full' => true]);
+}
+
+// 2. Gunakan di Filament Action (ListUsers.php atau Widget)
+use App\Jobs\SyncUsersJob;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 
 Action::make('sync_users')
     ->label('Sync dari Sipetra')
     ->icon('heroicon-o-arrow-path')
     ->color('info')
     ->requiresConfirmation()
-    ->action(fn () => Artisan::call('sync:users', ['--full' => true]))
-    ->successNotificationTitle('Sinkronisasi selesai!'),
+    ->action(function () {
+        SyncUsersJob::dispatch();
+        
+        Notification::make()
+            ->title('Sinkronisasi Dimulai')
+            ->body('Proses berjalan di latar belakang. Data akan terupdate otomatis.')
+            ->info()
+            ->send();
+    }),
 ```
 
 ---

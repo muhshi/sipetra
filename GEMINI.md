@@ -34,6 +34,7 @@ This application exposes a **Machine-to-Machine API** for client applications to
 - **Middleware:** `auth:api` + `master.token` (ValidateMasterToken) + `throttle:60,1`
 - **Key Fields:** `sipetra_id`, `is_active`, `period`, `contract_start`, `contract_end`
 - **Avatar:** returned as full absolute URL via `Storage::disk('public')->url()`
+- **Sync Pattern:** Use **Background Jobs** (`SyncUsersJob`) for client-side syncing to prevent browser timeouts on large datasets.
 
 When modifying the API response structure, **always update `docs/openapi.yaml`** to keep the contract in sync.
 

@@ -7,6 +7,15 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-05-04] — Documentation & Background Sync Refinement
+
+### ✅ Changed
+- **`GEMINI.md`** — Menambahkan instruksi pola Background Job untuk sinkronisasi client-side agar mencegah *browser timeout*.
+- **`docs/API_MASTER_USERS.md`** — Memperbarui referensi tombol sync manual di Filament agar menggunakan pola `SyncUsersJob` (Background Job) sesuai implementasi terbaru.
+- **`docs/openapi.yaml`** — Memperjelas dokumentasi strategi sinkronisasi dan persyaratan nama token `master-data-api`.
+
+---
+
 ## [2026-05-03] — Master Data API (M2M Sync)
 
 ### ✅ Added

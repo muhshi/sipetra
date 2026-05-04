@@ -8,12 +8,13 @@ info:
 
     ## Cara Mendapatkan Token
     Hubungi administrator Sipetra untuk mendapatkan **Personal Access Token**
-    yang khusus dibuat untuk aplikasi client Anda. Token ini berbeda dengan
-    token OAuth SSO biasa — dibuat dengan nama `master-data-api`.
+    yang khusus dibuat untuk aplikasi client Anda. Token ini wajib memiliki
+    nama `master-data-api` agar divalidasi oleh middleware.
 
     ## Strategi Sinkronisasi
-    - **Full Sync** (pertama kali / bulanan): tanpa parameter `updated_after`
-    - **Incremental Sync** (harian): sertakan `updated_after` = nilai `synced_at` dari response sebelumnya
+    - **Full Sync** (pertama kali / bulanan): tanpa parameter `updated_after`.
+    - **Incremental Sync** (harian): sertakan `updated_after` = nilai `synced_at` dari response sebelumnya.
+    - **Performance:** Sangat disarankan menjalankan sinkronisasi melalui **Background Job / Queue** di sisi client untuk menghindari *browser timeout* saat data berjumlah besar (ratusan/ribuan record).
 
     ## Penanganan `is_active: false`
     Jangan hapus data di sisi client. Tandai saja sebagai tidak aktif.
