@@ -49,10 +49,15 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-05-06]
 #### Added
+- **Merge Landing Page Branch**: Melakukan penggabungan branch `landingpage` ke `main` yang berisi fitur portal aplikasi.
 - **Data Awal Aplikasi Portal**: Membuat `PortalAppsSeeder` untuk menginputkan otomatis 8 aplikasi klien bawaan (Alfath, Magang, CKP, Surat, Siputri, Demakai, Portal, Dinamit) ke dalam database beserta link URL-nya.
 - **Portal Landing Page**: Implementasi *landing page* utama di URL root (`/`) menggunakan Livewire dan TailwindCSS. Halaman ini berfungsi sebagai portal kumpulan aplikasi milik klien.
 - **Manajemen Portal (Filament)**: Menambahkan fitur `ManagePortalSettings` (menggunakan `spatie/laravel-settings`) untuk mengatur warna aksen dan teks *hero section*.
 - **Manajemen Aplikasi (`PortalAppResource`)**: Menambahkan menu CRUD di Filament untuk mengelola daftar aplikasi (nama, deskripsi, URL, logo, status aktif, urutan) yang akan ditampilkan di *landing page*.
+
+#### Fixed
+- **Migration Idempotent Fix**: Memperbaiki error `duplicate column name: period` pada migration `add_mitra_contract_fields_to_users_table` dengan menambahkan pengecekan `hasColumn()`.
+- **Cleanup**: Menghapus file sampah `first(['name'` hasil kesalahan eksekusi perintah di branch sebelumnya.
 
 
 ### [2026-05-03]

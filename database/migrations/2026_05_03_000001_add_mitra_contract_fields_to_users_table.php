@@ -17,19 +17,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Periode aktif mitra. Contoh: "2026", "sensus_ekonomi_2026"
-            // null untuk pegawai PNS/PPPK
-            $table->string('period', 50)->nullable()->after('is_active');
+            if (! Schema::hasColumn('users', 'period')) {
+                $table->string('period', 50)->nullable()->after('is_active');
+                $table->index('period');
+            }
 
-            // Tanggal mulai kontrak mitra
-            $table->date('contract_start')->nullable()->after('period');
+            if (! Schema::hasColumn('users', 'contract_start')) {
+                $table->date('contract_start')->nullable()->after('period');
+            }
 
-            // Tanggal akhir kontrak mitra.
-            // Aplikasi client dapat menggunakan field ini untuk menampilkan warning.
-            $table->date('contract_end')->nullable()->after('contract_start');
-
-            // Index untuk query filter per periode (banyak dipakai di Master Data API)
-            $table->index('period');
+            if (! Schema::hasColumn('users', 'contract_end')) {
+                $table->date('contract_end')->nullable()->after('contract_start');
+            }
         });
     }
 
