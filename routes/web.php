@@ -4,10 +4,9 @@ use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Redirect root to login
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+use App\Livewire\PortalLandingPage;
+
+Route::get('/', PortalLandingPage::class)->name('home');
 
 // Custom SSO Login Route
 Route::get('/login', Login::class)->name('login')->middleware('guest');
