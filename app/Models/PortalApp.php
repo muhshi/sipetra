@@ -11,6 +11,7 @@ class PortalApp extends Model
 
     protected $fillable = [
         'name',
+        'full_name',
         'description',
         'url',
         'logo',

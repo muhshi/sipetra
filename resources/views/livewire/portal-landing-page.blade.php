@@ -94,39 +94,49 @@
 /* Card */
 .app-card {
     display: flex; flex-direction: column;
-    border-radius: 20px; border: 1.5px solid #e2e8f0;
-    padding: 22px; text-decoration: none; color: inherit;
-    transition: box-shadow .2s, border-color .2s, transform .15s;
-    background: #fff;
+    border-radius: 20px; border: 1px solid #e2e8f0;
+    padding: 24px; text-decoration: none; color: inherit;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    background: #fff; position: relative; overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
 }
-.app-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.1); border-color: var(--accent); transform: translateY(-3px); }
-.app-card.accent-card { background: #f0fff4; border-color: #bbf7d0; }
-.app-card.accent-card:hover { border-color: var(--accent); }
+.app-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--accent); opacity: 0; transition: opacity .3s;
+}
+.app-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    border-color: #cbd5e1; transform: translateY(-4px);
+}
+.app-card:hover::before { opacity: 1; }
 
-.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-.card-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
-.card-domain { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #64748b; flex-wrap: wrap; }
-.card-logo { width: 42px; height: 42px; border-radius: 10px; object-fit: contain; background: #fff; border: 1px solid #e2e8f0; padding: 5px; flex-shrink: 0; }
-.card-logo-placeholder {
-    width: 42px; height: 42px; border-radius: 10px; border: 1px solid #e2e8f0;
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 16px; }
+.card-header-text { flex: 1; min-width: 0; }
+.card-title { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.01em; }
+.card-subtitle { font-size: 13px; font-weight: 500; color: #64748b; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.card-logo-container {
+    width: 48px; height: 48px; border-radius: 12px;
     background: #f8fafc; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; font-size: 14px; font-weight: 800; color: var(--accent); letter-spacing: -.5px;
+    flex-shrink: 0; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
+.card-logo { width: 100%; height: 100%; border-radius: 11px; object-fit: contain; padding: 6px; }
+
 .card-desc {
-    font-size: 13px; color: #64748b; line-height: 1.6; flex-grow: 1; margin-bottom: 18px;
+    font-size: 14px; color: #475569; line-height: 1.6; flex-grow: 1; margin-bottom: 24px;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
-.card-footer { display: flex; align-items: center; justify-content: space-between; }
-.card-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #64748b; }
-.card-meta-item { display: flex; align-items: center; gap: 3px; }
+
+.card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 16px; margin-top: auto; }
+.card-domain { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: #64748b; }
+.card-domain svg { flex-shrink: 0; color: #94a3b8; }
+
 .btn-pill {
-    display: inline-flex; align-items: center; padding: 9px 20px;
-    border-radius: 999px; border: 1.5px solid #e2e8f0; background: #fff;
-    font-size: 13px; font-weight: 600; color: #0f172a; cursor: pointer;
-    transition: background .15s, border-color .15s, color .15s;
-    text-decoration: none; white-space: nowrap; font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9;
+    color: #0f172a; transition: all .2s;
 }
-.btn-pill:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.app-card:hover .btn-pill { background: var(--accent); color: #fff; transform: translateX(4px); }
 
 /* Footer */
 footer { background: #0f172a; color: #94a3b8; padding: 32px 24px; text-align: center; font-size: 13px; }
@@ -212,45 +222,45 @@ footer strong { color: #f1f5f9; }
         <a href="{{ $app->url }}"
            target="_blank"
            rel="noopener noreferrer"
-           class="app-card {{ $i === 0 ? 'accent-card' : '' }}"
-           style="{{ $i !== 0 ? 'background:'.$bg.';' : '' }}"
-           x-show="query === '' || '{{ addslashes(strtolower($app->name)) }}'.includes(query) || '{{ addslashes(strtolower($app->description ?? '')) }}'.includes(query)">
+           class="app-card"
+           x-show="query === '' || '{{ addslashes(strtolower($app->name)) }}'.includes(query) || '{{ addslashes(strtolower($app->full_name ?? '')) }}'.includes(query) || '{{ addslashes(strtolower($app->description ?? '')) }}'.includes(query)">
 
             <div class="card-top">
-                <div>
+                <div class="card-header-text">
                     <div class="card-title">{{ $app->name }}</div>
-                    <div class="card-domain">
-                        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#64748b" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
-                        </svg>
-                        {{ $host }}
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="{{ $accent }}">
-                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                        </svg>
-                    </div>
+                    @if($app->full_name)
+                        <div class="card-subtitle">{{ $app->full_name }}</div>
+                    @endif
                 </div>
 
-                @if($app->logo)
-                    {{-- Logo diutamakan jika ada --}}
-                    <img src="{{ Storage::url($app->logo) }}" alt="{{ $app->name }}" class="card-logo">
-                @elseif($app->icon)
-                    {{-- Icon heroicon --}}
-                    <div class="card-logo-placeholder">
+                <div class="card-logo-container">
+                    @if($app->logo)
+                        <img src="{{ Storage::url($app->logo) }}" alt="{{ $app->name }}" class="card-logo">
+                    @elseif($app->icon)
                         <x-dynamic-component
                             :component="$app->icon"
-                            style="width:22px;height:22px;color:{{ $accent }}"
+                            style="width:24px;height:24px;color:{{ $accent }}"
                         />
-                    </div>
-                @else
-                    {{-- Fallback: singkatan nama --}}
-                    <div class="card-logo-placeholder">{{ $abbr }}</div>
-                @endif
+                    @else
+                        <span style="font-weight:800;color:{{ $accent }};font-size:15px">{{ $abbr }}</span>
+                    @endif
+                </div>
             </div>
 
             <p class="card-desc">{{ $app->description ?? 'Sistem informasi ' . $app->name . ' BPS Kabupaten Demak.' }}</p>
 
             <div class="card-footer">
-                <span class="btn-pill">Buka Aplikasi</span>
+                <div class="card-domain">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    {{ $host }}
+                </div>
+                <div class="btn-pill">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </div>
             </div>
         </a>
         @empty

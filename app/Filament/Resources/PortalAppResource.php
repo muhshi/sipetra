@@ -31,8 +31,11 @@ class PortalAppResource extends Resource
             ->schema([
                 Section::make('Informasi Aplikasi')->schema([
                     Forms\Components\TextInput::make('name')
-                        ->label('Nama Aplikasi')
+                        ->label('Nama Aplikasi (Singkatan)')
                         ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('full_name')
+                        ->label('Kepanjangan Nama Aplikasi')
                         ->maxLength(255),
                     Forms\Components\TextInput::make('url')
                         ->label('URL / Link Aplikasi')
@@ -43,12 +46,23 @@ class PortalAppResource extends Resource
                         ->label('Deskripsi')
                         ->maxLength(65535)
                         ->columnSpanFull(),
-                    Forms\Components\Select::make('icon')
+                    Forms\Components\TextInput::make('icon')
                         ->label('Icon Aplikasi')
-                        ->searchable()
-                        ->allowHtml()
-                        ->options(self::getIconOptions())
-                        ->placeholder('-- Pilih Icon --')
+                        ->readOnly()
+                        ->extraInputAttributes([
+                            'x-on:click' => '$el.closest(\'[data-field-wrapper]\').querySelector(\'button\').click()',
+                            'style' => 'cursor: pointer;',
+                        ])
+                        ->suffixAction(
+                            \Filament\Actions\Action::make('selectIcon')
+                                ->icon('heroicon-m-squares-2x2')
+                                ->modalHeading('Pilih Icon')
+                                ->modalIcon(false)
+                                ->modalWidth('4xl')
+                                ->modalContent(fn ($component): \Illuminate\Contracts\View\View => view('filament.components.icon-picker-modal', ['statePath' => $component->getStatePath()]))
+                                ->modalSubmitAction(false)
+                                ->modalCancelAction(false)
+                        )
                         ->helperText('Icon ditampilkan di card jika logo tidak diunggah'),
                     Forms\Components\FileUpload::make('logo')
                         ->label('Logo Aplikasi (Override icon)')
@@ -109,49 +123,7 @@ class PortalAppResource extends Resource
         return [];
     }
 
-    /**
-     * Returns a curated list of heroicons for portal app icons.
-     *
-     * @return array<string, string>
-     */
-    public static function getIconOptions(): array
-    {
-        $icons = [
-            'heroicon-o-chart-bar' => 'Chart Bar (Statistik)',
-            'heroicon-o-document-text' => 'Document Text (Dokumen)',
-            'heroicon-o-users' => 'Users (Pengguna)',
-            'heroicon-o-academic-cap' => 'Academic Cap (Pendidikan/Magang)',
-            'heroicon-o-envelope' => 'Envelope (Surat/Email)',
-            'heroicon-o-briefcase' => 'Briefcase (Pekerjaan)',
-            'heroicon-o-globe-alt' => 'Globe (Portal/Web)',
-            'heroicon-o-building-office' => 'Building Office (Kantor)',
-            'heroicon-o-chart-pie' => 'Chart Pie (Laporan)',
-            'heroicon-o-clipboard-document-list' => 'Clipboard List (Daftar)',
-            'heroicon-o-cog-6-tooth' => 'Cog (Pengaturan)',
-            'heroicon-o-computer-desktop' => 'Computer (Aplikasi Desktop)',
-            'heroicon-o-currency-dollar' => 'Currency (Keuangan)',
-            'heroicon-o-finger-print' => 'Fingerprint (Identitas)',
-            'heroicon-o-home' => 'Home (Beranda)',
-            'heroicon-o-identification' => 'Identification (ID/KTP)',
-            'heroicon-o-map' => 'Map (Peta)',
-            'heroicon-o-presentation-chart-line' => 'Presentation (Presentasi)',
-            'heroicon-o-server' => 'Server (Sistem/IT)',
-            'heroicon-o-shield-check' => 'Shield Check (Keamanan)',
-            'heroicon-o-table-cells' => 'Table (Data/Tabel)',
-            'heroicon-o-truck' => 'Truck (Logistik)',
-            'heroicon-o-wrench-screwdriver' => 'Wrench (Alat/Teknis)',
-        ];
 
-        $options = [];
-        foreach ($icons as $value => $label) {
-            $options[$value] = "<span style='display:flex;align-items:center;gap:8px'>
-                <x-dynamic-component :component=\"'{$value}'\" style='width:16px;height:16px;display:inline-block;flex-shrink:0' />
-                {$label}
-            </span>";
-        }
-
-        return $options;
-    }
 
     public static function getPages(): array
     {
