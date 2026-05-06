@@ -9,20 +9,16 @@ use Livewire\Component;
 
 class PortalLandingPage extends Component
 {
-    public $apps;
-    public $settings;
-
-    public function mount(PortalSettings $settings)
+    #[Layout('components.layouts.portal')]
+    public function render(PortalSettings $settings)
     {
-        $this->settings = $settings;
-        $this->apps = PortalApp::where('is_active', true)
+        $apps = PortalApp::where('is_active', true)
             ->orderBy('order', 'asc')
             ->get();
-    }
 
-    #[Layout('components.layouts.guest')]
-    public function render()
-    {
-        return view('livewire.portal-landing-page');
+        return view('livewire.portal-landing-page', [
+            'settings' => $settings,
+            'apps' => $apps,
+        ]);
     }
 }
