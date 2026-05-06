@@ -149,10 +149,13 @@ footer strong { color: #f1f5f9; }
 </nav>
 
 {{-- ─── HERO ─── --}}
-<section class="hero" x-data>
-    <div class="hero-badge"><span></span> Satu Portal, Banyak Solusi</div>
+<section class="hero" x-data
+    @if($settings->background_image)
+    style="background-image: url('{{ Storage::url($settings->background_image) }}'); background-size: cover; background-position: center; position: relative;"
+    @endif
+>
 
-    <h1>{{ $settings->hero_title ?? 'Temukan Aplikasi' }}<br><em>Yang Anda Butuhkan</em></h1>
+    <h1>{{ $settings->hero_title ?? 'Sipetra' }}<br><em>{{ $settings->hero_accent_title ?? 'All in One Portal' }}</em></h1>
 
     <p class="hero-sub">
         @if($settings->hero_subtitle)
@@ -227,20 +230,6 @@ footer strong { color: #f1f5f9; }
             <p class="card-desc">{{ $app->description ?? 'Sistem informasi ' . $app->name . ' BPS Kabupaten Demak.' }}</p>
 
             <div class="card-footer">
-                <div class="card-meta">
-                    <div class="card-meta-item">
-                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#64748b" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        </svg>
-                        SSO
-                    </div>
-                    <div class="card-meta-item">
-                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#64748b" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                        Online
-                    </div>
-                </div>
                 <span class="btn-pill">Buka Aplikasi</span>
             </div>
         </a>
