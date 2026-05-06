@@ -10,6 +10,7 @@ SIPETRA (Sistem Identitas Tunggal Pegawai dan Mitra) adalah server autentikasi t
   - **Mitra**: Data Mitra Statistik (SOBAT ID, Profil).
 - **Data Import Tools**: Seeder otomatis untuk mengimpor ribuan data dari JSON (`pegawai.json`) dan Excel (`mitra.xlsx`).
 - **Filament Admin Panel**: Dashboard administratif yang kuat untuk pengelolaan user, role, dan permission (Shield).
+- **Ruflo Agent Framework**: Sistem koordinasi agen AI (Swarm) untuk otomatisasi pengembangan dan pemeliharaan kode berbasis AgentDB.
 
 ## Instalasi
 
@@ -45,6 +46,23 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ---
 
+## Alur Pengembangan (Agent Workflow)
+
+Proyek ini menggunakan **Ruflo** untuk koordinasi agen AI. Beberapa perintah yang tersedia:
+
+```bash
+# Inisialisasi ulang jika diperlukan
+npx ruflo@latest init
+
+# Cek kesehatan sistem agen
+npx ruflo@latest doctor --fix
+
+# Jalankan daemon background
+npx ruflo@latest daemon start
+```
+
+---
+
 ## Changelog
 
 ### [2026-05-25]
@@ -73,6 +91,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-05-06]
 #### Added
+- **Ruflo Agent Framework Integration**: Mengintegrasikan framework koordinasi agen **Ruflo V3 (Alpha 7)** ke dalam proyek. Ini mencakup inisialisasi engine **SwarmCoordinator**, setup **AgentDB** dengan indexing HNSW, dan konfigurasi **Background Workers** (Audit, Optimize, Map) untuk pemeliharaan codebase otomatis.
 - **Merge Landing Page Branch**: Melakukan penggabungan branch `landingpage` ke `main` yang berisi fitur portal aplikasi.
 - **Data Awal Aplikasi Portal**: Membuat `PortalAppsSeeder` untuk menginputkan otomatis 8 aplikasi klien bawaan (Alfath, Magang, CKP, Surat, Siputri, Demakai, Portal, Dinamit) ke dalam database beserta link URL-nya.
 - **Portal Landing Page**: Implementasi *landing page* utama di URL root (`/`) menggunakan Livewire dan TailwindCSS. Halaman ini berfungsi sebagai portal kumpulan aplikasi milik klien.

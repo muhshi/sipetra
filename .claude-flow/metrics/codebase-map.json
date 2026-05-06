@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-06T08:54:47.135Z",
+  "projectRoot": "/Users/saiful/development/sipetra",
+  "structure": {
+    "hasPackageJson": true,
+    "hasTsConfig": false,
+    "hasClaudeConfig": true,
+    "hasClaudeFlow": true
+  },
+  "scannedAt": 1778057687135
+}
