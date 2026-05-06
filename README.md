@@ -55,6 +55,9 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Manajemen Portal (Filament)**: Menambahkan fitur `ManagePortalSettings` (menggunakan `spatie/laravel-settings`) untuk mengatur warna aksen dan teks *hero section*.
 - **Manajemen Aplikasi (`PortalAppResource`)**: Menambahkan menu CRUD di Filament untuk mengelola daftar aplikasi (nama, deskripsi, URL, logo, status aktif, urutan) yang akan ditampilkan di *landing page*.
 
+#### Changed
+- **Redirection to /admin**: Mengubah semua titik masuk (landing page, login redirect, dan route `/dashboard`) untuk diarahkan ke `/admin` guna mendukung penggunaan Filament sebagai panel utama.
+
 #### Fixed
 - **Migration Idempotent Fix**: Memperbaiki error `duplicate column name: period` pada migration `add_mitra_contract_fields_to_users_table` dengan menambahkan pengecekan `hasColumn()`.
 - **Cleanup**: Menghapus file sampah `first(['name'` hasil kesalahan eksekusi perintah di branch sebelumnya.
