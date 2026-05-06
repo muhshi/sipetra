@@ -4,9 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PortalAppResource\Pages;
 use App\Models\PortalApp;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
-use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -14,17 +17,17 @@ class PortalAppResource extends Resource
 {
     protected static ?string $model = PortalApp::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-squares-2x2';
-    
-    protected static string | \UnitEnum | null $navigationGroup = 'Manajemen Portal';
-    
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-squares-2x2';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Manajemen Portal';
+
     protected static ?string $modelLabel = 'Aplikasi Portal';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                \Filament\Schemas\Components\Section::make('Informasi Aplikasi')->schema([
+                Section::make('Informasi Aplikasi')->schema([
                     Forms\Components\TextInput::make('name')
                         ->label('Nama Aplikasi')
                         ->required()
@@ -44,8 +47,8 @@ class PortalAppResource extends Resource
                         ->directory('portal-apps')
                         ->columnSpanFull(),
                 ])->columns(2),
-                
-                \Filament\Schemas\Components\Section::make('Pengaturan')->schema([
+
+                Section::make('Pengaturan')->schema([
                     Forms\Components\Toggle::make('is_active')
                         ->label('Aktif')
                         ->default(true),
@@ -81,12 +84,12 @@ class PortalAppResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    DeleteAction::make()->label('Hapus'),
                 ]),
             ])
             ->defaultSort('order', 'asc');
