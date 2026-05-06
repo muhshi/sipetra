@@ -56,6 +56,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Manajemen Aplikasi (`PortalAppResource`)**: Menambahkan menu CRUD di Filament untuk mengelola daftar aplikasi (nama, deskripsi, URL, logo, status aktif, urutan) yang akan ditampilkan di *landing page*.
 
 #### Changed
+- **Dashboard Widgets**: Menambahkan widget statistik (`StatsOverview`) dan tabel pengguna terbaru (`LatestUsers`) pada dashboard Filament untuk memantau jumlah Pegawai, Mitra, dan aplikasi aktif secara *real-time*.
 - **Redirection to /admin**: Mengubah semua titik masuk (landing page, login redirect, dan route `/dashboard`) untuk diarahkan ke `/admin` guna mendukung penggunaan Filament sebagai panel utama.
 
 #### Fixed
