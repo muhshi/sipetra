@@ -47,6 +47,14 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-06]
+#### Added
+- **Data Awal Aplikasi Portal**: Membuat `PortalAppsSeeder` untuk menginputkan otomatis 8 aplikasi klien bawaan (Alfath, Magang, CKP, Surat, Siputri, Demakai, Portal, Dinamit) ke dalam database beserta link URL-nya.
+- **Portal Landing Page**: Implementasi *landing page* utama di URL root (`/`) menggunakan Livewire dan TailwindCSS. Halaman ini berfungsi sebagai portal kumpulan aplikasi milik klien.
+- **Manajemen Portal (Filament)**: Menambahkan fitur `ManagePortalSettings` (menggunakan `spatie/laravel-settings`) untuk mengatur warna aksen dan teks *hero section*.
+- **Manajemen Aplikasi (`PortalAppResource`)**: Menambahkan menu CRUD di Filament untuk mengelola daftar aplikasi (nama, deskripsi, URL, logo, status aktif, urutan) yang akan ditampilkan di *landing page*.
+
+
 ### [2026-05-03]
 #### Fixed
 - **Kompatibilitas Filament v5.6+ (Passport UI)**: Memperbaiki `FatalError` pada `ListClients` di mana `getHeaderActions()` harus bersifat `public` untuk menyesuaikan dengan deklarasi di parent class `N3XT0R\FilamentPassportUi`.
