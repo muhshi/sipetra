@@ -13,7 +13,7 @@ Route::get('/login', Login::class)->name('login')->middleware('guest');
 
 // Normal User Dashboard (where they go if they login directly instead of via OAuth)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect('/admin');
 })->middleware('auth')->name('dashboard');
 
 // Logout Route

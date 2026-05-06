@@ -142,9 +142,19 @@ footer strong { color: #f1f5f9; }
         <ul class="navbar-links">
             <li><a href="#" class="active">Beranda</a></li>
             <li><a href="#apps">Semua Aplikasi</a></li>
-            <li><a href="{{ route('login') }}">Login</a></li>
+            @auth
+                <li><a href="/admin">Dashboard</a></li>
+            @else
+                <li><a href="/admin">Login</a></li>
+            @endauth
         </ul>
-        <a href="{{ route('login') }}" class="btn-accent">Masuk Sekarang</a>
+        <a href="/admin" class="btn-accent">
+            @auth
+                Buka Panel Admin
+            @else
+                Masuk Sekarang
+            @endauth
+        </a>
     </div>
 </nav>
 

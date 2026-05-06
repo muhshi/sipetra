@@ -78,12 +78,12 @@ class Login extends Component
                 $panel = app(FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
 
                 if (! $user->canAccessPanel($panel)) {
-                    return redirect()->route('dashboard');
+                    return redirect('/admin');
                 }
             }
 
             // Intended redirect for Passport/SSO atau Dashboard fallback
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended('/admin');
         }
 
         $this->addError('password', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
