@@ -221,8 +221,18 @@ footer strong { color: #f1f5f9; }
                 </div>
 
                 @if($app->logo)
+                    {{-- Logo diutamakan jika ada --}}
                     <img src="{{ Storage::url($app->logo) }}" alt="{{ $app->name }}" class="card-logo">
+                @elseif($app->icon)
+                    {{-- Icon heroicon --}}
+                    <div class="card-logo-placeholder">
+                        <x-dynamic-component
+                            :component="$app->icon"
+                            style="width:22px;height:22px;color:{{ $accent }}"
+                        />
+                    </div>
                 @else
+                    {{-- Fallback: singkatan nama --}}
                     <div class="card-logo-placeholder">{{ $abbr }}</div>
                 @endif
             </div>

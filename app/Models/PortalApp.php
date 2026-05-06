@@ -14,6 +14,7 @@ class PortalApp extends Model
         'description',
         'url',
         'logo',
+        'icon',
         'is_active',
         'order',
     ];
