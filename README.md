@@ -47,6 +47,12 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-22]
+#### Added
+- **Unified Single-Field Login**: Menggabungkan input NIP dan Email ke dalam satu kolom input di halaman Login SSO SIPETRA, menghilangkan kebutuhan tab toggle NIP/Email untuk kemudahan akses pengguna.
+- **BPS Email Prefix Support**: Memungkinkan pengguna dengan email BPS (`@bps.go.id`) untuk login hanya menggunakan prefix (awalan) email mereka tanpa perlu menuliskan domain lengkap.
+- **Login Test Suite**: Menambahkan pengujian otomatis komprehensif (`tests/Feature/LoginTest.php`) menggunakan Pest untuk menguji semua skenario login (NIP lama, NIP baru, email lengkap, prefix email BPS, admin redirection, status tidak aktif, salah kredensial).
+
 ### [2026-04-23]
 #### Fixed
 - Perbaikan `BadMethodCallException` pada `ClientResource` saat membuat client baru dengan mendefinisikan model secara eksplisit.
