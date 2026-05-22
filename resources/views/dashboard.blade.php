@@ -100,7 +100,7 @@
                         Anda saat ini telah masuk menggunakan akun utama SIPETRA. Anda bisa berpindah ke aplikasi internal BPS lainnya dengan mulus tanpa perlu login ulang (Single Sign-On).
                     </p>
 
-                    @if(Auth::check() && Auth::user()->canAccessPanel(app(\Filament\FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin')))
+                    @if(Auth::check() && Auth::user()->hasRole('super_admin'))
                     <div class="mt-4">
                         <a href="/admin" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:border-blue-900 focus:shadow-outline-blue transition ease-in-out duration-150 shadow-sm">
                             Buka Dasbor Admin SIPETRA &rarr;

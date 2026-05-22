@@ -91,6 +91,8 @@ class PegawaiSeeder extends Seeder
                 'is_active' => $isActive,
             ]);
 
+            $user->assignRole('pegawai');
+
             // Create Employee Profile
             $mkTahun = 0;
             $mkBulan = 0;

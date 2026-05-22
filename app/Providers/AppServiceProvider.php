@@ -8,14 +8,13 @@ use App\Policies\ClientPolicy;
 use App\Settings\SystemSettings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
 use Laravel\Passport\Passport;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\EditClient;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\ViewClient;
-
-use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,11 +55,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::useClientModel(PassportClient::class);
 
         Passport::authorizationView(function ($parameters) {
-            // Jika skipsAuthorization() == false, user tidak terdaftar → tampilkan halaman penolakan
-            // Jika skipsAuthorization() == true, alur tidak sampai ke view ini
-            return view('oauth.rejected', [
-                'client' => $parameters['client'] ?? null,
-            ]);
+            return view('vendor.passport.authorize', $parameters);
         });
 
         Passport::tokensCan([

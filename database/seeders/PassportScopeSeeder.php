@@ -14,32 +14,25 @@ class PassportScopeSeeder extends Seeder
     public function run(): void
     {
         $scopes = [
-            'profile:read',
-            'identity_pegawai:read',
-            'identity_mitra:read',
-            'employee:read',
-            'contact:read', // Merging phone and address to just contact:read
-            'roles:read',
+            'profile:read' => 'Informasi profil dasar (nama, email, avatar, tipe user)',
+            'identity_pegawai:read' => 'Identitas khusus pegawai (NIP Baru/Lama)',
+            'identity_mitra:read' => 'Identitas khusus mitra (SOBAT ID, NIK)',
+            'employee:read' => 'Data detil kepegawaian (Jabatan, Golongan, Masa Kerja, Agama, dsb)',
+            'contact:read' => 'Data kontak (Nomor HP, Alamat)',
+            'roles:read' => 'Hak akses (Roles & Permissions)',
         ];
 
-        $resources = [];
-        $actions = [];
-
-        foreach ($scopes as $scope) {
+        foreach ($scopes as $scope => $description) {
             [$resourceName, $actionName] = explode(':', $scope);
-            $resources[] = $resourceName;
-            $actions[] = $actionName;
-        }
 
-        $resources = array_unique($resources);
-        $actions = array_unique($actions);
+            $resource = PassportScopeResource::firstOrCreate(
+                ['name' => $resourceName],
+                ['description' => $description]
+            );
 
-        foreach ($resources as $resource) {
-            PassportScopeResource::firstOrCreate(['name' => $resource]);
-        }
-
-        foreach ($actions as $action) {
-            PassportScopeAction::firstOrCreate(['name' => $action]);
+            PassportScopeAction::firstOrCreate(
+                ['name' => $actionName]
+            );
         }
     }
 }

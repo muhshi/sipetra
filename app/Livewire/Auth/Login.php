@@ -38,7 +38,7 @@ class Login extends Component
                 ->orWhere('email', $loginKey);
 
             if (! str_contains($loginKey, '@')) {
-                $query->orWhere('email', $loginKey . '@bps.go.id');
+                $query->orWhere('email', $loginKey.'@bps.go.id');
             }
         })->first();
 

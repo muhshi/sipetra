@@ -28,8 +28,6 @@ class AccessRuleResolver
 
     private function ruleMatches(User $user, AccessRuleType|string|null $ruleType, string $ruleValue): bool
     {
-        $ruleType = $ruleType instanceof AccessRuleType ? $ruleType : AccessRuleType::tryFrom((string) $ruleType);
-
         return match ($ruleType) {
             AccessRuleType::User => (string) $user->getKey() === $ruleValue,
             AccessRuleType::SipetraRole => $user->hasRole($ruleValue),
