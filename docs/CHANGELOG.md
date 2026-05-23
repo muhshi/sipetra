@@ -7,6 +7,18 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-05-22] — Unified Single-Field Login & BPS Email Prefix Support
+
+### ✅ Added
+- **Unified Login Field Support**: Log in using either NIP, NIP Baru, full email, or BPS email prefix within a single username field.
+- **Unified Login Tests**: Extensive Pest feature test suite in `tests/Feature/LoginTest.php` covering all unified login paths and administrative blocks.
+
+### 🔄 Changed
+- **SSO Login Interface**: Unified NIP and Email tabs into a single input field with appropriate label and placeholders, improving User Experience.
+- **Livewire Authentication Logic**: Consolidated custom login verification to dynamically locate the active user record based on the input credentials before performing the `Auth::attempt` check.
+
+---
+
 ## [2026-05-04] — Documentation & Background Sync Refinement
 
 ### ✅ Changed

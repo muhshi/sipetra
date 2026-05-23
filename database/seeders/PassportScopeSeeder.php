@@ -24,7 +24,7 @@ class PassportScopeSeeder extends Seeder
 
         foreach ($scopes as $scope => $description) {
             [$resourceName, $actionName] = explode(':', $scope);
-            
+
             $resource = PassportScopeResource::firstOrCreate(
                 ['name' => $resourceName],
                 ['description' => $description]

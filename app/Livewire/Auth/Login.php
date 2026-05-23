@@ -14,54 +14,51 @@ use Livewire\Component;
 #[Title('Login SSO - SIPETRA BPS')]
 class Login extends Component
 {
-    public $loginType = 'nip'; // Default login for employees
-
-    public $nip = '';
-
-    public $email = '';
+    public $username = '';
 
     public $password = '';
 
     public $remember = false;
 
     protected $rules = [
-        'password' => 'required',
+        'username' => 'required|string',
+        'password' => 'required|string',
     ];
-
-    public function updatedLoginType()
-    {
-        $this->resetValidation();
-        $this->nip = '';
-        $this->email = '';
-    }
 
     public function authenticate()
     {
-        if ($this->loginType === 'nip') {
-            $this->validate([
-                'nip' => 'required|string',
-                'password' => 'required|string',
-            ]);
+        $this->validate();
 
-            // Try with NIP Lama first
-            $attempt = Auth::attempt(['nip' => $this->nip, 'password' => $this->password, 'is_active' => true], $this->remember);
+        $loginKey = trim($this->username);
 
-            // If failed, try with NIP Baru
-            if (! $attempt) {
-                $attempt = Auth::attempt(['nip_baru' => $this->nip, 'password' => $this->password, 'is_active' => true], $this->remember);
+        // Cari user berdasarkan NIP, NIP Baru, Email, atau awalan Email BPS
+        $user = User::where(function ($query) use ($loginKey) {
+            $query->where('nip', $loginKey)
+                ->orWhere('nip_baru', $loginKey)
+                ->orWhere('email', $loginKey);
+
+            if (! str_contains($loginKey, '@')) {
+                $query->orWhere('email', $loginKey.'@bps.go.id');
             }
+        })->first();
 
-        } else {
-            $this->validate([
-                'email' => 'required|email',
-                'password' => 'required|string',
-            ]);
+        if (! $user) {
+            $this->addError('username', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
 
-            $user = User::where('email', $this->email)->first();
-
-
-            $attempt = Auth::attempt(['email' => $this->email, 'password' => $this->password, 'is_active' => true], $this->remember);
+            return;
         }
+
+        if ($user->identity_type === IdentityType::Admin) {
+            $this->addError('username', 'Administrator harap login melalui halaman /admin/login');
+
+            return;
+        }
+
+        $attempt = Auth::attempt([
+            'email' => $user->email,
+            'password' => $this->password,
+            'is_active' => true,
+        ], $this->remember);
 
         if ($attempt) {
             session()->regenerate();
@@ -73,11 +70,11 @@ class Login extends Component
             // (biasanya karena ia pernah mengklik link /admin sebelum login).
             // Maka kita paksa ia masuk ke /dashboard saja, daripada kena halaman 403 Forbidden.
             if ($intended && str_contains($intended, '/admin')) {
-                /** @var User $user */
-                $user = Auth::user();
+                /** @var User $currentUser */
+                $currentUser = Auth::user();
                 $panel = app(FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
 
-                if (! $user->canAccessPanel($panel)) {
+                if (! $currentUser->canAccessPanel($panel)) {
                     return redirect('/admin');
                 }
             }
@@ -86,7 +83,7 @@ class Login extends Component
             return redirect()->intended('/admin');
         }
 
-        $this->addError('password', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
+        $this->addError('username', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
     }
 
     public function render()

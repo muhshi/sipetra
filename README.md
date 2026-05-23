@@ -47,6 +47,12 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-22]
+#### Added
+- **Unified Single-Field Login**: Menggabungkan input NIP dan Email ke dalam satu kolom input di halaman Login SSO SIPETRA, menghilangkan kebutuhan tab toggle NIP/Email untuk kemudahan akses pengguna.
+- **BPS Email Prefix Support**: Memungkinkan pengguna dengan email BPS (`@bps.go.id`) untuk login hanya menggunakan prefix (awalan) email mereka tanpa perlu menuliskan domain lengkap.
+- **Login Test Suite**: Menambahkan pengujian otomatis komprehensif (`tests/Feature/LoginTest.php`) menggunakan Pest untuk menguji semua skenario login (NIP lama, NIP baru, email lengkap, prefix email BPS, admin redirection, status tidak aktif, salah kredensial).
+
 ### [2026-05-06]
 #### Added
 - **Merge Landing Page Branch**: Melakukan penggabungan branch `landingpage` ke `main` yang berisi fitur portal aplikasi.
@@ -63,7 +69,6 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 - **Migration Idempotent Fix**: Memperbaiki error `duplicate column name: period` pada migration `add_mitra_contract_fields_to_users_table` dengan menambahkan pengecekan `hasColumn()`.
 - **Cleanup**: Menghapus file sampah `first(['name'` hasil kesalahan eksekusi perintah di branch sebelumnya.
 
-
 ### [2026-05-03]
 #### Fixed
 - **Kompatibilitas Filament v5.6+ (Passport UI)**: Memperbaiki `FatalError` pada `ListClients` di mana `getHeaderActions()` harus bersifat `public` untuk menyesuaikan dengan deklarasi di parent class `N3XT0R\FilamentPassportUi`.
@@ -75,22 +80,16 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 #### Added
 - **Image Optimizer untuk Avatar**: Menambahkan paket `danihidayatx/image-optimizer` untuk mengkompresi gambar secara otomatis saat upload. Avatar di halaman Profil Pegawai (`EditProfile`) dan form User Admin (`UserForm`) kini dikonversi ke format WebP dengan kualitas 80% dan lebar maksimal 800px sebelum disimpan ke server. Batas upload diatur maksimal **10MB** untuk mencegah kegagalan pada server.
 
-
 #### Changed
 - **Callback URI — Repeater Component**: Mengganti field Textarea untuk Callback URI dengan komponen `Repeater`. Setiap URI kini memiliki baris input sendiri, menghilangkan kebutuhan pemisahan manual dengan koma dan meningkatkan pengalaman pengguna saat mengelola banyak URI (server vs lokal).
 - **Callback URI — Placeholder & Format**: Placeholder diperbarui ke format `domain/auth/sipetra/callback` yang lebih relevan.
-
 
 #### Fixed
 - **Kompatibilitas Filament v5.6.0**: Memperbaiki `FatalError` pada `EmployeeProfileResource` yang disebabkan perubahan tipe properti `$navigationGroup` di Filament v5.6.0. Tipe diubah dari `?string` menjadi `string|UnitEnum|null` sesuai deklarasi tipe baru di parent class `Filament\Resources\Resource`.
 - **Migration Idempotent**: Memperbaiki error `activity_log table already exists` dan `duplicate column name` saat `php artisan migrate` dijalankan. Ketiga migration Spatie ActivityLog (`create_activity_log_table`, `add_event_column`, `add_batch_uuid_column`) kini dilindungi dengan guard `hasTable()`/`hasColumn()` agar aman dijalankan berulang kali.
 - **Callback URI Fix**: Memperbaiki error `[object Object]` pada field Callback URI dengan menggunakan `Simple Repeater`. Format data kini secara otomatis sinkron dengan array string di database tanpa perlu transformasi manual yang rentan error.
 
-
-
-
 ### [2026-04-24]
-
 #### Added
 - **OAuth Client Wizard**: Implementasi form pembuatan/pengeditan OAuth Client menggunakan Wizard 3-langkah yang lebih terorganisir.
 - **Extended Client Schemas**: Pemisahan logika form client ke dalam `ExtendedClientResourceForm` dan `ExtendedClientWizardForm` untuk meningkatkan maintainability.
