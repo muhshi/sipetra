@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\IdentityType;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserProfileResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -51,7 +51,7 @@ class UserApiController extends Controller
 
         // Scope Data Pegawai Khusus (Employee)
         if ($token->can('employee:read')) {
-            if ($user->identity_type === \App\Enums\IdentityType::Pegawai) {
+            if ($user->identity_type === IdentityType::Pegawai) {
                 // Pastikan load relasi jika dibutuhkan
                 $user->loadMissing('employeeProfile');
                 $profile = $user->employeeProfile;
@@ -77,7 +77,7 @@ class UserApiController extends Controller
 
         // Scope Roles
         if ($token->can('roles:read')) {
-            $data['client_role'] = $user->clientRoleFor($clientId);
+            $data['client_role'] = $clientId ? $user->clientRoleFor($clientId) : null;
             $data['system_roles'] = $user->getRoleNames();
         }
 

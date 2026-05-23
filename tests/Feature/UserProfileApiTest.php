@@ -6,7 +6,7 @@ use Laravel\Passport\Passport;
 
 uses(RefreshDatabase::class);
 
-it('returns the aggregated user profile payload from /api/user/me', function () {
+it('returns the aggregated user profile payload from /api/user based on scopes', function () {
     $user = User::factory()->pegawai()->create([
         'name' => 'Pegawai Demo',
         'email' => 'pegawai@example.com',
@@ -14,21 +14,19 @@ it('returns the aggregated user profile payload from /api/user/me', function () 
         'unit_kerja' => 'BPS Demak',
     ]);
 
-    Passport::actingAs($user, ['profile:read']);
+    Passport::actingAs($user, ['profile:read', 'employee:read', 'roles:read']);
 
-    $this->getJson('/api/user/me')
+    $this->getJson('/api/user')
         ->assertSuccessful()
         ->assertJson([
             'id' => $user->id,
             'name' => 'Pegawai Demo',
             'email' => 'pegawai@example.com',
-            'client_role' => null,
-            'profile' => [
-                'identity_type' => 'pegawai',
-            ],
-            'organization' => [
+            'identity_type' => 'pegawai',
+            'employee' => [
                 'jabatan' => 'Statistisi Ahli Pertama',
                 'unit_kerja' => 'BPS Demak',
             ],
+            'system_roles' => [],
         ]);
 });

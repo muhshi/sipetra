@@ -138,20 +138,26 @@ it('accesses /api/user with Passport::actingAs', function () {
         ->assertJsonStructure(['id', 'name', 'email']);
 });
 
-it('accesses /api/user/identity with scope', function () {
-    $pegawai = User::factory()->pegawai()->create();
-    Passport::actingAs($pegawai, ['identity:read']);
+it('accesses /api/user with identity_pegawai:read scope', function () {
+    $pegawai = User::factory()->pegawai()->create([
+        'nip' => '199001012015011001',
+    ]);
+    Passport::actingAs($pegawai, ['identity_pegawai:read']);
 
-    $this->getJson('/api/user/identity')
-        ->assertSuccessful();
+    $this->getJson('/api/user')
+        ->assertSuccessful()
+        ->assertJsonFragment(['nip' => '199001012015011001']);
 });
 
-it('accesses /api/user/organization with scope', function () {
-    $pegawai = User::factory()->pegawai()->create();
-    Passport::actingAs($pegawai, ['organization:read']);
+it('accesses /api/user with employee:read scope', function () {
+    $pegawai = User::factory()->pegawai()->create([
+        'jabatan' => 'Statistisi',
+    ]);
+    Passport::actingAs($pegawai, ['employee:read']);
 
-    $this->getJson('/api/user/organization')
-        ->assertSuccessful();
+    $this->getJson('/api/user')
+        ->assertSuccessful()
+        ->assertJsonPath('employee.jabatan', 'Statistisi');
 });
 
 it('denies access to /api/user without token', function () {

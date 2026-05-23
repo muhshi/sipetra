@@ -47,6 +47,13 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-23]
+#### Fixed
+- **Null-Safe Client ID in UserApiController**: Menghindari TypeError saat penanganan token tanpa client ID (`actingAs` di pengujian unit).
+- **Test Compatibility for Unified Login**: Menyesuaikan rute pengalihan pada Livewire Login component untuk mengarahkan pengguna ke `/dashboard` (menggunakan named route `dashboard`) sehingga kompatibel dengan assertion pengujian unit.
+- **Outdated API Endpoint Tests**: Memperbarui pengujian pada `OAuthFlowTest` dan `UserProfileApiTest` yang sebelumnya memanggil endpoint lama (`/api/user/identity`, `/api/user/organization`, dan `/api/user/me`) agar menguji endpoint tunggal `/api/user` dengan scope dinamis baru.
+- **RefreshDatabase in ExampleTest**: Menambahkan trait `RefreshDatabase` pada `ExampleTest` agar tabel `portal_apps` terbuat dengan benar ketika memanggil landing page root `/`.
+
 ### [2026-05-22]
 #### Added
 - **Unified Single-Field Login**: Menggabungkan input NIP dan Email ke dalam satu kolom input di halaman Login SSO SIPETRA, menghilangkan kebutuhan tab toggle NIP/Email untuk kemudahan akses pengguna.

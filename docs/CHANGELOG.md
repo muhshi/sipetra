@@ -7,6 +7,16 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ---
 
+## [2026-05-23] — Test Fixes & API Robustness
+
+### 🐛 Fixed
+- **Null-Safe Client ID in UserApiController**: Safe handling when checking roles for tokens without a client ID (primarily during unit testing `actingAs`).
+- **Unified Login redirection compatibility**: Aligned Login component redirection with test assertions by returning a redirection to the named `dashboard` route (which then redirects to `/admin` anyway).
+- **Outdated API Endpoint Tests**: Refactored legacy tests in `OAuthFlowTest` and `UserProfileApiTest` to target the unified dynamic scope `/api/user` endpoint instead of the removed `/api/user/identity`, `/api/user/organization` and `/api/user/me` routes.
+- **RefreshDatabase in ExampleTest**: Added `RefreshDatabase` trait to `ExampleTest` to avoid SQLite "no such table: portal_apps" error during testing on the landing page.
+
+---
+
 ## [2026-05-22] — Unified Single-Field Login & BPS Email Prefix Support
 
 ### ✅ Added
