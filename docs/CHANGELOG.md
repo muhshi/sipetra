@@ -9,6 +9,9 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 
 ## [2026-05-23] — Test Fixes & API Robustness
 
+### ✅ Added
+- **Allow Admin Login via SSO**: Removed the restriction blocking administrators from logging in through the unified SSO login page.
+
 ### 🐛 Fixed
 - **Null-Safe Client ID in UserApiController**: Safe handling when checking roles for tokens without a client ID (primarily during unit testing `actingAs`).
 - **Unified Login redirection compatibility**: Aligned Login component redirection with test assertions by returning a redirection to the named `dashboard` route (which then redirects to `/admin` anyway).

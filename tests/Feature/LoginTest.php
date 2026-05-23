@@ -1,8 +1,10 @@
 <?php
 
+use App\Enums\IdentityType;
 use App\Livewire\Auth\Login;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use function Pest\Livewire\livewire;
 
 uses(RefreshDatabase::class);
@@ -121,10 +123,11 @@ test('can login using full non-BPS email', function () {
     $this->assertAuthenticatedAs($user);
 });
 
-test('denies administrator login on SSO page', function () {
+test('allows administrator login on SSO page', function () {
     $user = User::factory()->create([
         'email' => 'admin@bps.go.id',
         'password' => bcrypt('password'),
+        'identity_type' => IdentityType::Admin,
     ]);
 
     livewire(Login::class)
@@ -133,9 +136,10 @@ test('denies administrator login on SSO page', function () {
             'password' => 'password',
         ])
         ->call('authenticate')
-        ->assertHasErrors(['username' => 'Administrator harap login melalui halaman /admin/login']);
+        ->assertHasNoErrors()
+        ->assertRedirect(route('dashboard'));
 
-    $this->assertGuest();
+    $this->assertAuthenticatedAs($user);
 });
 
 test('denies inactive user login', function () {

@@ -48,6 +48,9 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 ## Changelog
 
 ### [2026-05-23]
+#### Added
+- **Allow Admin Login via SSO**: Mengizinkan administrator untuk masuk menggunakan halaman login terpusat (SSO) utama, menghapus pembatasan sebelumnya.
+
 #### Fixed
 - **Null-Safe Client ID in UserApiController**: Menghindari TypeError saat penanganan token tanpa client ID (`actingAs` di pengujian unit).
 - **Test Compatibility for Unified Login**: Menyesuaikan rute pengalihan pada Livewire Login component untuk mengarahkan pengguna ke `/dashboard` (menggunakan named route `dashboard`) sehingga kompatibel dengan assertion pengujian unit.

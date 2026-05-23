@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth;
 
-use App\Enums\IdentityType;
 use App\Models\User;
 use Filament\FilamentManager;
 use Illuminate\Support\Facades\Auth;
@@ -44,12 +43,6 @@ class Login extends Component
 
         if (! $user) {
             $this->addError('username', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
-
-            return;
-        }
-
-        if ($user->identity_type === IdentityType::Admin) {
-            $this->addError('username', 'Administrator harap login melalui halaman /admin/login');
 
             return;
         }
