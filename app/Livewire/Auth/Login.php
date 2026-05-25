@@ -82,7 +82,14 @@ class Login extends Component
             }
 
             // Redirect langsung ke URL yang sudah ditangkap
-            return redirect($intendedUrl);
+            // return redirect($intendedUrl);
+            dd([
+                'STATUS' => 'LOGIN SUCCESS',
+                'INTENDED_URL' => $intendedUrl,
+                'SESSION_ID' => session()->getId(),
+                'USER' => $user->email,
+                'PLEASE_SEND_THIS_SCREENSHOT_TO_AI' => true
+            ]);
         }
 
         $this->addError('username', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
