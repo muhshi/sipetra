@@ -55,6 +55,7 @@ class Login extends Component
 
         if ($attempt) {
             session()->regenerate();
+            session()->save();
 
             // Get intended URL
             $intended = redirect()->getIntendedUrl();

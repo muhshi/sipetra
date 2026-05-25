@@ -47,6 +47,10 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ## Changelog
 
+### [2026-05-25]
+#### Fixed
+- **SSO Login Redirect Loop (Race Condition)**: Menambahkan penyimpanan sesi sinkron (`session()->save()`) langsung setelah regenerasi sesi di komponen `Login` Livewire. Ini memperbaiki masalah login loop pada server di mana browser mengalihkan ke URL tujuan (`/oauth/authorize`) sebelum database selesai menulis sesi baru.
+
 ### [2026-05-23]
 #### Added
 - **Allow Admin Login via SSO**: Mengizinkan administrator untuk masuk menggunakan halaman login terpusat (SSO) utama, menghapus pembatasan sebelumnya.
