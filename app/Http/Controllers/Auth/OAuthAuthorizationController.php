@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\Passport\Client;
 use App\Services\AccessRuleResolver;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Passport\Bridge\User;
@@ -90,6 +91,24 @@ class OAuthAuthorizationController extends BaseAuthorizationController
             'request' => $request,
             'authToken' => $authToken,
         ]);
+    }
+
+    protected function hasGrantedScopes(Authenticatable $user, \Laravel\Passport\Client $client, array $scopes): bool
+    {
+        $tokens = $client->tokens()->where([
+            ['user_id', '=', $user->getAuthIdentifier()],
+            ['revoked', '=', false],
+            // Check removed: ['expires_at', '>', now()]
+            // Ini untuk mencegah prompt berulang jika token sudah expired (1 jam).
+        ]);
+
+        if (empty($scopes)) {
+            return $tokens->exists();
+        }
+
+        return collect($scopes)->pluck('id')->diff(
+            $tokens->pluck('scopes')->flatten()
+        )->isEmpty();
     }
 
     private function buildDeniedHtml(string $clientName, string $userName): string

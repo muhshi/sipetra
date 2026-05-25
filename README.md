@@ -48,7 +48,11 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 ## Changelog
 
 ### [2026-05-25]
-#### Fixed
+#### Changed
+- **OAuth Authorization**: Memperbarui `OAuthAuthorizationController` dengan meng-override metode `hasGrantedScopes` untuk mengabaikan pengecekan kadaluarsa token (`expires_at`). Hal ini mencegah prompt persetujuan (consent screen) muncul berulang kali setiap kali token akses kadaluarsa, sehingga user hanya perlu menyetujui akses satu kali saja.
+
+### [2026-05-24]
+#### Added
 - **SSO Login Redirect Loop (Race Condition)**: Memperbaiki login loop pada server produksi. Intended URL (`url.intended`) kini ditangkap **sebelum** regenerasi sesi untuk mencegah kehilangan data. Ditambahkan `session()->save()` sinkron dan logging diagnostik untuk membantu troubleshoot di environment FrankenPHP/Docker.
 
 ### [2026-05-23]
