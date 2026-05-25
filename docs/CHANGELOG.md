@@ -10,7 +10,7 @@ dibandingkan dari versi **awal** ke versi **terbaru** (`sipetra`).
 ## [2026-05-25] — SSO Redirect Loop Fix
 
 ### 🐛 Fixed
-- **SSO Login Redirect Loop (Race Condition)**: Added immediate synchronous session save (`session()->save()`) after session regeneration in the Livewire `Login` component. This prevents database session driver race conditions in production environments where the browser navigates to the `/oauth/authorize` endpoint before the server-side process has finished persisting the regenerated session.
+- **SSO Login Redirect Loop (Race Condition)**: Captured the intended URL (`session()->pull('url.intended')`) **before** session regeneration to prevent data loss during session migration. Added synchronous `session()->save()` and diagnostic logging (`Log::info`) to help troubleshoot redirect issues in FrankenPHP/Docker production environments.
 
 ---
 

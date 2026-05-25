@@ -49,7 +49,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
 
 ### [2026-05-25]
 #### Fixed
-- **SSO Login Redirect Loop (Race Condition)**: Menambahkan penyimpanan sesi sinkron (`session()->save()`) langsung setelah regenerasi sesi di komponen `Login` Livewire. Ini memperbaiki masalah login loop pada server di mana browser mengalihkan ke URL tujuan (`/oauth/authorize`) sebelum database selesai menulis sesi baru.
+- **SSO Login Redirect Loop (Race Condition)**: Memperbaiki login loop pada server produksi. Intended URL (`url.intended`) kini ditangkap **sebelum** regenerasi sesi untuk mencegah kehilangan data. Ditambahkan `session()->save()` sinkron dan logging diagnostik untuk membantu troubleshoot di environment FrankenPHP/Docker.
 
 ### [2026-05-23]
 #### Added

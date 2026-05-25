@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use App\Models\User;
 use Filament\FilamentManager;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -54,16 +55,23 @@ class Login extends Component
         ], $this->remember);
 
         if ($attempt) {
+            // Tangkap intended URL SEBELUM regenerasi sesi untuk mencegah kehilangan data
+            $intendedUrl = session()->pull('url.intended', route('dashboard'));
+
             session()->regenerate();
             session()->save();
 
-            // Get intended URL
-            $intended = redirect()->getIntendedUrl();
+            Log::info('SSO Login berhasil', [
+                'user' => $user->email,
+                'intended_url' => $intendedUrl,
+                'session_id' => session()->getId(),
+                'session_driver' => config('session.driver'),
+            ]);
 
             // Cek jika Pegawai biasa (bukan admin) tanpa sengaja memiliki memori 'intended' ke /admin,
             // (biasanya karena ia pernah mengklik link /admin sebelum login).
             // Maka kita paksa ia masuk ke /dashboard saja, daripada kena halaman 403 Forbidden.
-            if ($intended && str_contains($intended, '/admin')) {
+            if (str_contains($intendedUrl, '/admin')) {
                 /** @var User $currentUser */
                 $currentUser = Auth::user();
                 $panel = app(FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
@@ -73,8 +81,8 @@ class Login extends Component
                 }
             }
 
-            // Intended redirect for Passport/SSO atau Dashboard fallback
-            return redirect()->intended(route('dashboard'));
+            // Redirect langsung ke URL yang sudah ditangkap
+            return redirect($intendedUrl);
         }
 
         $this->addError('username', 'Kredensial yang Anda berikan salah atau akun tidak aktif.');
