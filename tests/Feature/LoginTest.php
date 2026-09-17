@@ -158,3 +158,21 @@ test('denies inactive user login', function () {
 
     $this->assertGuest();
 });
+
+test('can login using SOBAT ID', function () {
+    $user = User::factory()->mitra()->create([
+        'sobat_id' => '332199887766',
+        'password' => bcrypt('password'),
+    ]);
+
+    livewire(Login::class)
+        ->fill([
+            'username' => '332199887766',
+            'password' => 'password',
+        ])
+        ->call('authenticate')
+        ->assertHasNoErrors()
+        ->assertRedirect(route('dashboard'));
+
+    $this->assertAuthenticatedAs($user);
+});

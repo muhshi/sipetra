@@ -6,9 +6,11 @@ use App\Models\User;
 use Filament\FilamentManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('components.layouts.guest')]
 #[Title('Login SSO - SIPETRA BPS')]
 class Login extends Component
 {
