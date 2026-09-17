@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('SIPETRA - BPS')
             ->brandLogo(asset('logoBpsDemakHitam.png'))
             ->darkModeBrandLogo(asset('logoBpsDemakOren.png'))

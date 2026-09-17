@@ -6,11 +6,9 @@ use App\Models\User;
 use Filament\FilamentManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('components.layouts.guest')]
 #[Title('Login SSO - SIPETRA BPS')]
 class Login extends Component
 {
@@ -31,10 +29,11 @@ class Login extends Component
 
         $loginKey = trim($this->username);
 
-        // Cari user berdasarkan NIP, NIP Baru, Email, atau awalan Email BPS
+        // Cari user berdasarkan NIP, NIP Baru, Email, SOBAT ID, atau awalan Email BPS
         $user = User::where(function ($query) use ($loginKey) {
             $query->where('nip', $loginKey)
                 ->orWhere('nip_baru', $loginKey)
+                ->orWhere('sobat_id', $loginKey)
                 ->orWhere('email', $loginKey);
 
             if (! str_contains($loginKey, '@')) {
@@ -70,14 +69,13 @@ class Login extends Component
 
             // Cek jika Pegawai biasa (bukan admin) tanpa sengaja memiliki memori 'intended' ke /admin,
             // (biasanya karena ia pernah mengklik link /admin sebelum login).
-            // Maka kita paksa ia masuk ke /dashboard saja, daripada kena halaman 403 Forbidden.
             if (str_contains($intendedUrl, '/admin')) {
-                /** @var User $currentUser */
-                $currentUser = Auth::user();
-                $panel = app(FilamentManager::class)->getCurrentPanel() ?? filament()->getPanel('admin');
+                $filamentManager = app(FilamentManager::class);
+                $panel = $filamentManager->getPanel('admin');
 
-                if (! $currentUser->canAccessPanel($panel)) {
-                    return redirect()->route('dashboard');
+                // Jika user TIDAK boleh akses Filament panel, arahkan mereka ke route dashboard
+                if (! $user->canAccessPanel($panel)) {
+                    $intendedUrl = route('dashboard');
                 }
             }
 

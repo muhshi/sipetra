@@ -237,3 +237,7 @@ npx ruflo@latest daemon start
 - Mengubah fungsi `canAccessPanel()` pada `User.php` agar SELURUH pengguna (termasuk Pegawai dan Mitra) dapat berpartisipasi dalam sesi masuk SSO tanpa perlu ditolak Filament.
 #### Added
 - Menambahkan dokumen `arsitektur_portal_sso.md` yang berisi panduan konseptual *Golden Flow* integrasi SSO dengan Aplikasi Portal.
+### [2026-09-17]
+#### Changed
+- Menyederhanakan formulir login SSO Livewire (`/login`) dengan menghapus tab terpisah NIP/Email dan menggantinya dengan satu input fleksibel (mendukung NIP, Email, Username, atau SOBAT ID).
+- Menyesuaikan formulir login Filament Admin (`/admin/login`) agar mendukung input fleksibel (NIP, Email, Username, atau SOBAT ID) tanpa validasi email kaku.
