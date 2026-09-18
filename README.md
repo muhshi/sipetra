@@ -241,3 +241,12 @@ npx ruflo@latest daemon start
 #### Changed
 - Menyederhanakan formulir login SSO Livewire (`/login`) dengan menghapus tab terpisah NIP/Email dan menggantinya dengan satu input fleksibel (mendukung NIP, Email, Username, atau SOBAT ID).
 - Menyesuaikan formulir login Filament Admin (`/admin/login`) agar mendukung input fleksibel (NIP, Email, Username, atau SOBAT ID) tanpa validasi email kaku.
+
+### [2026-09-18]
+#### Added
+- Script deployment otomatis cerdas (`deploy.sh`) untuk lingkungan server:
+  - Deteksi cerdas rebuild Docker: hanya rebuild image jika ada perubahan file Docker/Caddy atau container belum aktif.
+  - Deteksi cerdas build frontend: hanya compile asset Vite (`npm run build`) jika ada perubahan file asset/views atau `public/build` belum tersedia.
+  - Pengecekan update Composer: hanya menjalankan `composer install` jika `composer.lock` / `composer.json` mengalami perubahan.
+  - Eksekusi migrasi aman (`migrate --force`), optimasi cache Laravel, reload FrankenPHP, pembersihan image lama, dan verifikasi status.
+  - Opsi flag fleksibel: `--build` / `-b` (paksa Docker rebuild), `--build-assets` / `-a` (paksa Vite build), dan `--all`.
