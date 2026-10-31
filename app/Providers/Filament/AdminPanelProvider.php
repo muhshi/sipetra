@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Plugins\ExtendedPassportUiPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -28,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login(\App\Filament\Pages\Auth\Login::class)
+            ->login(Login::class)
             ->brandName('SIPETRA - BPS')
             ->brandLogo(asset('logoBpsDemakHitam.png'))
             ->darkModeBrandLogo(asset('logoBpsDemakOren.png'))

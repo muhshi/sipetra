@@ -66,6 +66,10 @@ npx ruflo@latest daemon start
 ## Changelog
 
 ### [2026-10-31]
+#### Added
+- **Simplified SSO Client Registration**: Mengganti wizard 3-langkah pendaftaran client OAuth dengan form terpadu 1-halaman (`SimplifiedClientForm`). Mendukung pengisian otomatis callback redirect URI dari URL aplikasi, pemilihan preset kebijakan akses instan (`open`, `pegawai`, `mitra`, atau `custom`), dan opsi 1-klik sinkronisasi langsung ke Portal Landing Page (`PortalApp`).
+- **Beautified View Client & .ENV Snippet Generator**: Mempercantik halaman `ViewClient` dengan kartu kredensial modern, penampil Client Secret yang dapat di-reveal/copy kapan saja (disimpan permanen di `plain_secret`), textarea monospace `.env` siap salin, tombol 1-klik "Salin .ENV", tombol "Buka Aplikasi", serta panduan integrasi cepat framework Laravel.
+- **Enhanced Client List Table**: Memperbarui tabel `ClientResource` dengan badge kebijakan akses visual, tautan URL, status aktif, serta quick action row "Salin .ENV" langsung dari tabel.
 #### Optimized
 - **Query N+1 Elimination**: Menambahkan eager loading `employeeProfile` pada `UserResource` dan `user` pada `EmployeeProfileResource` untuk mengeliminasi N+1 database query saat merender tabel di admin panel.
 - **Double Fetch Optimization**: Mengurangi duplikasi query `Client::find()` pada saat merender schema perizinan scope di `ExtendedClientResourceForm`.

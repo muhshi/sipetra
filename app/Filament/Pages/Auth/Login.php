@@ -34,8 +34,8 @@ class Login extends BaseLogin
                 ->orWhere('nip_baru', $login)
                 ->orWhere('sobat_id', $login);
 
-            if (!str_contains($login, '@')) {
-                $query->orWhere('email', $login . '@bps.go.id');
+            if (! str_contains($login, '@')) {
+                $query->orWhere('email', $login.'@bps.go.id');
             }
         })->first();
 

@@ -48,6 +48,11 @@ class Client extends \N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Cl
         return $this->hasMany(ClientAccessRule::class, 'client_id');
     }
 
+    public function getPlainSecretAttribute(): ?string
+    {
+        return $this->attributes['plain_secret'] ?? ($this->plainSecret ?? null);
+    }
+
     protected function casts(): array
     {
         return array_merge(parent::casts(), [
