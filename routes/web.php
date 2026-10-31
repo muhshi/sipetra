@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\OAuthLogoutController;
 use App\Livewire\Auth\Login;
 use App\Livewire\PortalLandingPage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', PortalLandingPage::class)->name('home');
@@ -15,11 +15,6 @@ Route::get('/dashboard', function () {
     return redirect('/admin');
 })->middleware('auth')->name('dashboard');
 
-// Logout Route
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-
-    return redirect()->route('login');
-})->name('logout');
+// Federated Single Logout (SLO) & Normal Logout Routes
+Route::get('/oauth/logout', [OAuthLogoutController::class, 'logout'])->name('oauth.logout');
+Route::match(['get', 'post'], '/logout', [OAuthLogoutController::class, 'logout'])->name('logout');

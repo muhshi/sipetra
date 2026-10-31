@@ -37,7 +37,22 @@ SIPETRA_BASE_URL="{{ config('app.url') }}"</pre>
                 <li><strong>Authorize URL:</strong> <code class="font-mono text-blue-600 dark:text-blue-400">{{ config('app.url') }}/oauth/authorize</code></li>
                 <li><strong>Token URL:</strong> <code class="font-mono text-blue-600 dark:text-blue-400">{{ config('app.url') }}/oauth/token</code></li>
                 <li><strong>User Profile API:</strong> <code class="font-mono text-blue-600 dark:text-blue-400">{{ config('app.url') }}/api/user</code> (Bearer Token)</li>
+                <li><strong>Single Logout (SLO):</strong> <code class="font-mono text-blue-600 dark:text-blue-400">{{ config('app.url') }}/oauth/logout?redirect_uri=...</code></li>
             </ul>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">4. Implementasi Single Logout (SLO) di Aplikasi Klien:</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Agar sesi SIPETRA ikut terputus saat user logout dari aplikasi Anda (mencegah login otomatis tanpa password):</p>
+            <div class="rounded-lg bg-slate-900 p-3 font-mono text-xs text-amber-300 overflow-x-auto">
+                <pre>// Pada Controller Logout aplikasi klien Anda:
+Auth::logout();
+$request->session()->invalidate();
+$request->session()->regenerateToken();
+
+$returnUrl = urlencode(route('login'));
+return redirect(config('services.sipetra.base_url') . '/oauth/logout?redirect_uri=' . $returnUrl);</pre>
+            </div>
         </div>
     </div>
 </div>

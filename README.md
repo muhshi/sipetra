@@ -198,6 +198,12 @@ npx ruflo@latest daemon start
 #### Changed
 - Inisialisasi repositori Git dan sinkronisasi dengan branch `asmuam` dari remote repository.
 
+### [2026-10-31]
+#### Added
+- **Federated Single Logout (SLO)**: Endpoint `/oauth/logout` dan `/logout` yang mendukung query parameter `redirect_uri` (tervalidasi terhadap URL client OAuth terdaftar). Mengakhiri sesi SIPETRA, meregenerasi token CSRF, dan mencabut token OAuth aktif milik pengguna sehingga mencegah login otomatis tanpa kredensial saat pengguna logout dari aplikasi klien.
+- **Admin Session Revocation (Putus Sesi)**: Aksi tabel pengguna di Filament Admin (`revoke_sessions`) yang memungkinkan administrator memutuskan seluruh sesi aktif pengguna di tabel `sessions` dan mencabut seluruh token OAuth (`oauth_access_tokens` dan `oauth_refresh_tokens`) secara instan.
+- **Panduan Single Logout pada Klien**: Menambahkan dokumentasi dan contoh kode implementasi Single Logout di `credential-guide.blade.php` untuk aplikasi klien Laravel.
+
 ### [2026-04-13]
 #### Added
 - **System Settings Page**: Halaman pengaturan sistem di Filament Admin untuk mengatur Session Lifetime secara dinamis via dropdown (60 menit, 2 jam, 1 hari, 1 minggu, 1 bulan, selamanya). Menggunakan `spatie/laravel-settings` sebagai backend-nya.
