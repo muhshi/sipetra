@@ -39,6 +39,16 @@ class PortalAppResource extends Resource
                     Forms\Components\TextInput::make('full_name')
                         ->label('Kepanjangan Nama Aplikasi')
                         ->maxLength(255),
+                    Forms\Components\Select::make('category')
+                        ->label('Kategori / Fungsi')
+                        ->options([
+                            'Umum & Kepegawaian' => 'Umum & Kepegawaian',
+                            'Statistik Sosial' => 'Statistik Sosial',
+                            'Produksi & Distribusi' => 'Produksi & Distribusi',
+                            'Nerwilis & IPDS' => 'Nerwilis & IPDS',
+                        ])
+                        ->default('Umum & Kepegawaian')
+                        ->required(),
                     Forms\Components\TextInput::make('url')
                         ->label('URL / Link Aplikasi')
                         ->required()
@@ -94,6 +104,10 @@ class PortalAppResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Aplikasi')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Kategori')
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('url')
                     ->label('URL')
                     ->limit(30)

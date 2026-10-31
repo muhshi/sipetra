@@ -13,6 +13,7 @@ class PortalApp extends Model
         'name',
         'full_name',
         'description',
+        'category',
         'url',
         'logo',
         'icon',
