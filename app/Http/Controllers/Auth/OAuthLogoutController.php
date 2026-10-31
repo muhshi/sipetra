@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\SsoAuditLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,14 @@ class OAuthLogoutController extends Controller
             $user = Auth::guard('web')->user();
 
             if ($user) {
+                SsoAuditLog::log(
+                    $user,
+                    null,
+                    'logout',
+                    'Single Logout (SLO) berhasil dilakukan',
+                    $request
+                );
+
                 // Cabut access tokens aktif milik user ini
                 DB::table('oauth_access_tokens')
                     ->where('user_id', $user->getAuthIdentifier())

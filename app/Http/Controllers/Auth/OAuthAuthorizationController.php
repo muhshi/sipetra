@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Passport\Client;
+use App\Models\SsoAuditLog;
 use App\Services\AccessRuleResolver;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -62,6 +63,14 @@ class OAuthAuthorizationController extends BaseAuthorizationController
         $client = $this->clients->find($authRequest->getClient()->getIdentifier());
 
         if ($client instanceof Client && ! $this->accessRuleResolver->isAllowed($user, $client)) {
+            SsoAuditLog::log(
+                $user,
+                $client->name ?? (string) $client->getIdentifier(),
+                'login_denied',
+                "Akses ditolak: role/permission tidak memenuhi syarat client {$client->name}",
+                $request
+            );
+
             return response(
                 $this->buildDeniedHtml($client->name, $user->name),
                 Response::HTTP_FORBIDDEN
@@ -74,6 +83,14 @@ class OAuthAuthorizationController extends BaseAuthorizationController
 
         if ($request->input('prompt') !== 'consent' &&
             ($client->skipsAuthorization($user, $scopes) || $this->hasGrantedScopes($user, $client, $scopes))) {
+            SsoAuditLog::log(
+                $user,
+                $client->name ?? (string) $client->getIdentifier(),
+                'login_success',
+                "Login SSO berhasil disetujui untuk client {$client->name}",
+                $request
+            );
+
             return $this->approveRequest($authRequest, $psrResponse);
         }
 
