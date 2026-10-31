@@ -27,6 +27,14 @@ class UserProfileModal extends Component
 
     public ?string $sessionSuccessMessage = null;
 
+    public function mount(): void
+    {
+        if (request()->has('open_profile') || request()->has('profile') || request()->boolean('open_profile')) {
+            $this->isOpen = true;
+            $this->activeTab = (string) request()->query('tab', 'profile');
+        }
+    }
+
     #[On('open-user-profile')]
     public function openModal(string $tab = 'profile'): void
     {

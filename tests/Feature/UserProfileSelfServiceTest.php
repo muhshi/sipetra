@@ -151,3 +151,56 @@ test('user can revoke all other active sessions', function () {
 
     expect(DB::table('sessions')->where('id', $otherSessionId)->count())->toBe(0);
 });
+
+test('pegawai profile displays nip and jabatan but hides sobat id', function () {
+    $pegawai = User::factory()->create([
+        'identity_type' => 'pegawai',
+        'nip' => '1987654321',
+        'nip_baru' => '198765432100000001',
+        'jabatan' => 'Pranata Komputer Ahli Muda',
+        'unit_kerja' => 'IPDS BPS Demak',
+        'sobat_id' => 'SOBAT-HIDDEN-99',
+    ]);
+
+    $this->actingAs($pegawai);
+
+    livewire(UserProfileModal::class)
+        ->call('openModal', 'profile')
+        ->assertSee('198765432100000001')
+        ->assertSee('Pranata Komputer Ahli Muda')
+        ->assertSee('IPDS BPS Demak')
+        ->assertDontSee('SOBAT-HIDDEN-99');
+});
+
+test('mitra profile displays sobat id but hides nip and jabatan and satker', function () {
+    $mitra = User::factory()->create([
+        'identity_type' => 'mitra',
+        'sobat_id' => 'SOBAT-3321-007',
+        'nip' => 'NIP-HIDDEN-123',
+        'nip_baru' => 'NIP-BARU-HIDDEN-456',
+        'jabatan' => 'Jabatan Hidden',
+        'unit_kerja' => 'Satker Hidden',
+    ]);
+
+    $this->actingAs($mitra);
+
+    livewire(UserProfileModal::class)
+        ->call('openModal', 'profile')
+        ->assertSee('SOBAT-3321-007')
+        ->assertDontSee('NIP-HIDDEN-123')
+        ->assertDontSee('NIP-BARU-HIDDEN-456')
+        ->assertDontSee('Jabatan Hidden')
+        ->assertDontSee('Satker Hidden');
+});
+
+test('account and profile routes redirect authenticated users to portal with open_profile parameter', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/account')
+        ->assertRedirect('/?open_profile=1');
+
+    $this->actingAs($user)
+        ->get('/profile')
+        ->assertRedirect('/?open_profile=1');
+});

@@ -82,6 +82,15 @@
                     <!-- Tab Content -->
                     <div class="p-6">
                         @if($activeTab === 'profile')
+                            @php
+                                $identityVal = $user?->identity_type instanceof \App\Enums\IdentityType 
+                                    ? $user->identity_type->value 
+                                    : (string) ($user?->identity_type ?? 'pegawai');
+                                $isMitra = strtolower($identityVal) === 'mitra';
+                                $identityLabel = $user?->identity_type instanceof \App\Enums\IdentityType 
+                                    ? $user->identity_type->label() 
+                                    : strtoupper($identityVal);
+                            @endphp
                             <div class="space-y-5">
                                 <div class="flex items-center space-x-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
                                     <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-blue-500/20 bg-slate-200">
@@ -97,15 +106,15 @@
                                         <h4 class="text-base font-bold text-slate-900">{{ $user?->name }}</h4>
                                         <p class="text-xs text-slate-500">{{ $user?->email }}</p>
                                         <div class="mt-2 flex flex-wrap gap-1.5">
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800">
-                                                {{ strtoupper($user?->identity_type ?? 'PEGAWAI') }}
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold {{ $isMitra ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800' }}">
+                                                {{ $identityLabel }}
                                             </span>
-                                            @if($user?->nip)
+                                            @if(! $isMitra && $user?->nip)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-200 text-slate-700">
                                                     NIP: {{ $user->nip }}
                                                 </span>
                                             @endif
-                                            @if($user?->sobat_id)
+                                            @if($isMitra && $user?->sobat_id)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800">
                                                     SOBAT: {{ $user->sobat_id }}
                                                 </span>
@@ -115,21 +124,48 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                                    <div class="p-3 rounded-lg border border-slate-100 bg-white">
-                                        <span class="block text-slate-400 font-medium">Jabatan</span>
-                                        <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->jabatan ?: '-' }}</span>
-                                    </div>
-                                    <div class="p-3 rounded-lg border border-slate-100 bg-white">
-                                        <span class="block text-slate-400 font-medium">Unit Kerja / Satker</span>
-                                        <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->unit_kerja ?: ($user?->kd_satker ?: 'BPS Kab. Demak') }}</span>
-                                    </div>
-                                    <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                    @if(! $isMitra)
+                                        {{-- KHUSUS PEGAWAI: NIP Baru, NIP Lama, Jabatan, Satker --}}
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">NIP Baru (18 Digit)</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->nip_baru ?: '-' }}</span>
+                                        </div>
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">NIP Lama</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->nip ?: '-' }}</span>
+                                        </div>
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">Jabatan</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->jabatan ?: '-' }}</span>
+                                        </div>
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">Unit Kerja / Satker</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->unit_kerja ?: ($user?->kd_satker ?: 'BPS Kab. Demak') }}</span>
+                                        </div>
+                                    @else
+                                        {{-- KHUSUS MITRA: ID SOBAT, Periode Mitra, Siklus Kontrak --}}
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">ID SOBAT BPS</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block font-mono font-bold text-emerald-700">{{ $user?->sobat_id ?: '-' }}</span>
+                                        </div>
+                                        <div class="p-3 rounded-lg border border-slate-100 bg-white">
+                                            <span class="block text-slate-400 font-medium">Tahun / Periode Mitra</span>
+                                            <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->period ?: date('Y') }}</span>
+                                        </div>
+                                        @if($user?->contract_start || $user?->contract_end)
+                                            <div class="p-3 rounded-lg border border-slate-100 bg-white sm:col-span-2">
+                                                <span class="block text-slate-400 font-medium">Masa Berlaku Kontrak</span>
+                                                <span class="text-slate-800 font-semibold mt-0.5 block">
+                                                    {{ $user?->contract_start ? \Carbon\Carbon::parse($user->contract_start)->format('d M Y') : '-' }} s/d 
+                                                    {{ $user?->contract_end ? \Carbon\Carbon::parse($user->contract_end)->format('d M Y') : '-' }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                    <div class="p-3 rounded-lg border border-slate-100 bg-white {{ $isMitra ? 'sm:col-span-2' : '' }}">
                                         <span class="block text-slate-400 font-medium">Nomor WhatsApp / Kontak</span>
                                         <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->phone ?: '-' }}</span>
-                                    </div>
-                                    <div class="p-3 rounded-lg border border-slate-100 bg-white">
-                                        <span class="block text-slate-400 font-medium">NIP Baru (18 Digit)</span>
-                                        <span class="text-slate-800 font-semibold mt-0.5 block">{{ $user?->nip_baru ?: '-' }}</span>
                                     </div>
                                 </div>
 

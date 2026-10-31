@@ -15,6 +15,15 @@ Route::get('/dashboard', function () {
     return redirect('/admin');
 })->middleware('auth')->name('dashboard');
 
+// Self-Service User Profile & Password Change Route
+Route::get('/account', function () {
+    return redirect('/?open_profile=1');
+})->middleware('auth')->name('account.profile');
+
+Route::get('/profile', function () {
+    return redirect('/?open_profile=1');
+})->middleware('auth')->name('user.profile');
+
 // Federated Single Logout (SLO) & Normal Logout Routes
 Route::get('/oauth/logout', [OAuthLogoutController::class, 'logout'])->name('oauth.logout');
 Route::match(['get', 'post'], '/logout', [OAuthLogoutController::class, 'logout'])->name('logout');
