@@ -4,12 +4,13 @@ namespace App\Filament\Pages;
 
 use App\Settings\SystemSettings;
 use Filament\Forms;
-use Filament\Schemas\Schema;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Schema;
+use Illuminate\Contracts\Support\Htmlable;
 
 class SystemSettingsPage extends SettingsPage
 {
-    protected static string $settings = \App\Settings\SystemSettings::class;
+    protected static string $settings = SystemSettings::class;
 
     public static function getNavigationIcon(): ?string
     {
@@ -21,7 +22,7 @@ class SystemSettingsPage extends SettingsPage
         return 'Pengaturan';
     }
 
-    public function getTitle(): string|\Illuminate\Contracts\Support\Htmlable
+    public function getTitle(): string|Htmlable
     {
         return 'System Settings';
     }

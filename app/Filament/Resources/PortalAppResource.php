@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PortalAppResource\Pages;
 use App\Models\PortalApp;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -14,6 +15,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 
 class PortalAppResource extends Resource
 {
@@ -54,12 +56,12 @@ class PortalAppResource extends Resource
                             'style' => 'cursor: pointer;',
                         ])
                         ->suffixAction(
-                            \Filament\Actions\Action::make('selectIcon')
+                            Action::make('selectIcon')
                                 ->icon('heroicon-m-squares-2x2')
                                 ->modalHeading('Pilih Icon')
                                 ->modalIcon(false)
                                 ->modalWidth('4xl')
-                                ->modalContent(fn ($component): \Illuminate\Contracts\View\View => view('filament.components.icon-picker-modal', ['statePath' => $component->getStatePath()]))
+                                ->modalContent(fn ($component): View => view('filament.components.icon-picker-modal', ['statePath' => $component->getStatePath()]))
                                 ->modalSubmitAction(false)
                                 ->modalCancelAction(false)
                         )
@@ -122,8 +124,6 @@ class PortalAppResource extends Resource
     {
         return [];
     }
-
-
 
     public static function getPages(): array
     {

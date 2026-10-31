@@ -7,13 +7,14 @@ namespace App\Filament\Resources\Passport;
 use App\Filament\Passport\Schemas\ExtendedClientResourceForm;
 use App\Filament\Resources\Passport\RelationManagers\AccessRulesRelationManager;
 use App\Filament\Resources\Passport\RelationManagers\ClientTokensRelationManager;
+use App\Models\Passport\Client;
 use Filament\Schemas\Schema;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource as BaseClientResource;
 use UnitEnum;
 
 class ClientResource extends BaseClientResource
 {
-    protected static ?string $model = \App\Models\Passport\Client::class;
+    protected static ?string $model = Client::class;
 
     protected static ?string $slug = 'clients';
 

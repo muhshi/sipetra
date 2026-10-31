@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Laravel\Passport\Token;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TokenPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:Token');
@@ -71,5 +71,4 @@ class TokenPolicy
     {
         return $authUser->can('Reorder:Token');
     }
-
 }

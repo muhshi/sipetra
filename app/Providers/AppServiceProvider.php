@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
 use Laravel\Passport\Passport;
-use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient;
-use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\EditClient;
-use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\ViewClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,21 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            CreateClient::class,
-            \App\Filament\Resources\ClientResource\Pages\CreateClient::class,
-        );
-
-        $this->app->bind(
-            ViewClient::class,
-            \App\Filament\Resources\ClientResource\Pages\ViewClient::class,
-        );
-
-        $this->app->bind(
-            EditClient::class,
-            \App\Filament\Resources\ClientResource\Pages\EditClient::class,
-        );
-
         $this->app->bind(PassportAuthorizationController::class, OAuthAuthorizationController::class);
     }
 
@@ -67,8 +49,6 @@ class AppServiceProvider extends ServiceProvider
             'roles:read' => 'Baca hak akses (Roles & Permissions)',
         ]);
 
-        Passport::useClientModel(PassportClient::class);
-
         Passport::tokensExpireIn(now()->addHour());
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
@@ -81,6 +61,5 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Throwable $th) {
             // Ignore if settings migration hasn't run
         }
-
     }
 }

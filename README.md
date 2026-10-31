@@ -65,6 +65,21 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-10-31]
+#### Optimized
+- **Query N+1 Elimination**: Menambahkan eager loading `employeeProfile` pada `UserResource` dan `user` pada `EmployeeProfileResource` untuk mengeliminasi N+1 database query saat merender tabel di admin panel.
+- **Double Fetch Optimization**: Mengurangi duplikasi query `Client::find()` pada saat merender schema perizinan scope di `ExtendedClientResourceForm`.
+
+#### Fixed
+- **API Contact Scope Attribute**: Memperbaiki pemetaan nomor telepon di `UserApiController` dari sebelumnya `$user->no_hp` (undefined) menjadi `$user->phone` sesuai skema database, sehingga scope `contact:read` mengembalikan nomor telepon dengan benar.
+- **Prevent 403 Redirect Loop**: Mengarahkan fallback error HTTP 403 di `bootstrap/app.php` dan fallback non-panel user di `Login.php` ke `route('home')` (bukan `route('dashboard')`) untuk mencegah infinite redirect loop antara `/dashboard` dan `/admin`.
+
+#### Cleaned
+- **Removal of Legacy ClientResource**: Menghapus direktori legacy `app/Filament/Resources/ClientResource` yang telah digantikan oleh `app/Filament/Resources/Passport/ClientResource`.
+- **AppServiceProvider Cleanup**: Menghapus binding container lama untuk `CreateClient`/`EditClient`/`ViewClient` dan menghapus duplikasi pemanggilan `Passport::useClientModel(PassportClient::class)`.
+- **Dead Code & Artifact Cleanup**: Menghapus `PassportClientPolicy.php` yang tidak terdaftar, `UserProfileResource.php` yang tidak terpakai, unused imports pada widget, unused method pada wizard form, registrasi manual redundan `SystemSettingsPage` di `AdminPanelProvider`, serta menghapus file skrip scratch `fix_admin.php`.
+- **Code Styling**: Menjalankan Laravel Pint pada seluruh codebase yang dimodifikasi.
+
 ### [2026-05-25]
 #### Changed
 - **OAuth Authorization**: Memperbarui `OAuthAuthorizationController` dengan meng-override metode `hasGrantedScopes` untuk mengabaikan pengecekan kadaluarsa token (`expires_at`). Hal ini mencegah prompt persetujuan (consent screen) muncul berulang kali setiap kali token akses kadaluarsa, sehingga user hanya perlu menyetujui akses satu kali saja.

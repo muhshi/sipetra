@@ -12,9 +12,10 @@ it('returns the aggregated user profile payload from /api/user based on scopes',
         'email' => 'pegawai@example.com',
         'jabatan' => 'Statistisi Ahli Pertama',
         'unit_kerja' => 'BPS Demak',
+        'phone' => '081234567890',
     ]);
 
-    Passport::actingAs($user, ['profile:read', 'employee:read', 'roles:read']);
+    Passport::actingAs($user, ['profile:read', 'employee:read', 'roles:read', 'contact:read']);
 
     $this->getJson('/api/user')
         ->assertSuccessful()
@@ -23,6 +24,7 @@ it('returns the aggregated user profile payload from /api/user based on scopes',
             'name' => 'Pegawai Demo',
             'email' => 'pegawai@example.com',
             'identity_type' => 'pegawai',
+            'phone_number' => '081234567890',
             'employee' => [
                 'jabatan' => 'Statistisi Ahli Pertama',
                 'unit_kerja' => 'BPS Demak',

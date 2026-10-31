@@ -8,15 +8,19 @@ use App\Enums\ClientAccessPolicy;
 use App\Filament\Passport\Schemas\Fields\ClientIdInput;
 use App\Filament\Passport\Schemas\Fields\RedirectInput;
 use App\Filament\Passport\Schemas\Fields\SecretInput;
+use App\Models\Passport\Client;
 use Filament\Forms\Components\Select;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use N3XT0R\FilamentPassportUi\Application\StateResolvers\GrantType\NeedsUserPermissionState;
+use N3XT0R\FilamentPassportUi\Resources\BaseResource\Components\ScopeCheckboxList;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\ClientResourceForm;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\GrantTypeSelect;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\NameInput;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\OwnerSelect;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Schemas\Fields\RevokeToggle;
+use N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository;
 
 class ExtendedClientResourceForm extends ClientResourceForm
 {
@@ -42,19 +46,24 @@ class ExtendedClientResourceForm extends ClientResourceForm
             RevokeToggle::make(),
         ];
 
-        $dbScopesRequired = app(\N3XT0R\LaravelPassportAuthorizationCore\Repositories\ConfigRepository::class)->isUsingDatabaseScopes();
+        $dbScopesRequired = app(ConfigRepository::class)->isUsingDatabaseScopes();
 
         if ($dbScopesRequired) {
-            $components[] = \Filament\Schemas\Components\Grid::make()
-                ->schema(fn (Get $get) => [
-                    \N3XT0R\FilamentPassportUi\Resources\BaseResource\Components\ScopeCheckboxList::make(
-                        context: 'client',
-                        name: 'client_scopes',
-                        record: $get('id') ? \App\Models\Passport\Client::find($get('id')) : null,
-                        statePath: 'client_scopes',
-                        contextClient: $get('id') ? \App\Models\Passport\Client::find($get('id')) : null,
-                    ),
-                ])
+            $components[] = Grid::make()
+                ->schema(function (Get $get) {
+                    $clientId = $get('id');
+                    $client = $clientId ? Client::find($clientId) : null;
+
+                    return [
+                        ScopeCheckboxList::make(
+                            context: 'client',
+                            name: 'client_scopes',
+                            record: $client,
+                            statePath: 'client_scopes',
+                            contextClient: $client,
+                        ),
+                    ];
+                })
                 ->key('client_scopes')
                 ->columnSpanFull();
         }

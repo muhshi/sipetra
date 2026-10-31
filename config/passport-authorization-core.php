@@ -1,6 +1,11 @@
 <?php
 
 declare(strict_types=1);
+use Laravel\Passport\RefreshToken;
+use Laravel\Passport\Scope;
+use Laravel\Passport\Token;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client;
+
 return [
 
     /**
@@ -51,30 +56,29 @@ return [
         /**
          * Model used to represent OAuth2 clients.
          *
-         * Must be compatible with {@see \N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Client}.
+         * Must be compatible with {@see Client}.
          */
         'client' => null,
 
         /**
          * Model used to represent OAuth2 tokens.
          *
-         * Must be compatible with {@see \Laravel\Passport\Token}.
+         * Must be compatible with {@see Token}.
          */
         'token' => null,
 
         /**
          * Model used to represent OAuth2 scopes.
          *
-         * Must be compatible with {@see \Laravel\Passport\Scope}.
+         * Must be compatible with {@see Scope}.
          */
         'scope' => null,
 
         /**
          * Model used to represent OAuth2 auth codes.
          *
-         * Must be compatible with {@see \Laravel\Passport\RefreshToken}.
+         * Must be compatible with {@see RefreshToken}.
          */
         'refresh_token' => null,
     ],
 ];
-

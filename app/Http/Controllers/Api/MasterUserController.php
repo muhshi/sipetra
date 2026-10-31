@@ -28,11 +28,11 @@ class MasterUserController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
-            'type'          => ['nullable', 'string', 'in:pegawai,mitra,admin'],
-            'period'        => ['nullable', 'string', 'max:50'],
+            'type' => ['nullable', 'string', 'in:pegawai,mitra,admin'],
+            'period' => ['nullable', 'string', 'max:50'],
             'updated_after' => ['nullable', 'date'],
-            'per_page'      => ['nullable', 'integer', 'min:1', 'max:500'],
-            'page'          => ['nullable', 'integer', 'min:1'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:500'],
+            'page' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $query = User::query()->orderBy('id');
@@ -53,7 +53,7 @@ class MasterUserController extends Controller
         }
 
         $perPage = (int) $request->input('per_page', 100);
-        $users   = $query->paginate($perPage);
+        $users = $query->paginate($perPage);
 
         // Tambahkan `synced_at` ke response meta — client harus simpan ini
         // sebagai `updated_after` untuk sync inkremental berikutnya.

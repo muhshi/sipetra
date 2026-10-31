@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Passport\Pages;
 use App\Enums\ClientAccessPolicy;
 use App\Filament\Passport\Schemas\ExtendedClientWizardForm;
 use App\Filament\Resources\Passport\ClientResource;
+use App\Models\ClientAccessRule;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use N3XT0R\FilamentPassportUi\Resources\ClientResource\Pages\CreateClient as BaseCreateClient;
@@ -36,7 +37,7 @@ class CreateClient extends BaseCreateClient
                 $ruleValues = (array) ($ruleSet['rule_values'] ?? []);
 
                 foreach ($ruleValues as $ruleValue) {
-                    \App\Models\ClientAccessRule::create([
+                    ClientAccessRule::create([
                         'client_id' => $record->getKey(),
                         'rule_type' => $ruleType,
                         'rule_value' => (string) $ruleValue,

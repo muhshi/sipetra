@@ -36,6 +36,7 @@ class Client extends \N3XT0R\LaravelPassportAuthorizationCore\Models\Passport\Cl
     {
         return $this->hasMany(ClientUserAccess::class, 'client_id');
     }
+
     public function getMorphClass(): string
     {
         // Keep the legacy morph type so existing scope grants continue to match.

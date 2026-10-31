@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\NoCacheHeaders;
+use App\Http\Middleware\ValidateMasterToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Alias untuk validasi token M2M Master Data API
         $middleware->alias([
-            'master.token' => \App\Http\Middleware\ValidateMasterToken::class,
+            'master.token' => ValidateMasterToken::class,
         ]);
 
     })
@@ -34,8 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Jika errornya Forbidden (403) dan user mencoba menjebol dari URL `/admin...`
             if ($e->getStatusCode() === 403 && $request->is('admin*')) {
-                // Paksa memantul kembali ke dashboard
-                return redirect()->route('dashboard')
+                // Paksa memantul kembali ke beranda portal
+                return redirect()->route('home')
                     ->with('error', 'Maaf, Anda tidak memiliki hak akses untuk masuk ke panel Administrator.');
             }
         });

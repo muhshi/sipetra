@@ -13,7 +13,7 @@ return [
     | for all Passport-related resources.
     |
     */
-    
+
     'navigation' => [
         'client_resource' => [
             'group' => 'filament-passport-ui::passport-ui.navigation.group',

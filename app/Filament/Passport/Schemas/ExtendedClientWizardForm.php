@@ -154,13 +154,6 @@ class ExtendedClientWizardForm extends ClientWizardForm
             ->all();
     }
 
-    private function getRuleValueLabel(string|AccessRuleType|null $ruleType, mixed $value): ?string
-    {
-        $labels = $this->getRuleValueLabels($ruleType, [$value]);
-
-        return $labels[(string) $value] ?? null;
-    }
-
     private function getRuleValueLabels(string|AccessRuleType|null $ruleType, array $values): array
     {
         $ruleType = $this->normalizeRuleType($ruleType);

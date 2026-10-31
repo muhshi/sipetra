@@ -31,7 +31,7 @@ class PortalAppsSeeder extends Seeder
                     'order' => $app['order'],
                     'icon' => $app['icon'],
                     'is_active' => true,
-                    'description' => 'Sistem Informasi ' . $app['name'] . ' BPS Kabupaten Demak',
+                    'description' => 'Sistem Informasi '.$app['name'].' BPS Kabupaten Demak',
                 ]
             );
         }

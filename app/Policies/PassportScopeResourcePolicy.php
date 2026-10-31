@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PassportScopeResourcePolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:PassportScopeResource');
@@ -71,5 +71,4 @@ class PassportScopeResourcePolicy
     {
         return $authUser->can('Reorder:PassportScopeResource');
     }
-
 }

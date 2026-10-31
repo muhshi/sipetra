@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         if (Schema::hasTable('passport_scope_grants')) {
@@ -20,7 +21,6 @@ return new class () extends Migration {
              */
             $table->string('tokenable_id');
             $table->string('tokenable_type');
-
 
             $table->foreignId('resource_id')
                 ->constrained('passport_scope_resources')

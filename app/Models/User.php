@@ -111,12 +111,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasspo
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'identity_type'     => IdentityType::class,
-            'tanggal_lahir'     => 'date',
-            'is_active'         => 'boolean',
-            'contract_start'    => 'date',
-            'contract_end'      => 'date',
+            'password' => 'hashed',
+            'identity_type' => IdentityType::class,
+            'tanggal_lahir' => 'date',
+            'is_active' => 'boolean',
+            'contract_start' => 'date',
+            'contract_end' => 'date',
         ];
     }
 }

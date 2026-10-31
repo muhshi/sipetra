@@ -57,7 +57,7 @@ class UserFactory extends Factory
             'nip_baru' => fake()->unique()->numerify('##################'),
             'kd_satker' => fake()->numerify('####0'),
             'jabatan' => fake()->randomElement(['Staf', 'Kepala Seksi', 'Kepala Sub Bagian', 'Kepala Bidang']),
-            'unit_kerja' => 'BPS ' . fake()->city(),
+            'unit_kerja' => 'BPS '.fake()->city(),
             'golongan' => fake()->randomElement(['III/a', 'III/b', 'III/c', 'III/d', 'IV/a', 'IV/b']),
             'jenis_kelamin' => fake()->randomElement(['LK', 'PR']),
             'tempat_lahir' => fake()->city(),

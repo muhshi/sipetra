@@ -1,10 +1,9 @@
 <?php
 
 use App\Livewire\Auth\Login;
+use App\Livewire\PortalLandingPage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-use App\Livewire\PortalLandingPage;
 
 Route::get('/', PortalLandingPage::class)->name('home');
 

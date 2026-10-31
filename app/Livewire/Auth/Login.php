@@ -71,13 +71,13 @@ class Login extends Component
 
             // Cek jika Pegawai biasa (bukan admin) tanpa sengaja memiliki memori 'intended' ke /admin,
             // (biasanya karena ia pernah mengklik link /admin sebelum login).
+            // Maka kita arahkan ke beranda portal saja, daripada kena halaman 403 Forbidden.
             if (str_contains($intendedUrl, '/admin')) {
                 $filamentManager = app(FilamentManager::class);
                 $panel = $filamentManager->getPanel('admin');
 
-                // Jika user TIDAK boleh akses Filament panel, arahkan mereka ke route dashboard
                 if (! $user->canAccessPanel($panel)) {
-                    $intendedUrl = route('dashboard');
+                    $intendedUrl = route('home');
                 }
             }
 

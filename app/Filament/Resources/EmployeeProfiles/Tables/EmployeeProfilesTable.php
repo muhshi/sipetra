@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\EmployeeProfiles\Tables;
 
-
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
@@ -36,7 +35,7 @@ class EmployeeProfilesTable
                     ->sortable(),
                 TextColumn::make('mk_tahun')
                     ->label('Masa Kerja')
-                    ->state(fn($record) => "{$record->mk_tahun}th {$record->mk_bulan}bl"),
+                    ->state(fn ($record) => "{$record->mk_tahun}th {$record->mk_bulan}bl"),
             ])
             ->filters([
                 //
