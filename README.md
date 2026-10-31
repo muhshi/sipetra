@@ -75,6 +75,7 @@ npx ruflo@latest daemon start
 - **Double Fetch Optimization**: Mengurangi duplikasi query `Client::find()` pada saat merender schema perizinan scope di `ExtendedClientResourceForm`.
 
 #### Fixed
+- **SSO Login Double-Click / Race Condition Fix**: Memperbaiki masalah hilangnya `url.intended` saat tombol login diklik ganda ketika sedang loading. Intended OAuth URL kini di-cache di dalam Livewire component state sejak pertama kali dimount, tombol login otomatis dinonaktifkan (`wire:loading.attr="disabled"` dan Alpine submission guard) saat sedang memproses, dan pengecekan `Auth::check()` memastikan redirect selalu mengarah ke aplikasi klien tujuan alih-alih mental ke beranda/admin SIPETRA.
 - **API Contact Scope Attribute**: Memperbaiki pemetaan nomor telepon di `UserApiController` dari sebelumnya `$user->no_hp` (undefined) menjadi `$user->phone` sesuai skema database, sehingga scope `contact:read` mengembalikan nomor telepon dengan benar.
 - **Prevent 403 Redirect Loop**: Mengarahkan fallback error HTTP 403 di `bootstrap/app.php` dan fallback non-panel user di `Login.php` ke `route('home')` (bukan `route('dashboard')`) untuk mencegah infinite redirect loop antara `/dashboard` dan `/admin`.
 

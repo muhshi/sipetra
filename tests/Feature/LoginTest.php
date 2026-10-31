@@ -176,3 +176,28 @@ test('can login using SOBAT ID', function () {
 
     $this->assertAuthenticatedAs($user);
 });
+
+test('preserves intended url even if authenticate is triggered multiple times while loading', function () {
+    $user = User::factory()->pegawai()->create([
+        'email' => 'adib@bps.go.id',
+        'password' => bcrypt('password'),
+    ]);
+
+    $oauthUrl = 'https://sipetra.bpsdemak.com/oauth/authorize?client_id=123&redirect_uri=https://alfath.bpsdemak.id/auth/callback&response_type=code';
+
+    session()->put('url.intended', $oauthUrl);
+
+    $component = livewire(Login::class)
+        ->fill([
+            'username' => 'adib@bps.go.id',
+            'password' => 'password',
+        ]);
+
+    // First call to authenticate
+    $component->call('authenticate')
+        ->assertRedirect($oauthUrl);
+
+    // Second call (simulating double click while loading)
+    $component->call('authenticate')
+        ->assertRedirect($oauthUrl);
+});

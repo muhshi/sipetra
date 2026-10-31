@@ -8,7 +8,7 @@
         <p class="text-sm text-gray-500 mt-1 dark:text-gray-400">Sistem Informasi Pegawai Terpadu (SIPETRA)</p>
     </div>
 
-    <form wire:submit="authenticate">
+    <form wire:submit="authenticate" x-data="{ submitting: false }" x-on:submit="if (submitting) { $event.preventDefault(); return false; } submitting = true;">
         <!-- Input Username/NIP/Email/SOBAT ID -->
         <div class="mb-4">
             <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">NIP / Email / Username / SOBAT ID</label>
@@ -27,13 +27,17 @@
 
         <!-- Remember Me & Submit -->
         <div class="flex items-center justify-between mb-6">
-            <label class="flex items-center">
+            <label class="flex items-center cursor-pointer">
                 <input wire:model="remember" type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Ingat Saya</span>
             </label>
         </div>
 
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <button type="submit"
+            wire:loading.attr="disabled"
+            wire:target="authenticate"
+            x-bind:disabled="submitting"
+            class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             <span wire:loading.remove wire:target="authenticate">Masuk ke Akun</span>
             <span wire:loading wire:target="authenticate" class="flex items-center">
                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
