@@ -65,6 +65,10 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-02]
+#### Fixed
+- **Fix CSS Berantakan pada Modal Profil & Spotlight Portal**: Memperbaiki ketiadaan pemuatan asset Vite (`@vite(['resources/css/app.css', 'resources/js/app.js'])`) pada layout portal (`components/layouts/portal.blade.php`), menghapus dependensi ganda AlpineJS CDN yang bentrok dengan Livewire, serta menambahkan styling tangguh scoped CSS pada modal profil pengguna (`UserProfileModal`) agar modal tampil terpusat sempurna, berlatar belakang solid, form rapi, dan responsif di semua perangkat.
+
 ### [2026-10-31]
 #### Added
 - **Centralized SSO Audit Logging**: Sistem pencatatan riwayat audit SSO terpusat (`sso_audit_logs`) yang merekam aktivitas login berhasil, penolakan akses oleh access rule resolver, dan single logout (SLO). Dilengkapi viewer admin Filament `SsoAuditLogResource` dengan filter aktivitas, IP address copyable, pencarian pengguna/aplikasi, dan badge status visual.
