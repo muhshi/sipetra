@@ -68,7 +68,7 @@ class UsersTable
                     ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Terdaftar')
-                    ->dateTime()
+                    ->dateTime('Y-m-d H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

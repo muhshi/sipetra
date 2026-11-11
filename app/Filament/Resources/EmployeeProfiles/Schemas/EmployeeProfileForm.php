@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EmployeeProfiles\Schemas;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -35,18 +36,22 @@ class EmployeeProfileForm
                     ->schema([
                         Grid::make(2)
                             ->schema([
-                                TextInput::make('tmt_cpns')
+                                DatePicker::make('tmt_cpns')
                                     ->label('TMT CPNS')
-                                    ->type('date'),
-                                TextInput::make('tmt_pns')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
+                                DatePicker::make('tmt_pns')
                                     ->label('TMT PNS')
-                                    ->type('date'),
-                                TextInput::make('tmt_golongan')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
+                                DatePicker::make('tmt_golongan')
                                     ->label('TMT Golongan')
-                                    ->type('date'),
-                                TextInput::make('tmt_jabatan')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
+                                DatePicker::make('tmt_jabatan')
                                     ->label('TMT Jabatan')
-                                    ->type('date'),
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
                             ]),
                         Grid::make(2)
                             ->schema([
@@ -67,13 +72,22 @@ class EmployeeProfileForm
                     ->schema([
                         Grid::make(2)
                             ->schema([
-                                TextInput::make('agama')
-                                    ->label('Agama'),
+                                Select::make('agama')
+                                    ->label('Agama')
+                                    ->options([
+                                        'Islam' => 'Islam',
+                                        'Protestan' => 'Protestan',
+                                        'Katolik' => 'Katolik',
+                                        'Hindu' => 'Hindu',
+                                        'Budha' => 'Budha',
+                                        'Konghucu' => 'Konghucu',
+                                    ]),
                                 TextInput::make('no_ijazah')
                                     ->label('Nomor Ijazah'),
-                                TextInput::make('tgl_ijazah')
+                                DatePicker::make('tgl_ijazah')
                                     ->label('Tanggal Ijazah')
-                                    ->type('date'),
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
                             ]),
                     ]),
             ]);

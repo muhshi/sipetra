@@ -16,7 +16,9 @@ class EmployeeProfilesTable
             ->columns([
                 ImageColumn::make('user.avatar_url')
                     ->label('Foto')
-                    ->circular(),
+                    ->circular()
+                    ->disk('public')
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name='.urlencode($record->user?->name ?? 'Pegawai').'&color=FFFFFF&background=030712'),
                 TextColumn::make('user.name')
                     ->label('Nama Pegawai')
                     ->searchable()

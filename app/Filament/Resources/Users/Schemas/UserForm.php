@@ -100,7 +100,9 @@ class UserForm
                                 TextInput::make('tempat_lahir')
                                     ->label('Tempat Lahir'),
                                 DatePicker::make('tanggal_lahir')
-                                    ->label('Tanggal Lahir'),
+                                    ->label('Tanggal Lahir')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
                             ]),
                         TextInput::make('pendidikan')
                             ->label('Pendidikan'),
@@ -123,43 +125,54 @@ class UserForm
                     ->schema([
                         Grid::make(3)
                             ->schema([
-                                TextInput::make('employeeProfile.tmt_cpns')
+                                DatePicker::make('employeeProfile.tmt_cpns')
                                     ->label('TMT CPNS')
-                                    ->disabled(),
-                                TextInput::make('employeeProfile.tmt_pns')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
+                                DatePicker::make('employeeProfile.tmt_pns')
                                     ->label('TMT PNS')
-                                    ->disabled(),
-                                TextInput::make('employeeProfile.tmt_golongan')
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
+                                DatePicker::make('employeeProfile.tmt_golongan')
                                     ->label('TMT Golongan')
-                                    ->disabled(),
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
                             ]),
                         Grid::make(3)
                             ->schema([
-                                TextInput::make('employeeProfile.tmt_jabatan')
+                                DatePicker::make('employeeProfile.tmt_jabatan')
                                     ->label('TMT Jabatan')
-                                    ->disabled(),
+                                    ->displayFormat('Y-m-d')
+                                    ->native(false),
                                 TextInput::make('employeeProfile.status_pegawai')
                                     ->label('Status Pegawai')
-                                    ->disabled(),
-                                TextInput::make('employeeProfile.agama')
+                                    ->placeholder('PNS, PPPK, dll'),
+                                Select::make('employeeProfile.agama')
                                     ->label('Agama')
-                                    ->disabled(),
+                                    ->options([
+                                        'Islam' => 'Islam',
+                                        'Protestan' => 'Protestan',
+                                        'Katolik' => 'Katolik',
+                                        'Hindu' => 'Hindu',
+                                        'Budha' => 'Budha',
+                                        'Konghucu' => 'Konghucu',
+                                    ]),
                             ]),
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('employeeProfile.mk_tahun')
                                     ->label('Masa Kerja (Tahun)')
-                                    ->suffix('Tahun')
-                                    ->disabled(),
+                                    ->numeric()
+                                    ->suffix('Tahun'),
                                 TextInput::make('employeeProfile.mk_bulan')
                                     ->label('Masa Kerja (Bulan)')
-                                    ->suffix('Bulan')
-                                    ->disabled(),
+                                    ->numeric()
+                                    ->suffix('Bulan'),
                             ]),
                     ])
                     ->collapsible()
                     ->collapsed()
-                    ->visible(fn ($record) => $record?->identity_type === IdentityType::Pegawai),
+                    ->visible(fn ($record, $get) => ($record?->identity_type ?? $get('identity_type')) === IdentityType::Pegawai || ($record?->identity_type ?? $get('identity_type')) === IdentityType::Pegawai->value),
             ]);
     }
 }

@@ -65,6 +65,12 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-11]
+#### Fixed
+- **Avatar Pegawai Muncul di Profil Pegawai**: Menambahkan konfigurasi disk penyimpanan `->disk('public')` dan fallback avatar otomatis di `EmployeeProfilesTable` serta `EditProfile`, sehingga foto profil yang diunggah di kelola pengguna tampil konsisten dan tidak kosong.
+- **Detil Kepegawaian (BPS) Editable di Form Edit Pengguna**: Membuka field detil kepegawaian BPS yang sebelumnya disabled di `UserForm`, menambahkan mekanisme prefill data relasi `mutateFormDataBeforeFill` dan penyimpanan otomatis relasi `afterSave` di `EditUser`.
+- **Standardisasi Format Tanggal ISO (YYYY-MM-DD)**: Mengubah seluruh field input tanggal (`tanggal_lahir`, `tmt_cpns`, `tmt_pns`, `tmt_golongan`, `tmt_jabatan`, `tgl_ijazah`) menggunakan `DatePicker` dengan `->displayFormat('Y-m-d')`, serta menyeragamkan kolom timestamp tabel ke format ISO standar.
+
 ### [2026-11-02]
 #### Fixed
 - **Fix CSS Berantakan pada Modal Profil & Spotlight Portal**: Memperbaiki ketiadaan pemuatan asset Vite (`@vite(['resources/css/app.css', 'resources/js/app.js'])`) pada layout portal (`components/layouts/portal.blade.php`), menghapus dependensi ganda AlpineJS CDN yang bentrok dengan Livewire, serta menambahkan styling tangguh scoped CSS pada modal profil pengguna (`UserProfileModal`) agar modal tampil terpusat sempurna, berlatar belakang solid, form rapi, dan responsif di semua perangkat.

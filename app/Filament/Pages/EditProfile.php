@@ -108,6 +108,7 @@ class EditProfile extends BaseEditProfile
                         FileUpload::make('avatar_url')
                             ->label('Foto Profil')
                             ->image()
+                            ->disk('public')
                             ->optimize('webp', 80)
                             ->maxImageWidth(800)
                             ->maxSize(10240)
