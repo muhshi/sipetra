@@ -18,6 +18,11 @@ class ManagePortalSettings extends SettingsPage
 
     protected static ?string $title = 'Pengaturan Portal';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin']) ?? false;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema

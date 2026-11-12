@@ -27,6 +27,11 @@ class SystemSettingsPage extends SettingsPage
         return 'System Settings';
     }
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin']) ?? false;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema

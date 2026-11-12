@@ -67,6 +67,7 @@ npx ruflo@latest daemon start
 
 ### [2026-11-12]
 #### Added
+- **Pengetatan Otorisasi Filament Shield (Pembatasan Menu untuk Mitra & Pegawai)**: Menambahkan Policy otorisasi `SsoAuditLogPolicy` yang sebelumnya luput, mengunci akses halaman pengaturan sistem (`ManagePortalSettings` & `SystemSettingsPage`), serta menyematkan guard `canViewAny()` pada resource SSO (`ClientResource` & `TokenResource`) dan widget dashboard agar pengguna dengan role `mitra` atau `pegawai` biasa tidak dapat melihat atau mengakses modul administratif.
 - **Fitur Pendaftaran Akun Mandiri (`/register`)**: Menyediakan form registrasi mandiri untuk calon Mitra Statistik / pengguna umum (`App\Livewire\Auth\Register`). Registrasi otomatis menetapkan role dan identity default `mitra`, mendukung input SOBAT ID opsional, serta meng-autentikasi pengguna secara langsung.
 - **Dukungan Alur "Daftar Akun Lewat SIPETRA" dari Web Klien**: Menambahkan deteksi parameter `screen_hint=register`, `prompt=create`, atau `action=register` pada halaman login SSO SIPETRA agar web klien dapat meredirect tombol "Daftar Akun" langsung ke form pendaftaran SIPETRA dan otomatis kembali ke web klien dalam keadaan terautentikasi (login) setelah selesai mendaftar.
 - **Tautan Registrasi di Halaman Login SSO**: Menambahkan link *"Belum memiliki akun Mitra? Daftar sekarang"* di halaman `/login`.

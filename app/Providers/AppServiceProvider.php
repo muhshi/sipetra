@@ -4,7 +4,11 @@ namespace App\Providers;
 
 use App\Http\Controllers\Auth\OAuthAuthorizationController;
 use App\Models\PassportClient;
+use App\Models\SsoAuditLog;
 use App\Policies\ClientPolicy;
+use App\Policies\PassportScopeActionPolicy;
+use App\Policies\PassportScopeResourcePolicy;
+use App\Policies\SsoAuditLogPolicy;
 use App\Settings\SystemSettings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
@@ -12,6 +16,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthorizationController;
 use Laravel\Passport\Passport;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
+use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::policy(PassportClient::class, ClientPolicy::class);
+        Gate::policy(SsoAuditLog::class, SsoAuditLogPolicy::class);
+        Gate::policy(PassportScopeAction::class, PassportScopeActionPolicy::class);
+        Gate::policy(PassportScopeResource::class, PassportScopeResourcePolicy::class);
 
         Passport::useClientModel(PassportClient::class);
 

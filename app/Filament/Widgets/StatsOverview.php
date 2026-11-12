@@ -12,6 +12,11 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    public static function canView(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin', 'operator']) ?? false;
+    }
+
     protected function getStats(): array
     {
         return [

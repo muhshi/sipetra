@@ -16,6 +16,11 @@ class PortalAppsWidget extends TableWidget
 
     protected static ?string $heading = 'Daftar Aplikasi Portal';
 
+    public static function canView(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin', 'operator']) ?? false;
+    }
+
     public function table(Table $table): Table
     {
         return $table

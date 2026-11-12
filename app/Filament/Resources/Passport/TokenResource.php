@@ -26,6 +26,11 @@ class TokenResource extends BaseTokenResource
 
     protected static string|UnitEnum|null $navigationGroup = 'SSO';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin']) ?? false;
+    }
+
     protected static ?string $pluralModelLabel = 'Token';
 
     public static function getNavigationBadge(): ?string

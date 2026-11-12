@@ -12,6 +12,19 @@ class PassportScopeResourcePolicy
 {
     use HandlesAuthorization;
 
+    public function before(AuthUser $authUser, string $ability): ?bool
+    {
+        if (method_exists($authUser, 'hasRole') && $authUser->hasRole('super_admin')) {
+            return true;
+        }
+
+        if (method_exists($authUser, 'hasRole') && $authUser->hasRole('admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:PassportScopeResource');

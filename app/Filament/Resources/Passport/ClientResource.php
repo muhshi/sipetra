@@ -29,6 +29,11 @@ class ClientResource extends BaseClientResource
 
     protected static string|UnitEnum|null $navigationGroup = 'SSO';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasAnyRole(['super_admin', 'admin']) ?? false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ExtendedClientResourceForm::configure($schema);
