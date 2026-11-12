@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\Auth\OAuthLogoutController;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use App\Livewire\PortalLandingPage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', PortalLandingPage::class)->name('home');
 
-// Custom SSO Login Route
+// Custom SSO Login & Register Routes
 Route::get('/login', Login::class)->name('login')->middleware('guest');
+Route::get('/register', Register::class)->name('register')->middleware('guest');
 
 // Normal User Dashboard (where they go if they login directly instead of via OAuth)
 Route::get('/dashboard', function () {

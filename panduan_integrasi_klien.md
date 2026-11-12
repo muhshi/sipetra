@@ -232,6 +232,56 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+## 7. Mengarahkan Tombol "Daftar Akun" ke SIPETRA
+
+Jika aplikasi Anda memiliki tombol **"Daftar Akun"** (misalnya untuk Mitra Statistik atau pendaftaran akun baru), Anda dapat mengarahkannya langsung ke form registrasi SIPETRA dengan menambahkan parameter `screen_hint=register` atau `prompt=create`.
+
+### Di Controller Klien (`SsoController.php`):
+
+```php
+public function register()
+{
+    // Arahkan ke endpoint authorize SIPETRA dengan parameter screen_hint=register
+    return Socialite::driver('sipetra')
+        ->with(['screen_hint' => 'register'])
+        ->redirect();
+}
+```
+
+Atau jika menggunakan redirect manual:
+
+```php
+public function register()
+{
+    $query = http_build_query([
+        'client_id' => config('services.sipetra.client_id'),
+        'redirect_uri' => config('services.sipetra.redirect'),
+        'response_type' => 'code',
+        'scope' => implode(' ', config('services.sipetra.scopes', [])),
+        'screen_hint' => 'register', // Membuka langsung form registrasi SIPETRA
+    ]);
+
+    return redirect(config('services.sipetra.base_url') . '/oauth/authorize?' . $query);
+}
+```
+
+Tambahkan rute di `routes/web.php` aplikasi klien:
+
+```php
+Route::get('/auth/sipetra/register', [SsoController::class, 'register'])->name('sipetra.register');
+```
+
+Di Blade/UI aplikasi klien:
+
+```html
+<a href="{{ route('sipetra.register') }}" class="btn-register">
+    Daftar Akun lewat SIPETRA
+</a>
+```
+
+> **Catatan Alur:**
+> Pengguna akan langsung melihat form registrasi SIPETRA. Setelah mendaftar, SIPETRA otomatis meng-autentikasi pengguna dan mengarahkannya kembali ke `callback` aplikasi Anda dalam keadaan **sudah login**. Akun pendaftar mandiri otomatis berstatus default sebagai **Mitra**.
+
 ## Catatan Penting
 - **Scopes**: Pastikan scope yang diminta di `config/services.php` sudah di-assign ke client di panel admin SIPETRA.
 - **HTTPS**: Di lingkungan production, pastikan `APP_URL` menggunakan `https://` agar callback tidak error.

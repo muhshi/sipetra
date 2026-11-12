@@ -47,6 +47,13 @@
                 Memproses...
             </span>
         </button>
+
+        <div class="mt-4 text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                Belum memiliki akun Mitra?
+                <a href="{{ route('register') }}" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Daftar sekarang</a>
+            </p>
+        </div>
     </form>
 
     <div class="mt-8 border-t border-gray-100 dark:border-gray-700 pt-6 text-center">

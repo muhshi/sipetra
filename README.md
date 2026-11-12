@@ -65,6 +65,13 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-12]
+#### Added
+- **Fitur Pendaftaran Akun Mandiri (`/register`)**: Menyediakan form registrasi mandiri untuk calon Mitra Statistik / pengguna umum (`App\Livewire\Auth\Register`). Registrasi otomatis menetapkan role dan identity default `mitra`, mendukung input SOBAT ID opsional, serta meng-autentikasi pengguna secara langsung.
+- **Dukungan Alur "Daftar Akun Lewat SIPETRA" dari Web Klien**: Menambahkan deteksi parameter `screen_hint=register`, `prompt=create`, atau `action=register` pada halaman login SSO SIPETRA agar web klien dapat meredirect tombol "Daftar Akun" langsung ke form pendaftaran SIPETRA dan otomatis kembali ke web klien dalam keadaan terautentikasi (login) setelah selesai mendaftar.
+- **Tautan Registrasi di Halaman Login SSO**: Menambahkan link *"Belum memiliki akun Mitra? Daftar sekarang"* di halaman `/login`.
+- **Dokumentasi Integrasi Web Klien**: Memperbarui `panduan_integrasi_klien.md` dengan panduan penggunaan Socialite `->with(['screen_hint' => 'register'])` dan contoh tombol pendaftaran.
+
 ### [2026-11-11]
 #### Fixed
 - **Avatar Pegawai Muncul di Profil Pegawai**: Menambahkan konfigurasi disk penyimpanan `->disk('public')` dan fallback avatar otomatis di `EmployeeProfilesTable` serta `EditProfile`, sehingga foto profil yang diunggah di kelola pengguna tampil konsisten dan tidak kosong.

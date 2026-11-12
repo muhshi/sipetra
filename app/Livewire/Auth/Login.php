@@ -32,6 +32,11 @@ class Login extends Component
         // Tangkap intended URL saat komponen pertama kali dimount agar tidak hilang saat reload atau double click
         $this->intendedUrl = (string) session('url.intended', '');
 
+        // Jika request datang dengan parameter pendaftaran (misal dari web klien dengan prompt=create atau screen_hint=register)
+        if (request()->query('prompt') === 'create' || request()->query('screen_hint') === 'register' || request()->query('action') === 'register') {
+            return redirect()->route('register');
+        }
+
         // Jika user sudah terautentikasi saat membuka halaman login, langsung teruskan
         if (Auth::check()) {
             return $this->handleSuccessfulRedirect();
