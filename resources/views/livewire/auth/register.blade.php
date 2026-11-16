@@ -8,7 +8,7 @@
         <p class="text-sm text-gray-500 mt-1 dark:text-gray-400">Pendaftaran Akun Mitra & Pengguna Layanan SIPETRA</p>
     </div>
 
-    <form wire:submit="register" x-data="{ submitting: false }" x-on:submit="if (submitting) { $event.preventDefault(); return false; } submitting = true;">
+    <form wire:submit="register">
         <!-- Input Nama Lengkap -->
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
@@ -56,7 +56,6 @@
         <button type="submit"
             wire:loading.attr="disabled"
             wire:target="register"
-            x-bind:disabled="submitting"
             class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             <span wire:loading.remove wire:target="register">Daftar Akun</span>
             <span wire:loading wire:target="register" class="flex items-center">

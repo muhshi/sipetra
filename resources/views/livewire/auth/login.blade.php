@@ -8,7 +8,7 @@
         <p class="text-sm text-gray-500 mt-1 dark:text-gray-400">Sistem Informasi Pegawai Terpadu (SIPETRA)</p>
     </div>
 
-    <form wire:submit="authenticate" x-data="{ submitting: false }" x-on:submit="if (submitting) { $event.preventDefault(); return false; } submitting = true;">
+    <form wire:submit="authenticate">
         <!-- Input Username/NIP/Email/SOBAT ID -->
         <div class="mb-4">
             <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">NIP / Email / Username / SOBAT ID</label>
@@ -36,7 +36,6 @@
         <button type="submit"
             wire:loading.attr="disabled"
             wire:target="authenticate"
-            x-bind:disabled="submitting"
             class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             <span wire:loading.remove wire:target="authenticate">Masuk ke Akun</span>
             <span wire:loading wire:target="authenticate" class="flex items-center">

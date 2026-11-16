@@ -201,3 +201,30 @@ test('preserves intended url even if authenticate is triggered multiple times wh
     $component->call('authenticate')
         ->assertRedirect($oauthUrl);
 });
+
+test('can retry login after a failed attempt without getting locked out', function () {
+    $user = User::factory()->pegawai()->create([
+        'email' => 'adib@bps.go.id',
+        'password' => bcrypt('password123'),
+    ]);
+
+    $component = livewire(Login::class)
+        ->fill([
+            'username' => 'adib@bps.go.id',
+            'password' => 'wrongpassword',
+        ])
+        ->call('authenticate')
+        ->assertHasErrors(['username']);
+
+    $this->assertGuest();
+
+    // Retry with correct credentials
+    $component->fill([
+        'password' => 'password123',
+    ])
+        ->call('authenticate')
+        ->assertHasNoErrors()
+        ->assertRedirect(route('dashboard'));
+
+    $this->assertAuthenticatedAs($user);
+});
