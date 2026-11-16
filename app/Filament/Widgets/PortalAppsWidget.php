@@ -18,7 +18,19 @@ class PortalAppsWidget extends TableWidget
 
     public static function canView(): bool
     {
-        return auth()->user()?->hasAnyRole(['super_admin', 'admin', 'operator']) ?? false;
+        $user = auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        return $user->can('View:PortalAppsWidget')
+            || $user->can('view_portal_apps_widget')
+            || $user->can('view_PortalAppsWidget');
     }
 
     public function table(Table $table): Table

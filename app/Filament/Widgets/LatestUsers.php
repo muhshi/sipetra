@@ -16,7 +16,19 @@ class LatestUsers extends TableWidget
 
     public static function canView(): bool
     {
-        return auth()->user()?->hasAnyRole(['super_admin', 'admin', 'operator']) ?? false;
+        $user = auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        return $user->can('View:LatestUsers')
+            || $user->can('view_latest_users')
+            || $user->can('view_LatestUsers');
     }
 
     public function table(Table $table): Table

@@ -6,15 +6,17 @@ use App\Filament\Pages\SystemSettingsPage;
 use App\Filament\Resources\Passport\ClientResource;
 use App\Filament\Resources\Passport\TokenResource;
 use App\Filament\Resources\PortalAppResource;
+use App\Filament\Resources\Roles\RoleResource;
 use App\Filament\Resources\SsoAuditLogResource;
 use App\Filament\Resources\Users\UserResource;
+use App\Filament\Widgets\StatsOverview;
 use App\Models\PassportClient;
 use App\Models\PortalApp;
 use App\Models\SsoAuditLog;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
@@ -53,6 +55,9 @@ test('mitra user cannot access administrative filament resources and pages', fun
     // 3. Page canAccess checks
     expect(ManagePortalSettings::canAccess())->toBeFalse()
         ->and(SystemSettingsPage::canAccess())->toBeFalse();
+
+    // 4. Widget canView checks (without widget permission)
+    expect(StatsOverview::canView())->toBeFalse();
 });
 
 test('super admin user can access administrative filament resources and pages', function () {
@@ -82,4 +87,56 @@ test('super admin user can access administrative filament resources and pages', 
     // 3. Page canAccess checks
     expect(ManagePortalSettings::canAccess())->toBeTrue()
         ->and(SystemSettingsPage::canAccess())->toBeTrue();
+
+    // 4. Widget canView checks for super admin
+    expect(StatsOverview::canView())->toBeTrue();
+});
+
+test('mitra user can view statsoverview widget when permission is granted', function () {
+    $permission = Permission::firstOrCreate(['name' => 'View:StatsOverview', 'guard_name' => 'web']);
+    $mitraRole = Role::where('name', 'mitra')->first();
+    $mitraRole->givePermissionTo($permission);
+
+    $mitraUser = User::factory()->create([
+        'identity_type' => IdentityType::Mitra,
+        'is_active' => true,
+    ]);
+    $mitraUser->assignRole('mitra');
+
+    $this->actingAs($mitraUser);
+
+    expect(StatsOverview::canView())->toBeTrue();
+});
+
+test('statsoverview only counts active employees', function () {
+    // 1 active pegawai
+    User::factory()->create([
+        'identity_type' => IdentityType::Pegawai,
+        'is_active' => true,
+    ]);
+
+    // 1 inactive pegawai
+    User::factory()->create([
+        'identity_type' => IdentityType::Pegawai,
+        'is_active' => false,
+    ]);
+
+    // 1 mitra
+    User::factory()->create([
+        'identity_type' => IdentityType::Mitra,
+        'is_active' => true,
+    ]);
+
+    $widget = new class extends StatsOverview
+    {
+        public function getStatsForTesting(): array
+        {
+            return $this->getStats();
+        }
+    };
+
+    $stats = $widget->getStatsForTesting();
+    $totalPegawaiStat = $stats[0];
+
+    expect($totalPegawaiStat->getValue())->toBe(1);
 });

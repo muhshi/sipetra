@@ -14,14 +14,26 @@ class StatsOverview extends StatsOverviewWidget
 
     public static function canView(): bool
     {
-        return auth()->user()?->hasAnyRole(['super_admin', 'admin', 'operator']) ?? false;
+        $user = auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->hasAnyRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        return $user->can('View:StatsOverview')
+            || $user->can('view_stats_overview')
+            || $user->can('view_StatsOverview');
     }
 
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Pegawai', User::where('identity_type', IdentityType::Pegawai)->count())
-                ->description('PNS & PPPK')
+            Stat::make('Total Pegawai', User::where('identity_type', IdentityType::Pegawai)->where('is_active', true)->count())
+                ->description('PNS & PPPK Aktif')
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('success'),
             Stat::make('Total Mitra', User::where('identity_type', IdentityType::Mitra)->count())

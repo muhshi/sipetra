@@ -66,7 +66,11 @@ npx ruflo@latest daemon start
 ## Changelog
 
 ### [2026-11-16]
+#### Added
+- **Manajemen Anggota Role Terintegrasi (`UsersRelationManager`)**: Menambahkan tabel relasi pengguna pada halaman edit role Filament Shield (`RoleResource`), memungkinkan admin melihat daftar user pemilik role secara langsung, menambahkan user ke role (`AttachAction`), serta mencabut user dari role (`DetachAction`).
 #### Fixed
+- **Sinkronisasi Hak Akses Widget Dashboard dengan Filament Shield**: Memperbaiki method `canView()` pada `StatsOverview`, `LatestUsers`, dan `PortalAppsWidget` agar menghormati izin Shield (`View:StatsOverview`, dll) yang dicentang pada konfigurasi role (seperti role Mitra), alih-alih di-hardcode hanya untuk role admin/operator.
+- **Filter Pegawai Aktif pada Widget StatsOverview**: Memperbarui penghitungan stat `Total Pegawai` agar hanya menghitung pegawai yang berstatus aktif (`is_active = true`).
 - **Penguncian Akses Menu Roles (Filament Shield) untuk Non-Admin / Mitra**: Memperbaiki celah di mana menu Roles masih dapat diakses oleh role non-admin (seperti Mitra). Akar masalah disebabkan oleh konfigurasi `register_role_policy => false` pada `config/filament-shield.php` dan ketiadaan binding eksplisit `RolePolicy` terhadap `Spatie\Permission\Models\Role` di Gate, sehingga Gate mengizinkan akses secara default. Perbaikan dilakukan dengan mengaktifkan registrasi policy di config Shield, mendaftarkan policy di `AppServiceProvider`, menyelaraskan verifikasi permission pada `RolePolicy` agar mendukung format PascalCase (`ViewAny:Role`) maupun snake_case (`view_any_role`), serta melengkapi pengujian otomatis pada `FilamentShieldAccessTest`.
 
 ### [2026-11-12]
