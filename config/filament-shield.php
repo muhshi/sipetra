@@ -272,6 +272,6 @@ return [
     |
     */
 
-    'register_role_policy' => false,
+    'register_role_policy' => true,
 
 ];

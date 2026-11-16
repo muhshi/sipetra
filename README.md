@@ -65,6 +65,10 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-16]
+#### Fixed
+- **Penguncian Akses Menu Roles (Filament Shield) untuk Non-Admin / Mitra**: Memperbaiki celah di mana menu Roles masih dapat diakses oleh role non-admin (seperti Mitra). Akar masalah disebabkan oleh konfigurasi `register_role_policy => false` pada `config/filament-shield.php` dan ketiadaan binding eksplisit `RolePolicy` terhadap `Spatie\Permission\Models\Role` di Gate, sehingga Gate mengizinkan akses secara default. Perbaikan dilakukan dengan mengaktifkan registrasi policy di config Shield, mendaftarkan policy di `AppServiceProvider`, menyelaraskan verifikasi permission pada `RolePolicy` agar mendukung format PascalCase (`ViewAny:Role`) maupun snake_case (`view_any_role`), serta melengkapi pengujian otomatis pada `FilamentShieldAccessTest`.
+
 ### [2026-11-12]
 #### Added
 - **Pengetatan Otorisasi Filament Shield (Pembatasan Menu untuk Mitra & Pegawai)**: Menambahkan Policy otorisasi `SsoAuditLogPolicy` yang sebelumnya luput, mengunci akses halaman pengaturan sistem (`ManagePortalSettings` & `SystemSettingsPage`), serta menyematkan guard `canViewAny()` pada resource SSO (`ClientResource` & `TokenResource`) dan widget dashboard agar pengguna dengan role `mitra` atau `pegawai` biasa tidak dapat melihat atau mengakses modul administratif.

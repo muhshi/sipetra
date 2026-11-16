@@ -12,6 +12,7 @@ use App\Models\PassportClient;
 use App\Models\PortalApp;
 use App\Models\SsoAuditLog;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -38,6 +39,7 @@ test('mitra user cannot access administrative filament resources and pages', fun
     expect(Gate::allows('viewAny', SsoAuditLog::class))->toBeFalse()
         ->and(Gate::allows('viewAny', PortalApp::class))->toBeFalse()
         ->and(Gate::allows('viewAny', User::class))->toBeFalse()
+        ->and(Gate::allows('viewAny', Role::class))->toBeFalse()
         ->and(Gate::allows('viewAny', PassportClient::class))->toBeFalse();
 
     // 2. Resource canViewAny checks
@@ -45,6 +47,7 @@ test('mitra user cannot access administrative filament resources and pages', fun
         ->and(TokenResource::canViewAny())->toBeFalse()
         ->and(SsoAuditLogResource::canViewAny())->toBeFalse()
         ->and(PortalAppResource::canViewAny())->toBeFalse()
+        ->and(RoleResource::canViewAny())->toBeFalse()
         ->and(UserResource::canViewAny())->toBeFalse();
 
     // 3. Page canAccess checks
@@ -65,6 +68,7 @@ test('super admin user can access administrative filament resources and pages', 
     expect(Gate::allows('viewAny', SsoAuditLog::class))->toBeTrue()
         ->and(Gate::allows('viewAny', PortalApp::class))->toBeTrue()
         ->and(Gate::allows('viewAny', User::class))->toBeTrue()
+        ->and(Gate::allows('viewAny', Role::class))->toBeTrue()
         ->and(Gate::allows('viewAny', PassportClient::class))->toBeTrue();
 
     // 2. Resource canViewAny checks
@@ -72,6 +76,7 @@ test('super admin user can access administrative filament resources and pages', 
         ->and(TokenResource::canViewAny())->toBeTrue()
         ->and(SsoAuditLogResource::canViewAny())->toBeTrue()
         ->and(PortalAppResource::canViewAny())->toBeTrue()
+        ->and(RoleResource::canViewAny())->toBeTrue()
         ->and(UserResource::canViewAny())->toBeTrue();
 
     // 3. Page canAccess checks

@@ -8,6 +8,7 @@ use App\Models\SsoAuditLog;
 use App\Policies\ClientPolicy;
 use App\Policies\PassportScopeActionPolicy;
 use App\Policies\PassportScopeResourcePolicy;
+use App\Policies\RolePolicy;
 use App\Policies\SsoAuditLogPolicy;
 use App\Settings\SystemSettings;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +19,7 @@ use Laravel\Passport\Http\Controllers\AuthorizationController as PassportAuthori
 use Laravel\Passport\Passport;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeAction;
 use N3XT0R\LaravelPassportAuthorizationCore\Models\PassportScopeResource;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(PassportClient::class, ClientPolicy::class);
         Gate::policy(SsoAuditLog::class, SsoAuditLogPolicy::class);
+        Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(PassportScopeAction::class, PassportScopeActionPolicy::class);
         Gate::policy(PassportScopeResource::class, PassportScopeResourcePolicy::class);
 
