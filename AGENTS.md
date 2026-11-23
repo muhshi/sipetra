@@ -115,6 +115,16 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 - Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
+### Server Deployment & Access Rules
+- **Target Server Ubuntu:** `ssh bpsdemak@10.133.21.24`
+- **Direktori Aplikasi:** `/home/bpsdemak/apps/sipetra`
+- **Prosedur Deploy Standar:**
+  1. Masuk ke direktori: `cd /home/bpsdemak/apps/sipetra`
+  2. Ambil update terbaru: `git pull origin main`
+  3. Update dependensi: `composer install --no-dev --optimize-autoloader`
+  4. Jalankan migrasi non-destructive: `php artisan migrate --force`
+  5. Optimasi cache: `php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache`
+
 === tests rules ===
 
 # Test Enforcement

@@ -270,6 +270,15 @@
                                 : strtoupper($identityVal);
                         @endphp
                         <div>
+                            @if($profileSuccessMessage)
+                                <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 10px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 0.8125rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <svg style="width: 18px; height: 18px; color: #059669; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    <span>{{ $profileSuccessMessage }}</span>
+                                </div>
+                            @endif
+
                             <div class="modal-profile-card">
                                 <div style="height: 60px; width: 60px; flex-shrink: 0; overflow: hidden; border-radius: 50%; border: 2px solid #0284c7; background: #e2e8f0; display: flex; align-items: center; justify-content: center;">
                                     @if($user?->avatar_url)
@@ -281,8 +290,25 @@
                                     @endif
                                 </div>
                                 <div style="flex: 1; min-width: 0;">
-                                    <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">{{ $user?->name }}</h4>
-                                    <p style="font-size: 0.8125rem; color: #64748b; margin: 0.15rem 0 0;">{{ $user?->email }}</p>
+                                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;">
+                                        <div>
+                                            <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">{{ $user?->name }}</h4>
+                                            <p style="font-size: 0.8125rem; color: #64748b; margin: 0.15rem 0 0;">{{ $user?->email }}</p>
+                                        </div>
+                                        @if(! $isEditingProfile)
+                                            <button 
+                                                type="button" 
+                                                wire:click="startEditingProfile" 
+                                                class="modal-btn-secondary"
+                                                style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.35rem; flex-shrink: 0;"
+                                            >
+                                                <svg style="width: 14px; height: 14px; color: #0284c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                </svg>
+                                                <span>Ubah Profil</span>
+                                            </button>
+                                        @endif
+                                    </div>
                                     <div style="margin-top: 0.45rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
                                         <span style="display: inline-flex; align-items: center; padding: 0.2rem 0.55rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; background: {{ $isMitra ? '#dcfce7' : '#e0f2fe' }}; color: {{ $isMitra ? '#166534' : '#075985' }};">
                                             {{ $identityLabel }}
@@ -301,74 +327,171 @@
                                 </div>
                             </div>
 
-                            <div class="modal-grid">
-                                @if(! $isMitra)
-                                    {{-- KHUSUS PEGAWAI: NIP Baru, NIP Lama, Jabatan, Satker --}}
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">NIP Baru (18 Digit)</span>
-                                        <span class="modal-field-val">{{ $user?->nip_baru ?: '-' }}</span>
+                            @if($isEditingProfile)
+                                {{-- FORM EDIT PROFIL --}}
+                                <form wire:submit="saveProfile" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1rem;">
+                                        <h5 style="font-size: 0.75rem; font-weight: 800; color: #0284c7; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">Kontak & Domisili</h5>
+                                        <div class="modal-grid" style="margin-top: 0;">
+                                            <div>
+                                                <label class="modal-field-label">Nomor WhatsApp / HP</label>
+                                                <input type="text" wire:model="phone" class="modal-input" placeholder="contoh: 08123456789">
+                                                @error('phone') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div>
+                                                <label class="modal-field-label">Alamat Domisili Lengkap</label>
+                                                <input type="text" wire:model="alamat" class="modal-input" placeholder="contoh: RT 01 RW 02, Ds. Betokan, Demak">
+                                                @error('alamat') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">NIP Lama</span>
-                                        <span class="modal-field-val">{{ $user?->nip ?: '-' }}</span>
+
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1rem;">
+                                        <h5 style="font-size: 0.75rem; font-weight: 800; color: #0284c7; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">Informasi Rekening Bank</h5>
+                                        <div class="modal-grid" style="margin-top: 0;">
+                                            <div>
+                                                <label class="modal-field-label">Nama Bank</label>
+                                                <input type="text" wire:model="nama_bank" class="modal-input" placeholder="contoh: (002) BANK BRI">
+                                                @error('nama_bank') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div>
+                                                <label class="modal-field-label">Nomor Rekening</label>
+                                                <input type="text" wire:model="nomor_rekening" class="modal-input" placeholder="Nomor rekening bank">
+                                                @error('nomor_rekening') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div style="grid-column: 1 / -1;">
+                                                <label class="modal-field-label">Nama Pemilik Rekening (Atas Nama)</label>
+                                                <input type="text" wire:model="nama_pemilik_rekening" class="modal-input" placeholder="Nama sesuai pada buku tabungan / rekening">
+                                                @error('nama_pemilik_rekening') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">Jabatan</span>
-                                        <span class="modal-field-val">{{ $user?->jabatan ?: '-' }}</span>
+
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1rem;">
+                                        <h5 style="font-size: 0.75rem; font-weight: 800; color: #0284c7; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;">Biodata Pendukung</h5>
+                                        <div class="modal-grid" style="margin-top: 0;">
+                                            <div>
+                                                <label class="modal-field-label">Tempat Lahir</label>
+                                                <input type="text" wire:model="tempat_lahir" class="modal-input" placeholder="Kota / Kabupaten lahir">
+                                                @error('tempat_lahir') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div>
+                                                <label class="modal-field-label">Tanggal Lahir</label>
+                                                <input type="date" wire:model="tanggal_lahir" class="modal-input">
+                                                @error('tanggal_lahir') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                            <div style="grid-column: 1 / -1;">
+                                                <label class="modal-field-label">Pendidikan Terakhir</label>
+                                                <input type="text" wire:model="pendidikan" class="modal-input" placeholder="contoh: Tamat D4 / S1">
+                                                @error('pendidikan') <span style="font-size: 0.75rem; color: #ef4444; margin-top: 0.2rem; display: block;">{{ $message }}</span> @enderror
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">Unit Kerja / Satker</span>
-                                        <span class="modal-field-val">{{ $user?->unit_kerja ?: ($user?->kd_satker ?: 'BPS Kab. Demak') }}</span>
+
+                                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
+                                        <button type="button" wire:click="cancelEditingProfile" class="modal-btn-secondary">
+                                            Batal
+                                        </button>
+                                        <button type="submit" class="modal-btn-primary" wire:loading.attr="disabled">
+                                            <span wire:loading.remove wire:target="saveProfile">Simpan Perubahan</span>
+                                            <span wire:loading wire:target="saveProfile">Menyimpan...</span>
+                                        </button>
                                     </div>
-                                @else
-                                    {{-- KHUSUS MITRA: ID SOBAT, Periode Mitra, Siklus Kontrak --}}
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">ID SOBAT BPS</span>
-                                        <span class="modal-field-val" style="font-family: monospace; font-size: 1rem; color: #059669;">{{ $user?->sobat_id ?: '-' }}</span>
+                                </form>
+                            @else
+                                {{-- VIEW MODE --}}
+                                <div class="modal-grid">
+                                    @if(! $isMitra)
+                                        {{-- KHUSUS PEGAWAI: NIP Baru, NIP Lama, Jabatan, Satker --}}
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">NIP Baru (18 Digit)</span>
+                                            <span class="modal-field-val">{{ $user?->nip_baru ?: '-' }}</span>
+                                        </div>
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">NIP Lama</span>
+                                            <span class="modal-field-val">{{ $user?->nip ?: '-' }}</span>
+                                        </div>
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">Jabatan</span>
+                                            <span class="modal-field-val">{{ $user?->jabatan ?: '-' }}</span>
+                                        </div>
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">Unit Kerja / Satker</span>
+                                            <span class="modal-field-val">{{ $user?->unit_kerja ?: ($user?->kd_satker ?: 'BPS Kab. Demak') }}</span>
+                                        </div>
+                                    @else
+                                        {{-- KHUSUS MITRA: ID SOBAT, Periode Mitra, Siklus Kontrak --}}
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">ID SOBAT BPS</span>
+                                            <span class="modal-field-val" style="font-family: monospace; font-size: 1rem; color: #059669;">{{ $user?->sobat_id ?: '-' }}</span>
+                                        </div>
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">Tahun / Periode Mitra</span>
+                                            <span class="modal-field-val">{{ $user?->period ?: date('Y') }}</span>
+                                        </div>
+                                        @if($user?->contract_start || $user?->contract_end)
+                                            <div class="modal-field-box" style="grid-column: 1 / -1;">
+                                                <span class="modal-field-label">Masa Berlaku Kontrak</span>
+                                                <span class="modal-field-val">
+                                                    {{ $user?->contract_start ? \Carbon\Carbon::parse($user->contract_start)->format('d M Y') : '-' }} s/d 
+                                                    {{ $user?->contract_end ? \Carbon\Carbon::parse($user->contract_end)->format('d M Y') : '-' }}
+                                                </span>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                    <div class="modal-field-box {{ $isMitra ? 'modal-col-full' : '' }}" style="{{ $isMitra ? 'grid-column: 1 / -1;' : '' }}">
+                                        <span class="modal-field-label">Nomor WhatsApp / Kontak</span>
+                                        <span class="modal-field-val">{{ $user?->phone ?: '-' }}</span>
                                     </div>
-                                    <div class="modal-field-box">
-                                        <span class="modal-field-label">Tahun / Periode Mitra</span>
-                                        <span class="modal-field-val">{{ $user?->period ?: date('Y') }}</span>
-                                    </div>
-                                    @if($user?->contract_start || $user?->contract_end)
+
+                                    @if($user?->nik)
                                         <div class="modal-field-box" style="grid-column: 1 / -1;">
-                                            <span class="modal-field-label">Masa Berlaku Kontrak</span>
-                                            <span class="modal-field-val">
-                                                {{ $user?->contract_start ? \Carbon\Carbon::parse($user->contract_start)->format('d M Y') : '-' }} s/d 
-                                                {{ $user?->contract_end ? \Carbon\Carbon::parse($user->contract_end)->format('d M Y') : '-' }}
-                                            </span>
+                                            <span class="modal-field-label">NIK (KTP)</span>
+                                            <span class="modal-field-val" style="font-family: monospace;">{{ $user->nik }}</span>
                                         </div>
                                     @endif
-                                @endif
 
-                                <div class="modal-field-box {{ $isMitra ? 'modal-col-full' : '' }}" style="{{ $isMitra ? 'grid-column: 1 / -1;' : '' }}">
-                                    <span class="modal-field-label">Nomor WhatsApp / Kontak</span>
-                                    <span class="modal-field-val">{{ $user?->phone ?: '-' }}</span>
-                                </div>
-
-                                @if($user?->nik)
                                     <div class="modal-field-box" style="grid-column: 1 / -1;">
-                                        <span class="modal-field-label">NIK (KTP)</span>
-                                        <span class="modal-field-val" style="font-family: monospace;">{{ $user->nik }}</span>
+                                        <span class="modal-field-label">Alamat Domisili</span>
+                                        <span class="modal-field-val">{{ $user?->alamat ?: '-' }}</span>
                                     </div>
-                                @endif
 
-                                @if($user?->nomor_rekening || $user?->nama_bank)
                                     <div class="modal-field-box" style="grid-column: 1 / -1;">
                                         <span class="modal-field-label">Informasi Rekening Bank</span>
                                         <span class="modal-field-val">
-                                            <strong>{{ $user->nama_bank ?: 'Bank' }}</strong> - {{ $user->nomor_rekening ?: '-' }}
-                                            @if($user->nama_pemilik_rekening)
-                                                <br><small style="color: #64748b;">a.n. {{ $user->nama_pemilik_rekening }}</small>
+                                            @if($user?->nomor_rekening || $user?->nama_bank)
+                                                <strong>{{ $user->nama_bank ?: 'Bank' }}</strong> - {{ $user->nomor_rekening ?: '-' }}
+                                                @if($user->nama_pemilik_rekening)
+                                                    <br><small style="color: #64748b;">a.n. {{ $user->nama_pemilik_rekening }}</small>
+                                                @endif
+                                            @else
+                                                <span style="color: #94a3b8; font-weight: normal; font-style: italic;">Belum diisi. Klik "Ubah Profil" untuk menambahkan rekening.</span>
                                             @endif
                                         </span>
                                     </div>
-                                @endif
-                            </div>
 
-                            <p style="margin-top: 1rem; font-size: 0.75rem; color: #94a3b8; font-style: italic;">
-                                *Untuk memperbarui data profil kepegawaian atau mitra, silakan menghubungi administrator SIPETRA BPS Kabupaten Demak.
-                            </p>
+                                    @if($user?->tempat_lahir || $user?->tanggal_lahir)
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">Tempat, Tanggal Lahir</span>
+                                            <span class="modal-field-val">
+                                                {{ $user->tempat_lahir ?: '-' }}, {{ $user->tanggal_lahir ? $user->tanggal_lahir->format('d M Y') : '-' }}
+                                            </span>
+                                        </div>
+                                    @endif
+
+                                    @if($user?->pendidikan)
+                                        <div class="modal-field-box">
+                                            <span class="modal-field-label">Pendidikan</span>
+                                            <span class="modal-field-val">{{ $user->pendidikan }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <p style="margin-top: 1rem; font-size: 0.75rem; color: #94a3b8; font-style: italic;">
+                                    *Untuk memperbarui NIP, NIK, ID SOBAT, atau Nama Resmi, silakan hubungi administrator SIPETRA BPS Kabupaten Demak.
+                                </p>
+                            @endif
                         </div>
 
                     @elseif($activeTab === 'password')

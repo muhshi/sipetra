@@ -17,6 +17,26 @@ class UserProfileModal extends Component
 
     public string $activeTab = 'profile';
 
+    public bool $isEditingProfile = false;
+
+    public ?string $profileSuccessMessage = null;
+
+    public string $phone = '';
+
+    public string $alamat = '';
+
+    public string $tempat_lahir = '';
+
+    public string $tanggal_lahir = '';
+
+    public string $pendidikan = '';
+
+    public string $nama_bank = '';
+
+    public string $nomor_rekening = '';
+
+    public string $nama_pemilik_rekening = '';
+
     public string $current_password = '';
 
     public string $new_password = '';
@@ -40,13 +60,77 @@ class UserProfileModal extends Component
     {
         $this->activeTab = $tab;
         $this->isOpen = true;
+        $this->isEditingProfile = false;
+        $this->profileSuccessMessage = null;
         $this->resetPasswordForm();
     }
 
     public function closeModal(): void
     {
         $this->isOpen = false;
+        $this->isEditingProfile = false;
+        $this->profileSuccessMessage = null;
         $this->resetPasswordForm();
+    }
+
+    public function startEditingProfile(): void
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        $this->phone = (string) ($user->phone ?? '');
+        $this->alamat = (string) ($user->alamat ?? '');
+        $this->tempat_lahir = (string) ($user->tempat_lahir ?? '');
+        $this->tanggal_lahir = $user->tanggal_lahir ? $user->tanggal_lahir->format('Y-m-d') : '';
+        $this->pendidikan = (string) ($user->pendidikan ?? '');
+        $this->nama_bank = (string) ($user->nama_bank ?? '');
+        $this->nomor_rekening = (string) ($user->nomor_rekening ?? '');
+        $this->nama_pemilik_rekening = (string) ($user->nama_pemilik_rekening ?? '');
+
+        $this->profileSuccessMessage = null;
+        $this->isEditingProfile = true;
+        $this->resetErrorBag();
+    }
+
+    public function cancelEditingProfile(): void
+    {
+        $this->isEditingProfile = false;
+        $this->resetErrorBag();
+    }
+
+    public function saveProfile(): void
+    {
+        $this->validate([
+            'phone' => ['nullable', 'string', 'max:25'],
+            'alamat' => ['nullable', 'string', 'max:500'],
+            'tempat_lahir' => ['nullable', 'string', 'max:100'],
+            'tanggal_lahir' => ['nullable', 'date'],
+            'pendidikan' => ['nullable', 'string', 'max:100'],
+            'nama_bank' => ['nullable', 'string', 'max:50'],
+            'nomor_rekening' => ['nullable', 'string', 'max:50'],
+            'nama_pemilik_rekening' => ['nullable', 'string', 'max:255'],
+        ], [
+            'phone.max' => 'Nomor telepon maksimal 25 karakter.',
+            'alamat.max' => 'Alamat maksimal 500 karakter.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
+        ]);
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        $user->update([
+            'phone' => filled($this->phone) ? trim($this->phone) : null,
+            'alamat' => filled($this->alamat) ? trim($this->alamat) : null,
+            'tempat_lahir' => filled($this->tempat_lahir) ? trim($this->tempat_lahir) : null,
+            'tanggal_lahir' => filled($this->tanggal_lahir) ? $this->tanggal_lahir : null,
+            'pendidikan' => filled($this->pendidikan) ? trim($this->pendidikan) : null,
+            'nama_bank' => filled($this->nama_bank) ? trim($this->nama_bank) : null,
+            'nomor_rekening' => filled($this->nomor_rekening) ? trim($this->nomor_rekening) : null,
+            'nama_pemilik_rekening' => filled($this->nama_pemilik_rekening) ? trim($this->nama_pemilik_rekening) : null,
+        ]);
+
+        $this->isEditingProfile = false;
+        $this->profileSuccessMessage = 'Data profil berhasil diperbarui.';
     }
 
     public function resetPasswordForm(): void

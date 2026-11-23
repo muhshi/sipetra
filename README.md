@@ -67,6 +67,9 @@ npx ruflo@latest daemon start
 
 ### [2026-11-23]
 #### Added
+- **Fitur Ubah Profil Mandiri di Portal Pengguna (`UserProfileModal`)**: Menambahkan tombol "Ubah Profil" dan mode form edit interaktif pada modal profil portal. Pengguna (Pegawai & Mitra) kini dapat memperbarui nomor WhatsApp/HP (`phone`), alamat domisili (`alamat`), data rekening bank (`nama_bank`, `nomor_rekening`, `nama_pemilik_rekening`), serta biodata pendukung (tempat lahir, tanggal lahir, pendidikan) secara mandiri dengan validasi form dan pesan sukses real-time.
+- **Form Edit Profil Filament (`EditProfile`)**: Menambahkan field input alamat domisili pada halaman edit profil admin panel.
+- **Knowledge Server Deployment**: Menyimpan konfigurasi dan panduan deployment server Ubuntu target (`bpsdemak@10.133.21.24`) pada dokumentasi agen (`GEMINI.md` dan `AGENTS.md`).
 - **Kolom Rekening Bank untuk Pegawai & Mitra (`nama_bank`, `nomor_rekening`, `nama_pemilik_rekening`)**: Migrasi penambahan kolom informasi perbankan pada tabel `users` untuk keperluan pembayaran honor, insentif, dan payroll.
 - **Integrasi Rekening Bank di UI & API**:
   - `UserForm` & `EditProfile`: Section 'Informasi Rekening Bank' yang dapat diisi dan diedit untuk seluruh pengguna (Pegawai maupun Mitra).

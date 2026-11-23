@@ -105,6 +105,8 @@ class EditProfile extends BaseEditProfile
                                 TextInput::make('tempat_lahir')
                                     ->label('Tempat Lahir'),
                             ]),
+                        TextInput::make('alamat')
+                            ->label('Alamat Domisili'),
                         FileUpload::make('avatar_url')
                             ->label('Foto Profil')
                             ->image()

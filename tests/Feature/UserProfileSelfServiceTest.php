@@ -204,3 +204,37 @@ test('account and profile routes redirect authenticated users to portal with ope
         ->get('/profile')
         ->assertRedirect('/?open_profile=1');
 });
+
+test('user can edit their contact and bank profile details via user profile modal', function () {
+    $user = User::factory()->create([
+        'phone' => '0811111111',
+        'alamat' => 'Alamat Lama',
+        'nama_bank' => null,
+        'nomor_rekening' => null,
+        'nama_pemilik_rekening' => null,
+    ]);
+
+    $this->actingAs($user);
+
+    livewire(UserProfileModal::class)
+        ->call('openModal', 'profile')
+        ->call('startEditingProfile')
+        ->assertSet('isEditingProfile', true)
+        ->assertSet('phone', '0811111111')
+        ->set('phone', '081234567890')
+        ->set('alamat', 'Jl. Sultan Fatah No. 10 Demak')
+        ->set('nama_bank', '(002) BANK BRI')
+        ->set('nomor_rekening', '1234567890')
+        ->set('nama_pemilik_rekening', 'Nama Rekening Pengguna')
+        ->call('saveProfile')
+        ->assertHasNoErrors()
+        ->assertSet('isEditingProfile', false)
+        ->assertSet('profileSuccessMessage', 'Data profil berhasil diperbarui.');
+
+    $user->refresh();
+    expect($user->phone)->toBe('081234567890')
+        ->and($user->alamat)->toBe('Jl. Sultan Fatah No. 10 Demak')
+        ->and($user->nama_bank)->toBe('(002) BANK BRI')
+        ->and($user->nomor_rekening)->toBe('1234567890')
+        ->and($user->nama_pemilik_rekening)->toBe('Nama Rekening Pengguna');
+});
