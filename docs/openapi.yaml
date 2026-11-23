@@ -121,6 +121,7 @@ paths:
                     nip: "199001012020011001"
                     nip_baru: "199001012020011001"
                     sobat_id: null
+                    nik: null
                     nomor_hp: "08123456789"
                     jabatan: "Statistisi Ahli Pertama"
                     golongan: "III/a"
@@ -140,6 +141,7 @@ paths:
                     nip: null
                     nip_baru: null
                     sobat_id: "MTR-2026-042"
+                    nik: "3321112009650001"
                     nomor_hp: "08567891234"
                     jabatan: "Mitra Statistik"
                     golongan: null
@@ -270,6 +272,11 @@ components:
           nullable: true
           description: ID mitra di sistem SOBAT BPS. `null` untuk pegawai.
           example: "MTR-2026-042"
+        nik:
+          type: string
+          nullable: true
+          description: Nomor Induk Kependudukan (NIK) mitra. `null` jika belum diisi atau untuk pegawai.
+          example: "3321112009650001"
         nomor_hp:
           type: string
           nullable: true

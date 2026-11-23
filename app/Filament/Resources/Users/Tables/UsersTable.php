@@ -50,6 +50,10 @@ class UsersTable
                     ->label('Sobat ID')
                     ->searchable()
                     ->toggleable(),
+                TextColumn::make('nik')
+                    ->label('NIK')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('kd_satker')
                     ->label('Satker')
                     ->searchable()

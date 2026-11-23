@@ -65,6 +65,16 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-23]
+#### Added
+- **Kolom NIK & Alamat Mitra di Tabel Users**: Migrasi penambahan kolom `nik` (varchar 20, indexed) dan `alamat` (text) pada tabel `users` untuk melengkapi data kependudukan dan domisili mitra statistik.
+- **Integrasi NIK & Alamat pada Filament & API**:
+  - `UserForm`: Field input NIK (khusus tipe Mitra) dan Alamat Lengkap.
+  - `UsersTable`: Kolom NIK (searchable, toggleable) pada tabel pengguna.
+  - `MasterUserResource` & OpenAPI Spec: Field `nik` kini resmi diekspos melalui Master Data API M2M untuk konsumsi aplikasi klien di ekosistem BPS Demak.
+- **Artisan Command `app:update-mitra-nik`**: Perintah otomatis untuk mencocokkan dan memperbarui data NIK, nomor telepon (`phone`), alamat domisili (`alamat`), jenis kelamin, dan tanggal lahir seluruh mitra berdasarkan SOBAT ID / email.
+- **Pemutakhiran Data 223 Mitra Statistik**: Seluruh 223 mitra terdaftar di database SIPETRA berhasil dimutakhirkan dengan data NIK resmi, nomor handphone aktif, dan alamat domisili dari file master rekrutmen.
+
 ### [2026-11-16]
 #### Added
 - **Manajemen Anggota Role Terintegrasi (`UsersRelationManager`)**: Menambahkan tabel relasi pengguna pada halaman edit role Filament Shield (`RoleResource`), memungkinkan admin melihat daftar user pemilik role secara langsung, menambahkan user ke role (`AttachAction`), serta mencabut user dari role (`DetachAction`).

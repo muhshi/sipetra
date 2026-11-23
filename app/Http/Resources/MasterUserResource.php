@@ -39,6 +39,7 @@ class MasterUserResource extends JsonResource
             'nip' => $this->nip,
             'nip_baru' => $this->nip_baru,
             'sobat_id' => $this->sobat_id,
+            'nik' => $this->nik,
 
             // Kontak
             'nomor_hp' => $this->phone,

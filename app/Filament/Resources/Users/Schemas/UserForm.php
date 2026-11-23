@@ -77,6 +77,10 @@ class UserForm
                                 TextInput::make('sobat_id')
                                     ->label('Sobat ID')
                                     ->visible(fn ($get) => $get('identity_type') === IdentityType::Mitra->value),
+                                TextInput::make('nik')
+                                    ->label('NIK')
+                                    ->maxLength(20)
+                                    ->visible(fn ($get) => $get('identity_type') === IdentityType::Mitra->value),
                                 Select::make('jenis_kelamin')
                                     ->label('Jenis Kelamin')
                                     ->options([
@@ -106,6 +110,8 @@ class UserForm
                             ]),
                         TextInput::make('pendidikan')
                             ->label('Pendidikan'),
+                        TextInput::make('alamat')
+                            ->label('Alamat Lengkap'),
                         FileUpload::make('avatar_url')
                             ->label('Avatar')
                             ->avatar()
