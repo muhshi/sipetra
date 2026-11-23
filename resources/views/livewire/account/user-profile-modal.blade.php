@@ -345,6 +345,25 @@
                                     <span class="modal-field-label">Nomor WhatsApp / Kontak</span>
                                     <span class="modal-field-val">{{ $user?->phone ?: '-' }}</span>
                                 </div>
+
+                                @if($user?->nik)
+                                    <div class="modal-field-box" style="grid-column: 1 / -1;">
+                                        <span class="modal-field-label">NIK (KTP)</span>
+                                        <span class="modal-field-val" style="font-family: monospace;">{{ $user->nik }}</span>
+                                    </div>
+                                @endif
+
+                                @if($user?->nomor_rekening || $user?->nama_bank)
+                                    <div class="modal-field-box" style="grid-column: 1 / -1;">
+                                        <span class="modal-field-label">Informasi Rekening Bank</span>
+                                        <span class="modal-field-val">
+                                            <strong>{{ $user->nama_bank ?: 'Bank' }}</strong> - {{ $user->nomor_rekening ?: '-' }}
+                                            @if($user->nama_pemilik_rekening)
+                                                <br><small style="color: #64748b;">a.n. {{ $user->nama_pemilik_rekening }}</small>
+                                            @endif
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
 
                             <p style="margin-top: 1rem; font-size: 0.75rem; color: #94a3b8; font-style: italic;">

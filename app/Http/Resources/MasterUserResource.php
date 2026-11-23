@@ -43,6 +43,12 @@ class MasterUserResource extends JsonResource
 
             // Kontak
             'nomor_hp' => $this->phone,
+            'alamat' => $this->alamat,
+
+            // Rekening Bank
+            'nama_bank' => $this->nama_bank,
+            'nomor_rekening' => $this->nomor_rekening,
+            'nama_pemilik_rekening' => $this->nama_pemilik_rekening,
 
             // Organisasi
             'jabatan' => $this->jabatan,

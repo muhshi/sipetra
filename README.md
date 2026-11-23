@@ -67,13 +67,20 @@ npx ruflo@latest daemon start
 
 ### [2026-11-23]
 #### Added
+- **Kolom Rekening Bank untuk Pegawai & Mitra (`nama_bank`, `nomor_rekening`, `nama_pemilik_rekening`)**: Migrasi penambahan kolom informasi perbankan pada tabel `users` untuk keperluan pembayaran honor, insentif, dan payroll.
+- **Integrasi Rekening Bank di UI & API**:
+  - `UserForm` & `EditProfile`: Section 'Informasi Rekening Bank' yang dapat diisi dan diedit untuk seluruh pengguna (Pegawai maupun Mitra).
+  - `UsersTable`: Kolom `nama_bank` dan `nomor_rekening` (toggleable).
+  - `UserProfileModal`: Informasi rekening bank tampil di modal profil portal pengguna.
+  - `MasterUserResource` & OpenAPI Spec: Field `alamat`, `nama_bank`, `nomor_rekening`, dan `nama_pemilik_rekening` resmi diekspos di endpoint M2M Master Data API.
 - **Kolom NIK & Alamat Mitra di Tabel Users**: Migrasi penambahan kolom `nik` (varchar 20, indexed) dan `alamat` (text) pada tabel `users` untuk melengkapi data kependudukan dan domisili mitra statistik.
 - **Integrasi NIK & Alamat pada Filament & API**:
   - `UserForm`: Field input NIK (khusus tipe Mitra) dan Alamat Lengkap.
   - `UsersTable`: Kolom NIK (searchable, toggleable) pada tabel pengguna.
   - `MasterUserResource` & OpenAPI Spec: Field `nik` kini resmi diekspos melalui Master Data API M2M untuk konsumsi aplikasi klien di ekosistem BPS Demak.
-- **Artisan Command `app:update-mitra-nik`**: Perintah otomatis untuk mencocokkan dan memperbarui data NIK, nomor telepon (`phone`), alamat domisili (`alamat`), jenis kelamin, dan tanggal lahir seluruh mitra berdasarkan SOBAT ID / email.
-- **Pemutakhiran Data 223 Mitra Statistik**: Seluruh 223 mitra terdaftar di database SIPETRA berhasil dimutakhirkan dengan data NIK resmi, nomor handphone aktif, dan alamat domisili dari file master rekrutmen.
+- **Artisan Command `app:update-mitra-nik` & Full Mitra Import**:
+  - Sinkronisasi data NIK, alamat, no telepon, dan rekening bank dari file master rekrutmen.
+  - Berhasil memutakhirkan 220 data mitra lama dan meng-import 902 mitra baru berstatus *"Diterima"*, sehingga total data mitra terdaftar di SIPETRA kini berjumlah 1.125 orang lengkap dengan NIK dan rekening bank.
 
 ### [2026-11-16]
 #### Added

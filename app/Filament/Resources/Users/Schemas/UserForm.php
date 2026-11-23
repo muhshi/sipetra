@@ -126,6 +126,22 @@ class UserForm
                     ])
                     ->collapsible(),
 
+                Section::make('Informasi Rekening Bank')
+                    ->description('Data rekening bank untuk keperluan pembayaran honor/tunjangan (Pegawai & Mitra).')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('nama_bank')
+                                    ->label('Nama Bank')
+                                    ->placeholder('contoh: (002) BANK BRI'),
+                                TextInput::make('nomor_rekening')
+                                    ->label('Nomor Rekening'),
+                                TextInput::make('nama_pemilik_rekening')
+                                    ->label('Nama Pemilik Rekening (Atas Nama)'),
+                            ]),
+                    ])
+                    ->collapsible(),
+
                 Section::make('Detil Kepegawaian (BPS)')
                     ->description('Data profil kepegawaian yang terhubung dengan data master.')
                     ->schema([

@@ -54,6 +54,14 @@ class UsersTable
                     ->label('NIK')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('nama_bank')
+                    ->label('Bank')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('nomor_rekening')
+                    ->label('No. Rekening')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('kd_satker')
                     ->label('Satker')
                     ->searchable()

@@ -116,6 +116,21 @@ class EditProfile extends BaseEditProfile
                             ->visibility('public')
                             ->helperText('Gambar akan otomatis dikompres ke format WebP. Maks. 10MB.'),
                     ]),
+
+                Section::make('Informasi Rekening Bank')
+                    ->description('Data rekening bank untuk keperluan pencairan honor atau tunjangan.')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('nama_bank')
+                                    ->label('Nama Bank')
+                                    ->placeholder('contoh: (002) BANK BRI'),
+                                TextInput::make('nomor_rekening')
+                                    ->label('Nomor Rekening'),
+                                TextInput::make('nama_pemilik_rekening')
+                                    ->label('Nama Pemilik Rekening'),
+                            ]),
+                    ]),
             ]);
     }
 }

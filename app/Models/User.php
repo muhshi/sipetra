@@ -39,6 +39,9 @@ use Spatie\Permission\Traits\HasRoles;
     'pendidikan',
     'alamat',
     'phone',
+    'nama_bank',
+    'nomor_rekening',
+    'nama_pemilik_rekening',
     'avatar_url',
     'is_active',
     // Kolom siklus kontrak mitra

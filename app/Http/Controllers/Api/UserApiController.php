@@ -46,7 +46,12 @@ class UserApiController extends Controller
         // Scope Kontak
         if ($token->can('contact:read')) {
             $data['phone_number'] = $user->phone ?? null;
-            $data['address'] = $user->alamat ?? null; // Sesuaikan jika ada kolom alamat di DB di masa depan
+            $data['address'] = $user->alamat ?? null;
+            $data['bank_account'] = [
+                'bank_name' => $user->nama_bank ?? null,
+                'account_number' => $user->nomor_rekening ?? null,
+                'account_holder' => $user->nama_pemilik_rekening ?? null,
+            ];
         }
 
         // Scope Data Pegawai Khusus (Employee)

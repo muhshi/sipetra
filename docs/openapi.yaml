@@ -123,6 +123,10 @@ paths:
                     sobat_id: null
                     nik: null
                     nomor_hp: "08123456789"
+                    alamat: "Jl. Pemuda No. 10, Demak"
+                    nama_bank: "(002) BANK BRI"
+                    nomor_rekening: "001601000123501"
+                    nama_pemilik_rekening: "Budi Santoso"
                     jabatan: "Statistisi Ahli Pertama"
                     golongan: "III/a"
                     unit_kerja: "Seksi Distribusi"
@@ -143,6 +147,10 @@ paths:
                     sobat_id: "MTR-2026-042"
                     nik: "3321112009650001"
                     nomor_hp: "08567891234"
+                    alamat: "Betokan RT 001 RW 002"
+                    nama_bank: "(002) BANK BRI"
+                    nomor_rekening: "001601030699505"
+                    nama_pemilik_rekening: "Sari Rahayu"
                     jabatan: "Mitra Statistik"
                     golongan: null
                     unit_kerja: null
@@ -281,6 +289,26 @@ components:
           type: string
           nullable: true
           example: "08123456789"
+        alamat:
+          type: string
+          nullable: true
+          description: Alamat domisili lengkap.
+          example: "Jl. Pemuda No. 10, Demak"
+        nama_bank:
+          type: string
+          nullable: true
+          description: Nama bank untuk pembayaran honor/tunjangan.
+          example: "(002) BANK BRI"
+        nomor_rekening:
+          type: string
+          nullable: true
+          description: Nomor rekening bank.
+          example: "001601030699505"
+        nama_pemilik_rekening:
+          type: string
+          nullable: true
+          description: Nama pemilik rekening bank (atas nama).
+          example: "Sukilan"
         jabatan:
           type: string
           nullable: true
