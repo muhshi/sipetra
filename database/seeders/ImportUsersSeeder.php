@@ -84,7 +84,7 @@ class ImportUsersSeeder extends Seeder
         array_shift($rows); // Remove header
 
         $count = 0;
-        $defaultPassword = Hash::make('3321');
+        $defaultPassword = Hash::make('Mitra3321');
 
         foreach ($rows as $row) {
             $sobatIdRaw = isset($row[12]) ? trim((string) $row[12]) : '';

@@ -38,7 +38,7 @@ Untuk mengimpor data mentah dari file JSON atau Excel:
     ```bash
     php artisan db:seed --class=ImportUsersSeeder
     ```
-    *Catatan: Default password untuk user yang diimport adalah `3321`.*
+    *Catatan: Default password untuk Pegawai adalah `3321` dan untuk Mitra adalah `Mitra3321`.*
 
 ## Lisensi
 
@@ -68,6 +68,10 @@ npx ruflo@latest daemon start
 ### [2026-11-24]
 #### Added
 - **Command Import & Sinkronisasi Mitra (`app:import-additional-mitra`)**: Menambahkan perintah artisan untuk memverifikasi dan mengimpor 73 data mitra statistik ke dalam database SIPETRA secara idempoten dengan kata sandi default `Mitra3321`, tipe identitas `mitra`, dan kode satker `3321`. Dilengkapi dengan pengujian otomatis Pest (`tests/Feature/ImportAdditionalMitraTest.php`).
+- **Command Reset Password Mitra (`app:reset-mitra-passwords`)**: Menambahkan console command untuk memperbarui kata sandi seluruh akun mitra menjadi `Mitra3321` tanpa menyentuh kata sandi pegawai (`3321`) atau administrator. Dilengkapi pengujian otomatis Pest (`tests/Feature/ResetMitraPasswordsTest.php`).
+
+#### Changed
+- **Default Password Mitra pada Seeder**: Memperbarui password default saat import data mitra di `ImportUsersSeeder` menjadi `Mitra3321`, sementara password default pegawai tetap dipertahankan `3321`.
 
 ### [2026-11-23]
 #### Added
