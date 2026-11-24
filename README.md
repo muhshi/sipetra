@@ -65,6 +65,10 @@ npx ruflo@latest daemon start
 
 ## Changelog
 
+### [2026-11-24]
+#### Added
+- **Command Import & Sinkronisasi Mitra (`app:import-additional-mitra`)**: Menambahkan perintah artisan untuk memverifikasi dan mengimpor 73 data mitra statistik ke dalam database SIPETRA secara idempoten dengan kata sandi default `Mitra3321`, tipe identitas `mitra`, dan kode satker `3321`. Dilengkapi dengan pengujian otomatis Pest (`tests/Feature/ImportAdditionalMitraTest.php`).
+
 ### [2026-11-23]
 #### Added
 - **Fitur Ubah Profil Mandiri di Portal Pengguna (`UserProfileModal`)**: Menambahkan tombol "Ubah Profil" dan mode form edit interaktif pada modal profil portal. Pengguna (Pegawai & Mitra) kini dapat memperbarui nomor WhatsApp/HP (`phone`), alamat domisili (`alamat`), data rekening bank (`nama_bank`, `nomor_rekening`, `nama_pemilik_rekening`), serta biodata pendukung (tempat lahir, tanggal lahir, pendidikan) secara mandiri dengan validasi form dan pesan sukses real-time.
